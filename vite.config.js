@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-04-20 18:32:45
+ * @LastEditTime: 2024-04-20 19:05:52
  * @Description: 
  */
 import { defineConfig } from 'vite'
@@ -21,4 +21,19 @@ export default defineConfig({
   },
   assetsInclude: ["./src/assets"],
   plugins: [vue()],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "@/assets/style/common.less";`,
+      },
+      less: {
+        javascriptEnabled: true,
+        modifyVars: {
+          hack: `true; @import (reference) "${path.resolve(
+            "src/assets/style/variables.less"
+          )}";`,
+        },
+      },
+    },
+  },
 })
