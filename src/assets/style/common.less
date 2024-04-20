@@ -1,0 +1,90 @@
+html,body{
+  width: 100%;
+  height: 100%;
+}
+body,
+div,
+ul,
+ol,
+dl,
+dt,
+dd,
+li,
+dl,
+h1,
+h2,
+h3,
+h4 {
+margin: 0;
+padding: 0;
+font-style: normal;
+}
+
+
+* {
+box-sizing: border-box;
+font-family: "PingFang SC", "Helvetica Neue", Helvetica, "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+ol,
+ul,
+li {
+list-style: none;
+}
+@main_color:#292d32;
+
+.row-center{
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.text-ellipsis{
+text-overflow: ellipsis;
+overflow: hidden;
+white-space: nowrap;
+}
+
+@font-face {
+font-family: "YYZY";
+src: url('../fonts/b.ttf');
+font-weight: normal;
+font-style: normal;
+}
+
+.scroll_container {
+overflow: auto;
+}
+
+.scroll_container::-webkit-scrollbar {
+width: 0;
+background: white;
+}
+
+.scroll_container::-webkit-scrollbar-corner,
+/* 滚动条角落 */
+.scroll_container::-webkit-scrollbar-thumb,
+.scroll_container::-webkit-scrollbar-track {
+border-radius: 4px;
+}
+
+.scroll_container::-webkit-scrollbar-corner,
+.scroll_container::-webkit-scrollbar-track {
+/* 滚动条轨道 */
+background-color: rgba(181, 165, 132, 0.1);
+box-shadow: inset 0 0 1px rgba(180, 160, 120, 0.5);
+}
+
+.scroll_container::-webkit-scrollbar-thumb {
+/* 滚动条手柄 */
+background-color: rgba(0, 0, 0, .1);
+}
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  height: 100%;
+  width: 100%;
+}
