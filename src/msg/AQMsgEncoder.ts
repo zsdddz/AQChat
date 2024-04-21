@@ -15,11 +15,8 @@ export default class AQMsgEncoder {
             null == msgBody) {
             return null;
         }
-        var MSG_LEN = 2;
-        var MSG_COMMAND = 2;
-
         let msgBodySerialize = msgBody.serializeBinary();
-        var msgLen = MSG_LEN + MSG_COMMAND + msgBodySerialize.length;
+        var msgLen =msgBodySerialize.length;
 
         let pack = new ByteBuffer(null, 0);
         pack.short(msgLen).short(msgCommand).byteArray(msgBodySerialize,msgBodySerialize.length)
