@@ -11,11 +11,14 @@
   "dependencies": {
     "axios": "^0.24.0",
     "element-plus": "^2.7.1",
+    "google-protobuf": "^3.21.2",
     "lottie-web": "^5.12.2",
+    "protobufjs": "^7.2.6",
     "v-viewer": "^3.0.10",
     "vue": "^3.4.21",
     "vue-router": "4",
-    "wangeditor": "^4.7.5"
+    "wangeditor": "^4.7.5",
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.0.4",
