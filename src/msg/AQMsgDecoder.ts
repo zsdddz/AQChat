@@ -1,9 +1,9 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:53:16
- * @LastEditTime: 2024-04-21 20:14:44
+ * @LastEditTime: 2024-04-21 21:16:04
  */
-import * as AQChatMSg from '../utils/AQChatMsgProtocol_pb.js';
+import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
 
 /**
  * 消息解码器

@@ -523,7 +523,7 @@ proto.chat_msg.UserLoginAck.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.UserLoginAck.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     username: jspb.Message.getFieldWithDefault(msg, 2, ""),
     useravatar: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
@@ -563,7 +563,7 @@ proto.chat_msg.UserLoginAck.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt64());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
@@ -604,8 +604,8 @@ proto.chat_msg.UserLoginAck.prototype.serializeBinary = function() {
 proto.chat_msg.UserLoginAck.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt64(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -628,20 +628,20 @@ proto.chat_msg.UserLoginAck.serializeBinaryToWriter = function(message, writer) 
 
 
 /**
- * optional int64 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.UserLoginAck.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.UserLoginAck} returns this
  */
 proto.chat_msg.UserLoginAck.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -713,7 +713,7 @@ proto.chat_msg.HeartBeatCmd.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.HeartBeatCmd.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0)
+    userid: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -751,7 +751,7 @@ proto.chat_msg.HeartBeatCmd.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     default:
@@ -784,8 +784,8 @@ proto.chat_msg.HeartBeatCmd.prototype.serializeBinary = function() {
 proto.chat_msg.HeartBeatCmd.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -794,20 +794,20 @@ proto.chat_msg.HeartBeatCmd.serializeBinaryToWriter = function(message, writer) 
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.HeartBeatCmd.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.HeartBeatCmd} returns this
  */
 proto.chat_msg.HeartBeatCmd.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -843,7 +843,7 @@ proto.chat_msg.HeartBeatAck.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.HeartBeatAck.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0)
+    userid: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -881,7 +881,7 @@ proto.chat_msg.HeartBeatAck.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     default:
@@ -914,8 +914,8 @@ proto.chat_msg.HeartBeatAck.prototype.serializeBinary = function() {
 proto.chat_msg.HeartBeatAck.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -924,20 +924,20 @@ proto.chat_msg.HeartBeatAck.serializeBinaryToWriter = function(message, writer) 
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.HeartBeatAck.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.HeartBeatAck} returns this
  */
 proto.chat_msg.HeartBeatAck.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -973,8 +973,8 @@ proto.chat_msg.JoinRoomCmd.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.JoinRoomCmd.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    roomid: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    roomno: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -1012,12 +1012,12 @@ proto.chat_msg.JoinRoomCmd.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setRoomid(value);
+      msg.setRoomno(value);
       break;
     default:
       reader.skipField();
@@ -1049,13 +1049,13 @@ proto.chat_msg.JoinRoomCmd.prototype.serializeBinary = function() {
 proto.chat_msg.JoinRoomCmd.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
   }
-  f = message.getRoomid();
+  f = message.getRoomno();
   if (f !== 0) {
     writer.writeInt32(
       2,
@@ -1066,28 +1066,28 @@ proto.chat_msg.JoinRoomCmd.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.JoinRoomCmd.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.JoinRoomCmd} returns this
  */
 proto.chat_msg.JoinRoomCmd.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * optional int32 roomId = 2;
+ * optional int32 roomNo = 2;
  * @return {number}
  */
-proto.chat_msg.JoinRoomCmd.prototype.getRoomid = function() {
+proto.chat_msg.JoinRoomCmd.prototype.getRoomno = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
@@ -1096,7 +1096,7 @@ proto.chat_msg.JoinRoomCmd.prototype.getRoomid = function() {
  * @param {number} value
  * @return {!proto.chat_msg.JoinRoomCmd} returns this
  */
-proto.chat_msg.JoinRoomCmd.prototype.setRoomid = function(value) {
+proto.chat_msg.JoinRoomCmd.prototype.setRoomno = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
 };
 
@@ -1133,8 +1133,8 @@ proto.chat_msg.JoinRoomAck.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.JoinRoomAck.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
-    roomid: jspb.Message.getFieldWithDefault(msg, 2, 0)
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
+    roomno: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
   if (includeInstance) {
@@ -1172,12 +1172,12 @@ proto.chat_msg.JoinRoomAck.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
       var value = /** @type {number} */ (reader.readInt32());
-      msg.setRoomid(value);
+      msg.setRoomno(value);
       break;
     default:
       reader.skipField();
@@ -1209,13 +1209,13 @@ proto.chat_msg.JoinRoomAck.prototype.serializeBinary = function() {
 proto.chat_msg.JoinRoomAck.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
   }
-  f = message.getRoomid();
+  f = message.getRoomno();
   if (f !== 0) {
     writer.writeInt32(
       2,
@@ -1226,28 +1226,28 @@ proto.chat_msg.JoinRoomAck.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.JoinRoomAck.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.JoinRoomAck} returns this
  */
 proto.chat_msg.JoinRoomAck.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
 /**
- * optional int32 roomId = 2;
+ * optional int32 roomNo = 2;
  * @return {number}
  */
-proto.chat_msg.JoinRoomAck.prototype.getRoomid = function() {
+proto.chat_msg.JoinRoomAck.prototype.getRoomno = function() {
   return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
@@ -1256,7 +1256,7 @@ proto.chat_msg.JoinRoomAck.prototype.getRoomid = function() {
  * @param {number} value
  * @return {!proto.chat_msg.JoinRoomAck} returns this
  */
-proto.chat_msg.JoinRoomAck.prototype.setRoomid = function(value) {
+proto.chat_msg.JoinRoomAck.prototype.setRoomno = function(value) {
   return jspb.Message.setProto3IntField(this, 2, value);
 };
 
@@ -1293,7 +1293,7 @@ proto.chat_msg.CreateRoomCmd.prototype.toObject = function(opt_includeInstance) 
  */
 proto.chat_msg.CreateRoomCmd.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomno: jspb.Message.getFieldWithDefault(msg, 2, ""),
     roomname: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
@@ -1333,7 +1333,7 @@ proto.chat_msg.CreateRoomCmd.deserializeBinaryFromReader = function(msg, reader)
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
@@ -1374,8 +1374,8 @@ proto.chat_msg.CreateRoomCmd.prototype.serializeBinary = function() {
 proto.chat_msg.CreateRoomCmd.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -1398,20 +1398,20 @@ proto.chat_msg.CreateRoomCmd.serializeBinaryToWriter = function(message, writer)
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.CreateRoomCmd.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.CreateRoomCmd} returns this
  */
 proto.chat_msg.CreateRoomCmd.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -1483,7 +1483,7 @@ proto.chat_msg.CreateRoomAck.prototype.toObject = function(opt_includeInstance) 
  */
 proto.chat_msg.CreateRoomAck.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomid: jspb.Message.getFieldWithDefault(msg, 2, 0),
     roomno: jspb.Message.getFieldWithDefault(msg, 3, ""),
     roomname: jspb.Message.getFieldWithDefault(msg, 4, "")
@@ -1524,7 +1524,7 @@ proto.chat_msg.CreateRoomAck.deserializeBinaryFromReader = function(msg, reader)
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
@@ -1569,8 +1569,8 @@ proto.chat_msg.CreateRoomAck.prototype.serializeBinary = function() {
 proto.chat_msg.CreateRoomAck.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -1600,20 +1600,20 @@ proto.chat_msg.CreateRoomAck.serializeBinaryToWriter = function(message, writer)
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.CreateRoomAck.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.CreateRoomAck} returns this
  */
 proto.chat_msg.CreateRoomAck.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -1703,7 +1703,7 @@ proto.chat_msg.LeaveRoomCmd.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.LeaveRoomCmd.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomid: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
@@ -1742,7 +1742,7 @@ proto.chat_msg.LeaveRoomCmd.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
@@ -1779,8 +1779,8 @@ proto.chat_msg.LeaveRoomCmd.prototype.serializeBinary = function() {
 proto.chat_msg.LeaveRoomCmd.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -1796,20 +1796,20 @@ proto.chat_msg.LeaveRoomCmd.serializeBinaryToWriter = function(message, writer) 
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.LeaveRoomCmd.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.LeaveRoomCmd} returns this
  */
 proto.chat_msg.LeaveRoomCmd.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -1863,7 +1863,7 @@ proto.chat_msg.LeaveRoomAck.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.LeaveRoomAck.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomid: jspb.Message.getFieldWithDefault(msg, 2, 0)
   };
 
@@ -1902,7 +1902,7 @@ proto.chat_msg.LeaveRoomAck.deserializeBinaryFromReader = function(msg, reader) 
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
@@ -1939,8 +1939,8 @@ proto.chat_msg.LeaveRoomAck.prototype.serializeBinary = function() {
 proto.chat_msg.LeaveRoomAck.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -1956,20 +1956,20 @@ proto.chat_msg.LeaveRoomAck.serializeBinaryToWriter = function(message, writer) 
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.LeaveRoomAck.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.LeaveRoomAck} returns this
  */
 proto.chat_msg.LeaveRoomAck.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -2023,7 +2023,7 @@ proto.chat_msg.SendMsgCmd.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.SendMsgCmd.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomid: jspb.Message.getFieldWithDefault(msg, 2, 0),
     msgtype: jspb.Message.getFieldWithDefault(msg, 3, 0),
     msg: jspb.Message.getFieldWithDefault(msg, 4, "")
@@ -2064,7 +2064,7 @@ proto.chat_msg.SendMsgCmd.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
@@ -2109,8 +2109,8 @@ proto.chat_msg.SendMsgCmd.prototype.serializeBinary = function() {
 proto.chat_msg.SendMsgCmd.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -2140,20 +2140,20 @@ proto.chat_msg.SendMsgCmd.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.SendMsgCmd.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.SendMsgCmd} returns this
  */
 proto.chat_msg.SendMsgCmd.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -2243,7 +2243,7 @@ proto.chat_msg.SendMsgAck.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.SendMsgAck.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomid: jspb.Message.getFieldWithDefault(msg, 2, 0),
     success: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
   };
@@ -2283,7 +2283,7 @@ proto.chat_msg.SendMsgAck.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
@@ -2324,8 +2324,8 @@ proto.chat_msg.SendMsgAck.prototype.serializeBinary = function() {
 proto.chat_msg.SendMsgAck.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -2348,20 +2348,20 @@ proto.chat_msg.SendMsgAck.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.SendMsgAck.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.SendMsgAck} returns this
  */
 proto.chat_msg.SendMsgAck.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
@@ -2433,7 +2433,7 @@ proto.chat_msg.BroadcastMsgAck.prototype.toObject = function(opt_includeInstance
  */
 proto.chat_msg.BroadcastMsgAck.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, 0),
+    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomid: jspb.Message.getFieldWithDefault(msg, 2, 0),
     msgtype: jspb.Message.getFieldWithDefault(msg, 3, 0),
     msg: jspb.Message.getFieldWithDefault(msg, 4, "")
@@ -2474,7 +2474,7 @@ proto.chat_msg.BroadcastMsgAck.deserializeBinaryFromReader = function(msg, reade
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {number} */ (reader.readInt32());
+      var value = /** @type {string} */ (reader.readString());
       msg.setUserid(value);
       break;
     case 2:
@@ -2519,8 +2519,8 @@ proto.chat_msg.BroadcastMsgAck.prototype.serializeBinary = function() {
 proto.chat_msg.BroadcastMsgAck.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
   f = message.getUserid();
-  if (f !== 0) {
-    writer.writeInt32(
+  if (f.length > 0) {
+    writer.writeString(
       1,
       f
     );
@@ -2550,20 +2550,20 @@ proto.chat_msg.BroadcastMsgAck.serializeBinaryToWriter = function(message, write
 
 
 /**
- * optional int32 userId = 1;
- * @return {number}
+ * optional string userId = 1;
+ * @return {string}
  */
 proto.chat_msg.BroadcastMsgAck.prototype.getUserid = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /**
- * @param {number} value
+ * @param {string} value
  * @return {!proto.chat_msg.BroadcastMsgAck} returns this
  */
 proto.chat_msg.BroadcastMsgAck.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3IntField(this, 1, value);
+  return jspb.Message.setProto3StringField(this, 1, value);
 };
 
 
