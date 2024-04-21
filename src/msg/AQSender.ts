@@ -1,9 +1,15 @@
+/*
+ * @Author: zsdddz
+ * @Date: 2024-04-21 00:40:59
+ * @LastEditTime: 2024-04-21 21:25:32
+ */
+
+
 import { w3cwebsocket} from 'websocket';
 import AQMsgDecoder from './AQMsgDecoder';
 import AQMsgEncoder from './AQMsgEncoder';
 import ByteBuffer from './codec/ByteBuffer'
-const SERVER_HOST = "ws.dev.aqchat.run";
-// const SERVER_HOST = "127.0.0.1:9090/ws";
+const SERVER_HOST = "127.0.0.1:9090/ws";
 
 export default class AQSender {
     /**

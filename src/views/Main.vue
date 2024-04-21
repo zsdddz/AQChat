@@ -1,3 +1,8 @@
+<!--
+ * @Author: zsdddz
+ * @Date: 2024-04-21 00:31:05
+ * @LastEditTime: 2024-04-21 21:03:22
+-->
 <template>
   <div>
     主页
@@ -9,7 +14,7 @@
 
 <script setup lang="ts">
 import AQSender from '../msg/AQSender';
-import * as AQChatMSg from '../utils/AQChatMsgProtocol_pb.js';
+import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
 const testWs = () => {
     console.log("123")
     AQSender.getInstance().connect(()=>{
