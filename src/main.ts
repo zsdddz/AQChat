@@ -7,9 +7,11 @@
  */
 
 import { createApp } from 'vue'
-import App from './App.vue'
-import router from "./router"
+import App from "./App.vue"
+import router from './router'
 import ElementPlus from 'element-plus'
+import store from './store'
+
 
 // css
 import 'element-plus/dist/index.css'
@@ -20,4 +22,5 @@ import "viewerjs/dist/viewer.css";
 createApp(App)
 .use(router)
 .use(ElementPlus)
+.use(store)
 .mount('#app')

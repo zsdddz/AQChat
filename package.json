@@ -13,6 +13,8 @@
     "element-plus": "^2.7.1",
     "google-protobuf": "^3.21.2",
     "lottie-web": "^5.12.2",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "protobufjs": "^7.2.6",
     "v-viewer": "^3.0.10",
     "vue": "^3.4.21",
