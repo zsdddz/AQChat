@@ -1,3 +1,10 @@
+/*
+ * @Author: zsdddz
+ * @Date: 2024-04-21 00:40:59
+ * @LastEditTime: 2024-04-21 20:16:13
+ */
+
+
 import { w3cwebsocket} from 'websocket';
 import AQMsgDecoder from './AQMsgDecoder';
 import AQMsgEncoder from './AQMsgEncoder';

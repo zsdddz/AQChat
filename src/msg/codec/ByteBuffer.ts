@@ -1,3 +1,10 @@
+/*
+ * @Author: zsdddz
+ * @Date: 2024-04-21 13:11:32
+ * @LastEditTime: 2024-04-21 20:16:29
+ */
+
+
 export default class ByteBuffer {
     Type_Byte: number = 1;
     Type_Short: number = 2;

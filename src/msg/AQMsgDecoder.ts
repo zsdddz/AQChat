@@ -1,4 +1,8 @@
-// @import
+/*
+ * @Author: zsdddz
+ * @Date: 2024-04-21 00:53:16
+ * @LastEditTime: 2024-04-21 20:14:44
+ */
 import * as AQChatMSg from '../utils/AQChatMsgProtocol_pb.js';
 
 /**
