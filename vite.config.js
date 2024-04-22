@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-04-20 19:05:52
+ * @LastEditTime: 2024-04-22 20:21:31
  * @Description: 
  */
 import { defineConfig } from 'vite'
@@ -11,7 +11,7 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/",
+  base: "/aqchat",
   root: process.cwd(),
   resolve: {
     alias: {
