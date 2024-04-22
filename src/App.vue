@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-04-20 19:12:54
+ * @LastEditTime: 2024-04-22 20:42:21
  * @Description: 
 -->
 <template>
@@ -30,8 +30,8 @@ const initDevice = () => {
 
 const changeTheme = () => {
   if (themeActive.value) {
-    document.documentElement.className = "theme-light";
-    theme.value = "light";
+    document.documentElement.className = "theme-dark";
+    theme.value = "dark";
   } else {
     document.documentElement.className = "theme-default";
     theme.value = "default";
