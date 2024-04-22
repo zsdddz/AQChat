@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-04-21 21:25:32
+ * @LastEditTime: 2024-04-22 10:30:51
  */
 
 
@@ -9,6 +9,7 @@ import { w3cwebsocket} from 'websocket';
 import AQMsgDecoder from './AQMsgDecoder';
 import AQMsgEncoder from './AQMsgEncoder';
 import ByteBuffer from './codec/ByteBuffer'
+import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
 const SERVER_HOST = "127.0.0.1:9090/ws";
 
 export default class AQSender {
@@ -119,6 +120,24 @@ export default class AQSender {
     }
 
     /**
+     * 心跳
+     * @param userId
+     */
+    heartbeatLoop() {
+        let loop = () =>{
+            if(this._oWebSocket == null){
+                console.error("[心跳失败]未连接")
+                return;
+            }
+            console.log("send ping...")
+            let pack = new AQChatMSg.default.HeartBeatCmd();
+            pack.setPing("AQChat-PING");
+            this.sendMsg(AQChatMSg.default.MsgCommand.HEART_BEAT_CMD,pack);
+        }
+        setInterval(loop, 3000);
+    }
+
+    /**
      * 发送消息
      * 
      * @param msgCommand 消息编号
@@ -136,7 +155,6 @@ export default class AQSender {
         }
 
         let msgPack = this._oMsgEncoder.encode(msgCommand, msgBody);
-
         if (null == msgPack || msgPack.byteLength <= 0) {
             console.error(`字节数组为空, msgCommand = ${msgCommand}`);
             return;

@@ -1,7 +1,7 @@
 <!--
  * @Author: zsdddz
  * @Date: 2024-04-21 00:31:05
- * @LastEditTime: 2024-04-21 21:03:22
+ * @LastEditTime: 2024-04-22 09:58:29
 -->
 <template>
   <div>
@@ -37,7 +37,11 @@ const testWs = () => {
       m.setUsername("test2");
       m.setUseravatar("Tx2")
       AQSender.getInstance().sendMsg(AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,m);
+
+      //心跳
+      AQSender.getInstance().heartbeatLoop();
     })
+    
   }
 
 </script>

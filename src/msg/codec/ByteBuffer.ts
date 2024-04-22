@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 13:11:32
- * @LastEditTime: 2024-04-21 20:16:29
+ * @LastEditTime: 2024-04-22 09:50:52
  */
 
 
@@ -98,7 +98,7 @@ export default class ByteBuffer {
             this._list.push(this._org_buf.getInt16(this._offset, this._littleEndian));
             this._offset += 2;
         } else {
-            this._list.splice(index != undefined ? index : this._list.length, 0, { t: this.Type_Int32, d: val, l: 2 });
+            this._list.splice(index != undefined ? index : this._list.length, 0, { t: this.Type_Short, d: val, l: 2 });
             this._offset += 2;
         }
         return this;
