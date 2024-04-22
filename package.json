@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@multiavatar/multiavatar": "^1.0.7",
     "axios": "^0.24.0",
     "element-plus": "^2.7.1",
     "google-protobuf": "^3.21.2",
