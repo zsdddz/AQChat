@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-04-22 10:30:51
+ * @LastEditTime: 2024-04-22 23:06:49
  */
 
 
@@ -11,6 +11,7 @@ import AQMsgEncoder from './AQMsgEncoder';
 import ByteBuffer from './codec/ByteBuffer'
 import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
 const SERVER_HOST = "127.0.0.1:9090/ws";
+
 
 export default class AQSender {
     /**
