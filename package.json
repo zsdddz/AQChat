@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@multiavatar/multiavatar": "^1.0.7",
+    "ali-oss": "^6.20.0",
     "axios": "^0.24.0",
     "element-plus": "^2.7.1",
     "google-protobuf": "^3.21.2",

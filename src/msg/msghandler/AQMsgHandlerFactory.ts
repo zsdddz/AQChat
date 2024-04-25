@@ -5,6 +5,7 @@
  */
 
 import * as AQChatMSg from '../protocol/AQChatMsgProtocol_pb';
+import GetStsAckHandler from './GetStsAckHandler';
 import UserLoginAckHandler from './UserLoginAckHandler';
 
 export default class AQMsgHandlerFactory {
@@ -18,6 +19,7 @@ export default class AQMsgHandlerFactory {
     private constructor() {
         let msgCommand = AQChatMSg.default.MsgCommand;
         this.handlerMap[msgCommand.USER_LOGIN_ACK] = new UserLoginAckHandler();
+        this.handlerMap[msgCommand.GET_STS_ACK] = new GetStsAckHandler();
     }
 
     handle(msgCommand:number, msgBody) {

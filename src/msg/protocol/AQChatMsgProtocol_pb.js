@@ -3277,7 +3277,9 @@ proto.chat_msg.GetStsAck.toObject = function(includeInstance, msg) {
     accesskeysecret: jspb.Message.getFieldWithDefault(msg, 2, ""),
     securitytoken: jspb.Message.getFieldWithDefault(msg, 3, ""),
     region: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    bucket: jspb.Message.getFieldWithDefault(msg, 5, "")
+    bucket: jspb.Message.getFieldWithDefault(msg, 5, ""),
+    uploadpath: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    endpoint: jspb.Message.getFieldWithDefault(msg, 7, "")
   };
 
   if (includeInstance) {
@@ -3333,6 +3335,14 @@ proto.chat_msg.GetStsAck.deserializeBinaryFromReader = function(msg, reader) {
     case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.setBucket(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUploadpath(value);
+      break;
+    case 7:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setEndpoint(value);
       break;
     default:
       reader.skipField();
@@ -3395,6 +3405,20 @@ proto.chat_msg.GetStsAck.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       5,
+      f
+    );
+  }
+  f = message.getUploadpath();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getEndpoint();
+  if (f.length > 0) {
+    writer.writeString(
+      7,
       f
     );
   }
@@ -3492,6 +3516,42 @@ proto.chat_msg.GetStsAck.prototype.setBucket = function(value) {
 
 
 /**
+ * optional string uploadPath = 6;
+ * @return {string}
+ */
+proto.chat_msg.GetStsAck.prototype.getUploadpath = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.chat_msg.GetStsAck} returns this
+ */
+proto.chat_msg.GetStsAck.prototype.setUploadpath = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional string endpoint = 7;
+ * @return {string}
+ */
+proto.chat_msg.GetStsAck.prototype.getEndpoint = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.chat_msg.GetStsAck} returns this
+ */
+proto.chat_msg.GetStsAck.prototype.setEndpoint = function(value) {
+  return jspb.Message.setProto3StringField(this, 7, value);
+};
+
+
+/**
  * @enum {number}
  */
 proto.chat_msg.MsgCommand = {
@@ -3525,3 +3585,4 @@ proto.chat_msg.MsgType = {
 };
 
 export default proto.chat_msg;
+
