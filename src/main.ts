@@ -17,6 +17,7 @@ import store from './store'
 import 'element-plus/dist/index.css'
 import './assets/style/variables.less'
 import "./assets/style/common.less"
+import "./assets/icon/iconfont.css"
 // import "viewerjs/dist/viewer.css";
 
 createApp(App)
