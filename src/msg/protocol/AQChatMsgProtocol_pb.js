@@ -3143,7 +3143,7 @@ proto.chat_msg.GetStsCmd.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.GetStsCmd.toObject = function(includeInstance, msg) {
   var f, obj = {
-
+    msgtype: jspb.Message.getFieldWithDefault(msg, 1, 0)
   };
 
   if (includeInstance) {
@@ -3180,6 +3180,10 @@ proto.chat_msg.GetStsCmd.deserializeBinaryFromReader = function(msg, reader) {
     }
     var field = reader.getFieldNumber();
     switch (field) {
+    case 1:
+      var value = /** @type {!proto.chat_msg.MsgType} */ (reader.readEnum());
+      msg.setMsgtype(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -3209,6 +3213,31 @@ proto.chat_msg.GetStsCmd.prototype.serializeBinary = function() {
  */
 proto.chat_msg.GetStsCmd.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
+  f = message.getMsgtype();
+  if (f !== 0.0) {
+    writer.writeEnum(
+      1,
+      f
+    );
+  }
+};
+
+
+/**
+ * optional MsgType msgType = 1;
+ * @return {!proto.chat_msg.MsgType}
+ */
+proto.chat_msg.GetStsCmd.prototype.getMsgtype = function() {
+  return /** @type {!proto.chat_msg.MsgType} */ (jspb.Message.getFieldWithDefault(this, 1, 0));
+};
+
+
+/**
+ * @param {!proto.chat_msg.MsgType} value
+ * @return {!proto.chat_msg.GetStsCmd} returns this
+ */
+proto.chat_msg.GetStsCmd.prototype.setMsgtype = function(value) {
+  return jspb.Message.setProto3EnumField(this, 1, value);
 };
 
 
