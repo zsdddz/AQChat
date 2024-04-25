@@ -32,5 +32,8 @@
     "vite": "^5.2.0",
     "vue-cli-plugin-style-resources-loader": "^0.1.5",
     "vue-tsc": "^0.29.8"
+  },
+  "volta": {
+    "node": "16.15.0"
   }
 }
