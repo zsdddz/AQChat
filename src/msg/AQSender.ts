@@ -10,7 +10,8 @@ import AQMsgDecoder from './AQMsgDecoder';
 import AQMsgEncoder from './AQMsgEncoder';
 import ByteBuffer from './codec/ByteBuffer'
 import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
-const SERVER_HOST = "127.0.0.1:9090/ws";
+
+const SERVER_HOST = import.meta.env.VITE_SOCKET_API;
 
 
 export default class AQSender {
@@ -63,7 +64,7 @@ export default class AQSender {
         oWebSocket.onopen = (): void => {
             console.log(`已连接服务器, URL = ${strURL}`);
             this._oWebSocket = oWebSocket;
-
+            
             if (null != funCallback) {
                 funCallback();
             }
