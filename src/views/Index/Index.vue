@@ -45,9 +45,9 @@
     class="pop-start"
   >
     <div v-if="step == 1" class="tip-content">
-      <div class="popup-header">
+      <!-- <div class="popup-header">
         <lottie-ani style="cursor: pointer" :loop="false" :src="LottieStart" />
-      </div>
+      </div> -->
       <div class="user-info">
         <div class="user-avatar" v-html="userForm.userAvatar"></div>
         <div class="user-name">
