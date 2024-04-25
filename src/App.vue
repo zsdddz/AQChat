@@ -7,6 +7,19 @@
 -->
 <template>
   <div class="app-container">
+    <el-switch
+      class="theme-btn"
+      size="large"
+      v-model="themeActive"
+      @change="changeTheme"
+    >
+      <template #active-action>
+        <i class="iconfont icon-light"></i>
+      </template>
+      <template #inactive-action>
+        <i class="iconfont icon-dark"></i>
+      </template>
+    </el-switch>
     <router-view></router-view>
   </div>
 </template>
@@ -14,9 +27,10 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import useAppStore from "./store/modules/app"
+import { Check, Close } from '@element-plus/icons-vue'
 
 const themeActive = ref(false);
-const theme = ref('default');
+const theme = ref('light');
 
 const appStore = useAppStore()
 
@@ -30,33 +44,37 @@ const initDevice = () => {
 
 const changeTheme = () => {
   if (themeActive.value) {
+    document.documentElement.className = "theme-light";
+    theme.value = "light";
+  } else {
     document.documentElement.className = "theme-dark";
     theme.value = "dark";
-  } else {
-    document.documentElement.className = "theme-default";
-    theme.value = "default";
   }
   window.localStorage.setItem("theme", theme.value);
 };
 
 onMounted(() => {
-  theme.value = window.localStorage.getItem("theme") || "default";
-  themeActive.value = theme.value === "default" ? false : true;
+  theme.value = window.localStorage.getItem("theme") || "light";
+  themeActive.value = theme.value === "light" ? true : false;
   changeTheme();
   // 初始化设备类型
   initDevice()
 });
 </script>
 
-<style scoped>
+<style lang="less" scoped>
 .app-container{
   height: 100%;
   width: 100%;
-}
-.change-theme {
-  display: flex;
-  position: absolute;
-  top: 10px;
-  left: 30px;
+  position: relative;
+  .theme-btn{
+    display: flex;
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    .iconfont{
+      font-size: 14px;
+    }
+  }
 }
 </style>

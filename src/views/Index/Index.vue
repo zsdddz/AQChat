@@ -264,6 +264,7 @@ background: #fff;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  background-color: @bg-color;
   .bounce_fall {
     -webkit-animation: bounce_fall 1s linear;
   }
@@ -356,6 +357,7 @@ background: #fff;
     .ad-item {
       transition: all 0.5s;
       padding: 40px 10px;
+      color: @txt-color;
       &:hover {
         border-radius: 11px;
         background: #ffffff;
@@ -382,12 +384,14 @@ background: #fff;
     font-style: italic;
     font-weight: 600;
     letter-spacing: 5px;
+    color: @txt-color;
   }
   .desc {
     font-family: "YYZY";
     font-size: 18px;
     min-height: 30px;
     margin-top: 20px;
+    color: @txt-color;
   }
   .start-btn {
     font-family: inherit;
