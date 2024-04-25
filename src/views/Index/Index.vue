@@ -18,7 +18,7 @@
         <div class="ad-desc">{{ item.desc }}</div>
       </div>
     </div>
-    <div class="start-btn" @click="toStart">
+    <div class="start-btn" @click="toStartFun">
       <div class="svg-wrapper-1">
         <div class="svg-wrapper">
           <svg
@@ -55,7 +55,6 @@
           <div class="btn-reload">
             <lottie-ani
               v-if="reloadLoading"
-              ref="reloadRef"
               :loop="false"
               :autoplay="true"
               :src="LottieReload"
@@ -65,8 +64,7 @@
         </div>
       </div>
       
-      <!-- <el-button class="login" type="primary">登录</el-button> -->
-      <button class="login">
+      <button :class="['login',!isInitSocket && 'login-fail']" @click="enterChatFun">
         进入聊天室
         <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
           <path
@@ -94,13 +92,12 @@ const { startTyping } = useTyping();
 const {
   dialogStartVisible,
   step,
-  userFormRef,
   userForm,
-  userRules,
-  reloadRef,
   reloadLoading,
-  toStart,
+  isInitSocket,
+  toStartFun,
   reloadFun,
+  enterChatFun
 } = useStart();
 const advantageList = [
   {
@@ -120,6 +117,7 @@ const advantageList = [
 setTimeout(() => {
   startTyping("一个极速、便捷的在线匿名聊天室", appDesc);
 }, 1000);
+
 </script>
 <style>
 .pop-start {
@@ -147,6 +145,7 @@ background: #fff;
       top: 50%;
       transform: translateY(-50%);
     }
+   
     .login {
       position: absolute;
       transition: all 0.3s ease-in-out;
@@ -168,41 +167,40 @@ background: #fff;
       font-size: 15px;
       bottom: 0;
       right: 0;
+      &:hover {
+        transform: scale(1.05);
+        border-color: #fff9;
+      }
+      &:hover .icon {
+        transform: translate(4px);
+      }
+      &:hover::before {
+        animation: shine 1.5s ease-out infinite;
+      }
+      &::before {
+        content: "";
+        position: absolute;
+        width: 100px;
+        height: 100%;
+        background-image: linear-gradient(
+          120deg,
+          rgba(255, 255, 255, 0) 30%,
+          rgba(255, 255, 255, 0.8),
+          rgba(255, 255, 255, 0) 70%
+        );
+        top: 0;
+        left: -100px;
+        opacity: 0.6;
+      }
+      .icon {
+        width: 24px;
+        height: 24px;
+        transition: all 0.3s ease-in-out;
+      }
     }
-
-    .icon {
-      width: 24px;
-      height: 24px;
-      transition: all 0.3s ease-in-out;
-    }
-
-    .login:hover {
-      transform: scale(1.05);
-      border-color: #fff9;
-    }
-
-    .login:hover .icon {
-      transform: translate(4px);
-    }
-
-    .login:hover::before {
-      animation: shine 1.5s ease-out infinite;
-    }
-
-    .login::before {
-      content: "";
-      position: absolute;
-      width: 100px;
-      height: 100%;
-      background-image: linear-gradient(
-        120deg,
-        rgba(255, 255, 255, 0) 30%,
-        rgba(255, 255, 255, 0.8),
-        rgba(255, 255, 255, 0) 70%
-      );
-      top: 0;
-      left: -100px;
-      opacity: 0.6;
+    .login-fail{
+      cursor: not-allowed;
+      background-color:#ccc;
     }
 
     @keyframes shine {

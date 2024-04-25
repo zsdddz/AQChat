@@ -20,7 +20,7 @@ export default class AQMsgHandlerFactory {
         this.handlerMap[msgCommand.USER_LOGIN_ACK] = new UserLoginAckHandler();
     }
 
-    handle(msgCommand:number, msgBody): void {
+    handle(msgCommand:number, msgBody) {
         if(msgCommand<0||null==msgBody){
             return;
         }
@@ -30,6 +30,6 @@ export default class AQMsgHandlerFactory {
             console.error(`未找到消息处理器,msgCommand=${msgCommand}`);
             return;
         }
-        handler.handle(msgBody);
+        return handler.handle(msgBody);
     }
 }

@@ -6,9 +6,13 @@
  * @Description: 
  */
 
-import { ref,reactive,onMounted } from "vue"
+import { ref,reactive,onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import multiavatar from '@multiavatar/multiavatar/esm'
 import type { FormInstance, FormRules } from 'element-plus'
+import AQSender from '@/msg/AQSender'
+import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
+import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 
 export default ()=>{
 
@@ -37,45 +41,80 @@ export default ()=>{
       },
     ],
   })
-  const reloadRef = ref(null)
   const reloadLoading = ref(true)
-
+  let isInitSocket = ref(false)
+  const router = useRouter();
 
   onMounted(()=>{
-    userForm.userName =  generateUsername(4)
-    initUserAvatar()
+    userForm.userName =  generateUsernameFun(4)
+    initUserAvatar();
   })
 
-  function generateUsername(length:number) {
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var username = '';
-    for (var i = 0; i < length; i++) {
+  // 初始化websocket
+  const initSocketFun = ()=>{
+    AQSender.getInstance().connect(()=>{
+      console.log("连接成功...");
+      isInitSocket.value = true
+      let handlerFactory = AQMsgHandlerFactory.getInstance();
+      AQSender.getInstance().onMsgReceived = (msgCommand,msgBody) =>{
+        const result = handlerFactory.handle(msgCommand,msgBody);
+        switch(msgCommand){
+          case AQChatMSg.default.MsgCommand.USER_LOGIN_ACK:
+            console.log("==登录==");
+            console.log(result);
+            router.push({
+              name:"Main"
+            })
+            break;
+        }
+      }
+    })
+  }
+
+  // 生成随机名
+  const generateUsernameFun = (length:number)=>{
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let username = '';
+    for (let i = 0; i < length; i++) {
         username += chars.charAt(Math.floor(Math.random() * chars.length));
     }
     return username;
-}
+  }
 
   // 初始化用户头像
   const initUserAvatar = ()=>{
     userForm.userAvatar = multiavatar(userForm.userName)
   }
 
-  const toStart = ()=>{
+  // 点击开启
+  const toStartFun = ()=>{
     dialogStartVisible.value = true;
-    reloadRef.value && reloadRef.value.stop();
-    userForm.userName =  generateUsername(4)
+    userForm.userName =  generateUsernameFun(4);
     initUserAvatar();
+    if(!isInitSocket.value){
+      initSocketFun();
+    }
+    
   }
 
-  function reloadFun(){
-    // reloadRef.value && reloadRef.value.play();
+  // 重新生成用户头像、姓名
+  const reloadFun = ()=>{
     reloadLoading.value = false;
     setTimeout(()=>{
       reloadLoading.value = true;
-      userForm.userName =  generateUsername(4)
+      userForm.userName =  generateUsernameFun(4)
       initUserAvatar();
     },100)
     
+  }
+
+  // 进入聊天室
+  const enterChatFun = ()=>{
+    if(!isInitSocket.value) return
+    AQSender.getInstance().sendMsg(
+      AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
+      new AQChatMSg.default.UserLoginCmd([userForm.userName,userForm.userAvatar])
+    );
   }
 
   return{
@@ -84,9 +123,10 @@ export default ()=>{
     userFormRef,
     userForm,
     userRules,
-    reloadRef,
     reloadLoading,
-    toStart,
-    reloadFun
+    isInitSocket,
+    toStartFun,
+    reloadFun,
+    enterChatFun
   }
 }
