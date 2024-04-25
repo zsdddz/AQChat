@@ -9,15 +9,19 @@ import AQSender from '../AQSender';
 
 export default class UserLoginAckHandler {
 
-    handle(msgAck: AQChatMSg.default.UserLoginAck): void {
+    handle(msgAck: AQChatMSg.default.UserLoginAck) {
         if(msgAck == null){
             return;
         }
 
         //处理登录后的逻辑
         //...
-        console.log(`服务端返回登录ack,userId: ${msgAck.getUserid()},userName:${msgAck.getUsername()},头像地址:${msgAck.getUseravatar()}`)
-
+        // console.log(`服务端返回登录ack,userId: ${msgAck.getUserid()},userName:${msgAck.getUsername()},头像地址:${msgAck.getUseravatar()}`)
         AQSender.getInstance().heartbeatLoop();
+        return {
+            userId:msgAck.getUserid(),
+            userName:msgAck.getUsername(),
+            userAvatar:msgAck.getUseravatar(),
+        }
     }
 }
