@@ -5,24 +5,39 @@
  */
 
 import { defineStore } from 'pinia'
+interface UserInfo {
+    userId:String,
+    userName:String,
+    userAvatar:String
+}
+
+interface AppState {
+    isMobile:boolean,
+    userInfo:UserInfo
+}
 
 
-const appStore = defineStore('app', {
-    state: () => {
-        return {
-            isMobile: false
+const useAppStore = defineStore('app', {
+    state: ():AppState => ({
+        isMobile:false,
+        userInfo:{
+            userId:'',
+            userName:'',
+            userAvatar:''
         }
-    },
+    }),
     getters: {
         mobile: (state) => state.isMobile,
     },
     actions: {
-        initIsMobile(mobile) {
+        setIsMobile(mobile:boolean) {
             this.isMobile = mobile
         },
+        setUserInfo(userInfo:UserInfo) {
+            this.userInfo = userInfo
+        },
     },
-    // 
     persist: true,
 })
 
-export default appStore
+export default useAppStore

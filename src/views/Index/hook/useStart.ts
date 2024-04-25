@@ -13,7 +13,9 @@ import type { FormInstance, FormRules } from 'element-plus'
 import AQSender from '@/msg/AQSender'
 import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
 import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import useAppStore from "@/store/modules/app";
 
+const appStore = useAppStore()
 export default ()=>{
 
   interface UserForm {
@@ -62,6 +64,7 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.USER_LOGIN_ACK:
             console.log("==登录==");
             console.log(result);
+            appStore.setUserInfo(result)
             router.push({
               name:"Main"
             })
