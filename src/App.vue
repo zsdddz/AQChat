@@ -25,7 +25,7 @@ const isMobile = () => {
 }
 
 const initDevice = () => {
-  appStore.initIsMobile(isMobile())
+  appStore.setIsMobile(isMobile())
 }
 
 const changeTheme = () => {
