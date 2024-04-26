@@ -1,17 +1,19 @@
 <template>
   <div class="im-container">
     <div class="content">
-      <go-chat></go-chat>
+      <im-nav />
+      <im-list />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-
+import ImNav from "./components/im-nav.vue"
+import ImList from "./components/im-list.vue"
 </script>
 
 <style lang="less" scoped>
-.im-container{
+.im-container {
   width: 100%;
   min-width: 1200px;
   height: 100%;
@@ -27,6 +29,7 @@
     box-shadow:  -17px -17px 19px @im-content-shadow1,
                 17px 17px 19px @im-content-shadow2;
     overflow: hidden;
+    display: flex;
   }
 }
 </style>
