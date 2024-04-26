@@ -30,7 +30,7 @@ export default ()=>{
   const loginFun = (result:any)=>{
     appStore.setUserInfo(result)
     router.push({
-      name:"Main"
+      name:"IM"
     })
   }
 
