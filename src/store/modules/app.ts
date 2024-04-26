@@ -13,6 +13,7 @@ interface UserInfo {
 
 interface AppState {
     isMobile:boolean,
+    websocketStatus:boolean,
     userInfo:UserInfo
 }
 
@@ -20,6 +21,7 @@ interface AppState {
 const useAppStore = defineStore('app', {
     state: ():AppState => ({
         isMobile:false,
+        websocketStatus:false,
         userInfo:{
             userId:'',
             userName:'',
@@ -35,6 +37,9 @@ const useAppStore = defineStore('app', {
         },
         setUserInfo(userInfo:UserInfo) {
             this.userInfo = userInfo
+        },
+        setWebsocketStatus(status:boolean) {
+            this.websocketStatus = status
         },
     },
     persist: true,

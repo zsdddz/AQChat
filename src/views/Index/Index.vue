@@ -64,7 +64,7 @@
         </div>
       </div>
       
-      <button :class="['login',!isInitSocket && 'login-fail']" @click="enterChatFun">
+      <button :class="['login',!appStore.websocketStatus && 'login-fail']" @click="enterChatFun">
         进入聊天室
         <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
           <path
@@ -81,12 +81,14 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import LottieChat from "@/assets/json/lottie-chat.json";
-import LottieStart from "@/assets/json/lottie-start.json";
+// import LottieStart from "@/assets/json/lottie-start.json";
 import LottieReload from "@/assets/json/lottie-reload.json";
 import LottieAni from "@/components/Lottie.vue";
 import useTyping from "./hook/useTyping";
 import useStart from "./hook/useStart";
+import useAppStore from "@/store/modules/app";
 
+const appStore = useAppStore()
 const appDesc = ref("");
 const { startTyping } = useTyping();
 const {
@@ -94,7 +96,6 @@ const {
   step,
   userForm,
   reloadLoading,
-  isInitSocket,
   toStartFun,
   reloadFun,
   enterChatFun

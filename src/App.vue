@@ -27,21 +27,23 @@
 <script setup>
 import { onMounted, ref } from "vue";
 import useAppStore from "./store/modules/app"
-import { Check, Close } from '@element-plus/icons-vue'
+import useSocket from "./hooks/useSocket"
 
 const themeActive = ref(false);
 const theme = ref('light');
-
 const appStore = useAppStore()
+const {
+  initSocketFun
+} = useSocket()
 
 const isMobile = () => {
     return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i) || false
 }
-
+// 初始化设备类型
 const initDevice = () => {
   appStore.setIsMobile(isMobile())
 }
-
+// 切换主题
 const changeTheme = () => {
   if (themeActive.value) {
     document.documentElement.className = "theme-light";
@@ -57,8 +59,10 @@ onMounted(() => {
   theme.value = window.localStorage.getItem("theme") || "light";
   themeActive.value = theme.value === "light" ? true : false;
   changeTheme();
-  // 初始化设备类型
   initDevice()
+  setTimeout(()=>{
+    initSocketFun();
+  },1000)
 });
 </script>
 

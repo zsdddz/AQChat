@@ -15,14 +15,13 @@ import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
 import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app";
 
-const appStore = useAppStore()
 export default ()=>{
 
   interface UserForm {
     userName:string,
     userAvatar:string
   }
-
+  const appStore = useAppStore()
   const dialogStartVisible = ref(false)
   const step = ref(1)
   const userFormRef = ref<FormInstance>()
@@ -44,35 +43,11 @@ export default ()=>{
     ],
   })
   const reloadLoading = ref(true)
-  let isInitSocket = ref(false)
-  const router = useRouter();
 
   onMounted(()=>{
     userForm.userName =  generateUsernameFun(4)
     initUserAvatar();
   })
-
-  // 初始化websocket
-  const initSocketFun = ()=>{
-    AQSender.getInstance().connect(()=>{
-      console.log("连接成功...");
-      isInitSocket.value = true
-      let handlerFactory = AQMsgHandlerFactory.getInstance();
-      AQSender.getInstance().onMsgReceived = (msgCommand,msgBody) =>{
-        const result = handlerFactory.handle(msgCommand,msgBody);
-        switch(msgCommand){
-          case AQChatMSg.default.MsgCommand.USER_LOGIN_ACK:
-            console.log("==登录==");
-            console.log(result);
-            appStore.setUserInfo(result)
-            router.push({
-              name:"Main"
-            })
-            break;
-        }
-      }
-    })
-  }
 
   // 生成随机名
   const generateUsernameFun = (length:number)=>{
@@ -94,10 +69,6 @@ export default ()=>{
     dialogStartVisible.value = true;
     userForm.userName =  generateUsernameFun(4);
     initUserAvatar();
-    if(!isInitSocket.value){
-      initSocketFun();
-    }
-    
   }
 
   // 重新生成用户头像、姓名
@@ -113,7 +84,7 @@ export default ()=>{
 
   // 进入聊天室
   const enterChatFun = ()=>{
-    if(!isInitSocket.value) return
+    if(!appStore.websocketStatus) return
     AQSender.getInstance().sendMsg(
       AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
       new AQChatMSg.default.UserLoginCmd([userForm.userName,userForm.userAvatar])
@@ -127,7 +98,6 @@ export default ()=>{
     userForm,
     userRules,
     reloadLoading,
-    isInitSocket,
     toStartFun,
     reloadFun,
     enterChatFun
