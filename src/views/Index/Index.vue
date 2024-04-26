@@ -360,8 +360,8 @@ background: #fff;
       color: @txt-color;
       &:hover {
         border-radius: 11px;
-        background: #ffffff;
-        box-shadow: 8px 8px 18px #ededed, -8px -8px 18px #ffffff;
+        background: @bg-color;
+        box-shadow: inset 22px 22px 45px @ad-shadow, inset -22px -22px 45px @bg-color;
       }
       .label {
         font-size: 24px;
