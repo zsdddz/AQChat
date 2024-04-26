@@ -14,17 +14,17 @@ const routes = [
   { 
     path: "/", 
     name: "Index", 
-    component: () => import("@/views/Index/index.vue"),
+    component: () => import("@/views/index/index.vue"),
   },
   { 
-    path: "/", 
+    path: "/im", 
     name: "IM", 
-    component: () => import("@/views/IM/index.vue"),
+    component: () => import("@/views/im/index.vue"),
   },
   {
     path: "/main",
     name: "Main",
-    component: () => import("@/views/Main.vue"),
+    component: () => import("@/views/main.vue"),
   },
 ];
 
