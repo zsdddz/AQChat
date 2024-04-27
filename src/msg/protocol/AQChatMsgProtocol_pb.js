@@ -11,8 +11,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import * as jspb from 'google-protobuf';
-var goog = jspb;
+import * as jspb from 'google-protobuf';var goog = jspb;
 var global = (function() {
   if (this) { return this; }
   if (typeof window !== 'undefined') { return window; }
@@ -2403,7 +2402,8 @@ proto.chat_msg.SendMsgAck.toObject = function(includeInstance, msg) {
   var f, obj = {
     userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    success: jspb.Message.getBooleanFieldWithDefault(msg, 3, false)
+    success: jspb.Message.getBooleanFieldWithDefault(msg, 3, false),
+    msgid: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -2452,6 +2452,10 @@ proto.chat_msg.SendMsgAck.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setSuccess(value);
       break;
+    case 4:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMsgid(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2499,6 +2503,13 @@ proto.chat_msg.SendMsgAck.serializeBinaryToWriter = function(message, writer) {
   if (f) {
     writer.writeBool(
       3,
+      f
+    );
+  }
+  f = message.getMsgid();
+  if (f.length > 0) {
+    writer.writeString(
+      4,
       f
     );
   }
@@ -2559,6 +2570,24 @@ proto.chat_msg.SendMsgAck.prototype.setSuccess = function(value) {
 };
 
 
+/**
+ * optional string msgId = 4;
+ * @return {string}
+ */
+proto.chat_msg.SendMsgAck.prototype.getMsgid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.chat_msg.SendMsgAck} returns this
+ */
+proto.chat_msg.SendMsgAck.prototype.setMsgid = function(value) {
+  return jspb.Message.setProto3StringField(this, 4, value);
+};
+
+
 
 
 
@@ -2593,8 +2622,9 @@ proto.chat_msg.BroadcastMsgAck.toObject = function(includeInstance, msg) {
   var f, obj = {
     user: (f = msg.getUser()) && proto.chat_msg.User.toObject(includeInstance, f),
     roomid: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    msgtype: jspb.Message.getFieldWithDefault(msg, 3, 0),
-    msg: jspb.Message.getFieldWithDefault(msg, 4, "")
+    msgid: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    msgtype: jspb.Message.getFieldWithDefault(msg, 4, 0),
+    msg: jspb.Message.getFieldWithDefault(msg, 5, "")
   };
 
   if (includeInstance) {
@@ -2641,10 +2671,14 @@ proto.chat_msg.BroadcastMsgAck.deserializeBinaryFromReader = function(msg, reade
       msg.setRoomid(value);
       break;
     case 3:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setMsgid(value);
+      break;
+    case 4:
       var value = /** @type {!proto.chat_msg.MsgType} */ (reader.readEnum());
       msg.setMsgtype(value);
       break;
-    case 4:
+    case 5:
       var value = /** @type {string} */ (reader.readString());
       msg.setMsg(value);
       break;
@@ -2692,17 +2726,24 @@ proto.chat_msg.BroadcastMsgAck.serializeBinaryToWriter = function(message, write
       f
     );
   }
+  f = message.getMsgid();
+  if (f.length > 0) {
+    writer.writeString(
+      3,
+      f
+    );
+  }
   f = message.getMsgtype();
   if (f !== 0.0) {
     writer.writeEnum(
-      3,
+      4,
       f
     );
   }
   f = message.getMsg();
   if (f.length > 0) {
     writer.writeString(
-      4,
+      5,
       f
     );
   }
@@ -2765,11 +2806,29 @@ proto.chat_msg.BroadcastMsgAck.prototype.setRoomid = function(value) {
 
 
 /**
- * optional MsgType msgType = 3;
+ * optional string msgId = 3;
+ * @return {string}
+ */
+proto.chat_msg.BroadcastMsgAck.prototype.getMsgid = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.chat_msg.BroadcastMsgAck} returns this
+ */
+proto.chat_msg.BroadcastMsgAck.prototype.setMsgid = function(value) {
+  return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional MsgType msgType = 4;
  * @return {!proto.chat_msg.MsgType}
  */
 proto.chat_msg.BroadcastMsgAck.prototype.getMsgtype = function() {
-  return /** @type {!proto.chat_msg.MsgType} */ (jspb.Message.getFieldWithDefault(this, 3, 0));
+  return /** @type {!proto.chat_msg.MsgType} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
 };
 
 
@@ -2778,16 +2837,16 @@ proto.chat_msg.BroadcastMsgAck.prototype.getMsgtype = function() {
  * @return {!proto.chat_msg.BroadcastMsgAck} returns this
  */
 proto.chat_msg.BroadcastMsgAck.prototype.setMsgtype = function(value) {
-  return jspb.Message.setProto3EnumField(this, 3, value);
+  return jspb.Message.setProto3EnumField(this, 4, value);
 };
 
 
 /**
- * optional string msg = 4;
+ * optional string msg = 5;
  * @return {string}
  */
 proto.chat_msg.BroadcastMsgAck.prototype.getMsg = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
 };
 
 
@@ -2796,7 +2855,7 @@ proto.chat_msg.BroadcastMsgAck.prototype.getMsg = function() {
  * @return {!proto.chat_msg.BroadcastMsgAck} returns this
  */
 proto.chat_msg.BroadcastMsgAck.prototype.setMsg = function(value) {
-  return jspb.Message.setProto3StringField(this, 4, value);
+  return jspb.Message.setProto3StringField(this, 5, value);
 };
 
 
@@ -4534,12 +4593,10 @@ proto.chat_msg.ChatRecord.prototype.toObject = function(opt_includeInstance) {
  */
 proto.chat_msg.ChatRecord.toObject = function(includeInstance, msg) {
   var f, obj = {
-    userid: jspb.Message.getFieldWithDefault(msg, 1, ""),
-    username: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    useravatar: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    msgtype: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    message: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    createtime: jspb.Message.getFieldWithDefault(msg, 6, "")
+    user: (f = msg.getUser()) && proto.chat_msg.User.toObject(includeInstance, f),
+    msgtype: jspb.Message.getFieldWithDefault(msg, 2, 0),
+    message: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    createtime: jspb.Message.getFieldWithDefault(msg, 4, "")
   };
 
   if (includeInstance) {
@@ -4577,26 +4634,19 @@ proto.chat_msg.ChatRecord.deserializeBinaryFromReader = function(msg, reader) {
     var field = reader.getFieldNumber();
     switch (field) {
     case 1:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUserid(value);
+      var value = new proto.chat_msg.User;
+      reader.readMessage(value,proto.chat_msg.User.deserializeBinaryFromReader);
+      msg.setUser(value);
       break;
     case 2:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUsername(value);
-      break;
-    case 3:
-      var value = /** @type {string} */ (reader.readString());
-      msg.setUseravatar(value);
-      break;
-    case 4:
       var value = /** @type {!proto.chat_msg.MsgType} */ (reader.readEnum());
       msg.setMsgtype(value);
       break;
-    case 5:
+    case 3:
       var value = /** @type {string} */ (reader.readString());
       msg.setMessage(value);
       break;
-    case 6:
+    case 4:
       var value = /** @type {string} */ (reader.readString());
       msg.setCreatetime(value);
       break;
@@ -4629,45 +4679,32 @@ proto.chat_msg.ChatRecord.prototype.serializeBinary = function() {
  */
 proto.chat_msg.ChatRecord.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getUserid();
-  if (f.length > 0) {
-    writer.writeString(
+  f = message.getUser();
+  if (f != null) {
+    writer.writeMessage(
       1,
-      f
-    );
-  }
-  f = message.getUsername();
-  if (f.length > 0) {
-    writer.writeString(
-      2,
-      f
-    );
-  }
-  f = message.getUseravatar();
-  if (f.length > 0) {
-    writer.writeString(
-      3,
-      f
+      f,
+      proto.chat_msg.User.serializeBinaryToWriter
     );
   }
   f = message.getMsgtype();
   if (f !== 0.0) {
     writer.writeEnum(
-      4,
+      2,
       f
     );
   }
   f = message.getMessage();
   if (f.length > 0) {
     writer.writeString(
-      5,
+      3,
       f
     );
   }
   f = message.getCreatetime();
   if (f.length > 0) {
     writer.writeString(
-      6,
+      4,
       f
     );
   }
@@ -4675,65 +4712,48 @@ proto.chat_msg.ChatRecord.serializeBinaryToWriter = function(message, writer) {
 
 
 /**
- * optional string userId = 1;
- * @return {string}
+ * optional User user = 1;
+ * @return {?proto.chat_msg.User}
  */
-proto.chat_msg.ChatRecord.prototype.getUserid = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+proto.chat_msg.ChatRecord.prototype.getUser = function() {
+  return /** @type{?proto.chat_msg.User} */ (
+    jspb.Message.getWrapperField(this, proto.chat_msg.User, 1));
 };
 
 
 /**
- * @param {string} value
+ * @param {?proto.chat_msg.User|undefined} value
+ * @return {!proto.chat_msg.ChatRecord} returns this
+*/
+proto.chat_msg.ChatRecord.prototype.setUser = function(value) {
+  return jspb.Message.setWrapperField(this, 1, value);
+};
+
+
+/**
+ * Clears the message field making it undefined.
  * @return {!proto.chat_msg.ChatRecord} returns this
  */
-proto.chat_msg.ChatRecord.prototype.setUserid = function(value) {
-  return jspb.Message.setProto3StringField(this, 1, value);
+proto.chat_msg.ChatRecord.prototype.clearUser = function() {
+  return this.setUser(undefined);
 };
 
 
 /**
- * optional string userName = 2;
- * @return {string}
+ * Returns whether this field is set.
+ * @return {boolean}
  */
-proto.chat_msg.ChatRecord.prototype.getUsername = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
+proto.chat_msg.ChatRecord.prototype.hasUser = function() {
+  return jspb.Message.getField(this, 1) != null;
 };
 
 
 /**
- * @param {string} value
- * @return {!proto.chat_msg.ChatRecord} returns this
- */
-proto.chat_msg.ChatRecord.prototype.setUsername = function(value) {
-  return jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional string userAvatar = 3;
- * @return {string}
- */
-proto.chat_msg.ChatRecord.prototype.getUseravatar = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
-};
-
-
-/**
- * @param {string} value
- * @return {!proto.chat_msg.ChatRecord} returns this
- */
-proto.chat_msg.ChatRecord.prototype.setUseravatar = function(value) {
-  return jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-/**
- * optional MsgType msgType = 4;
+ * optional MsgType msgType = 2;
  * @return {!proto.chat_msg.MsgType}
  */
 proto.chat_msg.ChatRecord.prototype.getMsgtype = function() {
-  return /** @type {!proto.chat_msg.MsgType} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+  return /** @type {!proto.chat_msg.MsgType} */ (jspb.Message.getFieldWithDefault(this, 2, 0));
 };
 
 
@@ -4742,16 +4762,16 @@ proto.chat_msg.ChatRecord.prototype.getMsgtype = function() {
  * @return {!proto.chat_msg.ChatRecord} returns this
  */
 proto.chat_msg.ChatRecord.prototype.setMsgtype = function(value) {
-  return jspb.Message.setProto3EnumField(this, 4, value);
+  return jspb.Message.setProto3EnumField(this, 2, value);
 };
 
 
 /**
- * optional string message = 5;
+ * optional string message = 3;
  * @return {string}
  */
 proto.chat_msg.ChatRecord.prototype.getMessage = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
 };
 
 
@@ -4760,16 +4780,16 @@ proto.chat_msg.ChatRecord.prototype.getMessage = function() {
  * @return {!proto.chat_msg.ChatRecord} returns this
  */
 proto.chat_msg.ChatRecord.prototype.setMessage = function(value) {
-  return jspb.Message.setProto3StringField(this, 5, value);
+  return jspb.Message.setProto3StringField(this, 3, value);
 };
 
 
 /**
- * optional string createTime = 6;
+ * optional string createTime = 4;
  * @return {string}
  */
 proto.chat_msg.ChatRecord.prototype.getCreatetime = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
 };
 
 
@@ -4778,7 +4798,7 @@ proto.chat_msg.ChatRecord.prototype.getCreatetime = function() {
  * @return {!proto.chat_msg.ChatRecord} returns this
  */
 proto.chat_msg.ChatRecord.prototype.setCreatetime = function(value) {
-  return jspb.Message.setProto3StringField(this, 6, value);
+  return jspb.Message.setProto3StringField(this, 4, value);
 };
 
 
