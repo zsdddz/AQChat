@@ -41,7 +41,7 @@ const roomList = ref([])
       align-items: center;
       justify-content: center;
       border-radius: 0px;
-      background: @im-add;
+      background: @im-primary;
       border-radius: 4px;
       .icon-add{
         font-size: 12px;

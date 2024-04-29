@@ -14,11 +14,13 @@ import AQSender from '@/msg/AQSender'
 import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
 import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app";
+import { ElMessage } from 'element-plus'
 
 export default ()=>{
 
   interface UserForm {
     userName:string,
+    roomId:string,
     userAvatar:string
   }
   const appStore = useAppStore()
@@ -27,6 +29,7 @@ export default ()=>{
   const userFormRef = ref<FormInstance>()
   const userForm = reactive<UserForm>({
     userName:'',
+    roomId:'',
     userAvatar:''
   })
   const userRules = reactive<FormRules<UserForm>>({
@@ -61,12 +64,14 @@ export default ()=>{
 
   // 初始化用户头像
   const initUserAvatar = ()=>{
-    userForm.userAvatar = multiavatar(userForm.userName)
+    const avatarString = generateUsernameFun(2);
+    userForm.userAvatar = multiavatar(avatarString)
   }
 
   // 点击开启
   const toStartFun = ()=>{
     dialogStartVisible.value = true;
+    step.value = 1;
     userForm.userName =  generateUsernameFun(4);
     initUserAvatar();
   }
@@ -76,19 +81,34 @@ export default ()=>{
     reloadLoading.value = false;
     setTimeout(()=>{
       reloadLoading.value = true;
-      userForm.userName =  generateUsernameFun(4)
       initUserAvatar();
     },100)
     
   }
 
   // 进入聊天室
-  const enterChatFun = ()=>{
+  const enterRoomFun = ()=>{
     if(!appStore.websocketStatus) return
+    if(!userForm.userName.trim()){
+      ElMessage.warning("请输入用户名")
+      return
+    }
+    if(step.value == 3 && !userForm.roomId.trim()){
+      ElMessage.warning("请输入房间名")
+      return
+    }
     AQSender.getInstance().sendMsg(
       AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
       new AQChatMSg.default.UserLoginCmd([userForm.userName,userForm.userAvatar])
     );
+  }
+
+  const createRoomFun = ()=>{
+    step.value = 2;
+  }
+
+  const joinRoomFun = ()=>{
+    step.value = 3;
   }
 
   return{
@@ -100,6 +120,8 @@ export default ()=>{
     reloadLoading,
     toStartFun,
     reloadFun,
-    enterChatFun
+    enterRoomFun,
+    createRoomFun,
+    joinRoomFun
   }
 }

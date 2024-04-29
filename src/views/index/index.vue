@@ -10,7 +10,7 @@
     <div class="chat-lottie">
       <lottie-ani :src="LottieChat" />
     </div>
-    <div class="title bounce_fall">Anonymous Quick Chat</div>
+    <div class="title bounce_fall">AQChat</div>
     <div class="desc">{{ appDesc }}</div>
     <div class="advantage-list">
       <div v-for="item in advantageList" :key="item.title" class="ad-item">
@@ -44,28 +44,42 @@
     width="500px"
     class="pop-start"
   >
-    <div v-if="step == 1" class="tip-content">
-      <!-- <div class="popup-header">
-        <lottie-ani style="cursor: pointer" :loop="false" :src="LottieStart" />
-      </div> -->
+    <div v-if="step == 1" class="tip-content tip-2">
+      <div class="select-option">
+        <div class="option" @click="createRoomFun">
+          <i class="iconfont icon-create"></i>
+          创建
+        </div>
+        <div class="option" @click="joinRoomFun">
+          <i class="iconfont icon-enter"></i>
+          加入
+        </div>
+      </div>
+    </div>
+    <div v-else-if="step == 2 || step == 3" class="tip-content">
       <div class="user-info">
         <div class="user-avatar" v-html="userForm.userAvatar"></div>
+        <div class="btn-reload">
+          <lottie-ani
+            v-if="reloadLoading"
+            :loop="false"
+            :autoplay="true"
+            :src="LottieReload"
+            @click.native="reloadFun"
+          />
+        </div>
         <div class="user-name">
-          <input v-model="userForm.userName" />
-          <div class="btn-reload">
-            <lottie-ani
-              v-if="reloadLoading"
-              :loop="false"
-              :autoplay="true"
-              :src="LottieReload"
-              @click.native="reloadFun"
-            />
-          </div>
+          用户名
+          <input placeholder="请输入用户名" v-model="userForm.userName" />
+        </div>
+        <div v-if="step == 3" class="room-no">
+          房间号
+          <input placeholder="请输入房间号" v-model="userForm.roomId" />
         </div>
       </div>
       
-      <button :class="['login',!appStore.websocketStatus && 'login-fail']" @click="enterChatFun">
-        进入聊天室
+      <button :class="['next-btn',,!appStore.websocketStatus && 'init-fail']" @click="enterRoomFun">
+        进入
         <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
           <path
             clip-rule="evenodd"
@@ -98,7 +112,9 @@ const {
   reloadLoading,
   toStartFun,
   reloadFun,
-  enterChatFun
+  enterRoomFun,
+  joinRoomFun,
+  createRoomFun
 } = useStart();
 const advantageList = [
   {
@@ -134,26 +150,54 @@ background: #fff;
   .tip-content {
     box-shadow: none;
     width: 100%;
-    height: 280px;
-    padding: 20px;
+    padding: 10px;
     border-radius: 10px;
     position: relative;
+    &::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+    .select-option{
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      margin-top: 20px;
+      .option{
+        height: 100px;
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        background-color: @im-primary;
+        border-radius: 16px;
+        color: #fff;
+        cursor: pointer;
+        .icon-create{
+          font-size: 34px;
+          margin-bottom: 6px;
+        }
+        .icon-enter{
+          font-size: 28px;
+          margin-bottom: 10px;
+        }
+      }
+    }
     .btn-reload {
       margin: 0 auto;
       height: 30px;
       position: absolute;
-      right: -20px;
-      top: 50%;
-      transform: translateY(-50%);
+      right: 110px;
+      top: 40px;
     }
    
-    .login {
-      position: absolute;
+    .next-btn {
+      float: right;
       transition: all 0.3s ease-in-out;
       box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
       padding-block: 0.5rem;
       padding-inline: 1.25rem;
-      background-color: rgb(0 107 179);
+      background-color: @im-primary;
       border-radius: 9999px;
       display: flex;
       align-items: center;
@@ -166,8 +210,7 @@ background: #fff;
       outline: none;
       overflow: hidden;
       font-size: 15px;
-      bottom: 0;
-      right: 0;
+      margin-top: 40px;
       &:hover {
         transform: scale(1.05);
         border-color: #fff9;
@@ -199,7 +242,7 @@ background: #fff;
         transition: all 0.3s ease-in-out;
       }
     }
-    .login-fail{
+    .init-fail{
       cursor: not-allowed;
       background-color:#ccc;
     }
@@ -227,10 +270,11 @@ background: #fff;
         width: 90px;
         margin-bottom: 20px;
       }
-      .user-name{
+      .room-no,.user-name{
         height: 40px;
-        width: 200px;
         position: relative;
+        display: flex;
+        align-items: center;
         input{
           outline: none;
           border: none;
@@ -242,8 +286,12 @@ background: #fff;
                       inset -6px -6px 8px #ffffff;
           padding: 0 10px;
           margin-right: 20px;
+          margin-left: 10px;
           text-align: center;
         }
+      }
+      .user-name{
+        margin-bottom: 30px;
       }
     }
     .popup-header {
@@ -397,7 +445,7 @@ background: #fff;
   .start-btn {
     font-family: inherit;
     font-size: 20px;
-    background: royalblue;
+    background: @im-primary;
     color: white;
     padding: 0.7em 1em;
     padding-left: 0.9em;
