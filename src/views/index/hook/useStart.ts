@@ -88,19 +88,30 @@ export default ()=>{
 
   // 进入聊天室
   const enterRoomFun = ()=>{
-    if(!appStore.websocketStatus) return
-    if(!userForm.userName.trim()){
-      ElMessage.warning("请输入用户名")
+    if(!appStore.websocketStatus){
+      ElMessage.error("websocket初始化失败，请稍后再试")
       return
     }
-    if(step.value == 3 && !userForm.roomId.trim()){
-      ElMessage.warning("请输入房间名")
-      return
+    if(step.value == 2){
+      if(!userForm.userName.trim()){
+        ElMessage.warning("请输入用户名")
+        return
+      }
+      AQSender.getInstance().sendMsg(
+        AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
+        new AQChatMSg.default.UserLoginCmd([userForm.userName.trim(),userForm.userAvatar])
+      );
+    }else if(step.value == 3){
+      if(!userForm.roomId.trim()){
+        ElMessage.warning("请输入房间名")
+        return
+      }
+      let msg = new AQChatMSg.default.JoinRoomCmd();
+      msg.setRoomno(parseInt(userForm.roomId.trim()));
+      AQSender.getInstance().sendMsg(
+        AQChatMSg.default.MsgCommand.JOIN_ROOM_CMD,msg
+      )
     }
-    AQSender.getInstance().sendMsg(
-      AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
-      new AQChatMSg.default.UserLoginCmd([userForm.userName,userForm.userAvatar])
-    );
   }
 
   const createRoomFun = ()=>{
