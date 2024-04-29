@@ -290,8 +290,8 @@ background: #fff;
           text-align: center;
         }
       }
-      .user-name{
-        margin-bottom: 30px;
+      .room-no{
+        margin-top: 30px;
       }
     }
     .popup-header {
