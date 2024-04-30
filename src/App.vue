@@ -12,7 +12,7 @@
       size="large"
       style="--el-switch-on-color: #4D5FFF;"
       v-model="themeActive"
-      @change="changeTheme"
+      @change="changeThemeFun"
     >
       <template #active-action>
         <i class="iconfont icon-light"></i>
@@ -37,15 +37,15 @@ const {
   initSocketFun
 } = useSocket()
 
-const isMobile = () => {
+const isMobile = ()=> {
     return navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i) || false
 }
 // 初始化设备类型
-const initDevice = () => {
+const initDeviceFun = ()=> {
   appStore.setIsMobile(isMobile())
 }
 // 切换主题
-const changeTheme = () => {
+const changeThemeFun = ()=> {
   if (themeActive.value) {
     document.documentElement.className = "theme-light";
     theme.value = "light";
@@ -57,10 +57,10 @@ const changeTheme = () => {
 };
 
 onMounted(() => {
-  theme.value = window.localStorage.getItem("theme") || "light";
-  themeActive.value = theme.value === "light" ? true : false;
-  changeTheme();
-  initDevice()
+  theme.value = window.localStorage.getItem("theme") || "light"
+  themeActive.value = theme.value === "light" ? true : false
+  changeThemeFun()
+  initDeviceFun()
   setTimeout(()=>{
     initSocketFun();
   },1000)
