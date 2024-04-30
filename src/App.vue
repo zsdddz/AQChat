@@ -10,6 +10,7 @@
     <el-switch
       class="theme-btn"
       size="large"
+      style="--el-switch-on-color: #4D5FFF;"
       v-model="themeActive"
       @change="changeTheme"
     >
