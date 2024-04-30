@@ -92,7 +92,7 @@ export default ()=>{
       ElMessage.error("websocket初始化失败，请稍后再试")
       return
     }
-    if(step.value == 2){
+    if(step.value == 1){
       if(!userForm.userName.trim()){
         ElMessage.warning("请输入用户名")
         return

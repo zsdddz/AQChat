@@ -2,7 +2,10 @@
   <div class="im-container">
     <div class="content">
       <im-nav />
-      <im-content />
+      <div class="content-info">
+        <im-domain v-if="!appStore.roomId" />
+        <im-content v-else />
+      </div>
     </div>
   </div>
 </template>
@@ -10,6 +13,12 @@
 <script setup lang="ts">
 import ImNav from "./components/im-nav.vue"
 import ImContent from "./components/im-content.vue"
+import ImDomain from "./components/im-domain.vue"
+import useAppStore from "@/store/modules/app"
+
+const appStore = useAppStore()
+
+
 </script>
 
 <style lang="less" scoped>
@@ -30,6 +39,13 @@ import ImContent from "./components/im-content.vue"
                 17px 17px 19px @im-content-shadow2;
     overflow: hidden;
     display: flex;
+    .content-info{
+      height: 100%;
+      width: 98%;
+      background: @im-list-bg;
+      position: relative;
+      padding: 20px;
+    }
   }
 }
 </style>

@@ -134,7 +134,7 @@ setTimeout(() => {
 </script>
 <style>
 .pop-start {
-background: #fff;
+  background: #fff;
 }
 </style>
 <style scoped lang="less">
