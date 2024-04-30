@@ -3,7 +3,7 @@
     <div class="content">
       <im-nav />
       <div class="content-info">
-        <im-domain v-if="!appStore.roomId" />
+        <im-domain v-if="!appStore.roomInfo.roomId" />
         <im-content v-else />
       </div>
     </div>
@@ -17,7 +17,6 @@ import ImDomain from "./components/im-domain.vue"
 import useAppStore from "@/store/modules/app"
 
 const appStore = useAppStore()
-
 
 </script>
 
