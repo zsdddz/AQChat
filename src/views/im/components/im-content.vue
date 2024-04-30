@@ -1,7 +1,7 @@
 <template>
   <div class="im-content">
     <header class="head">
-      <span class="name">房间号：xsk5451217212</span>
+      <span class="name">房间名：{{ appStore.roomInfo.roomName }}</span>
     </header>
     <!--聊天内容-->
     <div class="content-win">
