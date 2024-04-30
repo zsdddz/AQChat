@@ -2,14 +2,14 @@
   <div class="im-container">
     <div class="content">
       <im-nav />
-      <im-list />
+      <im-content />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import ImNav from "./components/im-nav.vue"
-import ImList from "./components/im-list.vue"
+import ImContent from "./components/im-content.vue"
 </script>
 
 <style lang="less" scoped>
