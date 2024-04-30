@@ -44,7 +44,7 @@
     width="500px"
     class="pop-start"
   >
-    <div v-if="step == 1" class="tip-content tip-2">
+    <!-- <div v-if="step == 1" class="tip-content tip-2">
       <div class="select-option">
         <div class="option" @click="createRoomFun">
           <i class="iconfont icon-create"></i>
@@ -55,8 +55,8 @@
           加入
         </div>
       </div>
-    </div>
-    <div v-else-if="step == 2 || step == 3" class="tip-content">
+    </div> -->
+    <div v-if="step == 1" class="tip-content">
       <div class="user-info">
         <div class="user-avatar" v-html="userForm.userAvatar"></div>
         <div class="btn-reload">
@@ -71,10 +71,6 @@
         <div class="user-name">
           用户名
           <input placeholder="请输入用户名" v-model="userForm.userName" />
-        </div>
-        <div v-if="step == 3" class="room-no">
-          房间号
-          <input placeholder="请输入房间号" v-model="userForm.roomId" />
         </div>
       </div>
       
@@ -193,6 +189,7 @@ background: #fff;
    
     .next-btn {
       float: right;
+      position: relative;
       transition: all 0.3s ease-in-out;
       box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
       padding-block: 0.5rem;
