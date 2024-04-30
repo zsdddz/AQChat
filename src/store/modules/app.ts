@@ -11,10 +11,17 @@ interface UserInfo {
     userAvatar:String
 }
 
+interface RoomInfo {
+    roomId:String,
+    roomNo:String,
+    roomName:String
+}
+
 interface AppState {
     isMobile:boolean,
     websocketStatus:boolean,
-    userInfo:UserInfo
+    userInfo:UserInfo,
+    roomInfo:RoomInfo
 }
 
 
@@ -26,6 +33,11 @@ const useAppStore = defineStore('app', {
             userId:'',
             userName:'',
             userAvatar:''
+        },
+        roomInfo:{
+            roomId:'',
+            roomNo:'',
+            roomName:''
         }
     }),
     getters: {
@@ -37,6 +49,9 @@ const useAppStore = defineStore('app', {
         },
         setUserInfo(userInfo:UserInfo) {
             this.userInfo = userInfo
+        },
+        setRoomInfo(roomInfo:RoomInfo) {
+            this.roomInfo = roomInfo
         },
         setWebsocketStatus(status:boolean) {
             this.websocketStatus = status
