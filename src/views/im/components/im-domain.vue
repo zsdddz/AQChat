@@ -290,47 +290,51 @@ const enterRoomFun = ()=>{
       border-radius: 16px;
       color: #fff;
       cursor: pointer;
-      &:hover {
-        animation: jello-horizontal 0.9s both;
+      transition: 500ms;
+      position: relative;
+      padding-top: 40px;
+      &:active {
+        transform: translate(3px , 3px);
+        transition-duration: .3s;
+        box-shadow: 2px 2px 0px @im-primary;
       }
-      .icon-create{
+      &:hover {
+        color: transparent;
+      }
+      .iconfont {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        fill: white;
+        transition-duration: .3s;
+      }
+      &:hover .icon-create{
+          font-size: 40px;
+      }
+      &:hover .icon-enter{
+          font-size: 34px;
+      }
+      &:hover .iconfont {
+        top: 50%;
+        transform: translate(-50%,-50%);
+        margin: 0;
+        padding: 0;
+        border: none;
+        transition-duration: .3s;
+        color: #fff;
+      }
+      .icon-create {
         font-size: 34px;
         margin-bottom: 6px;
+        
       }
-      .icon-enter{
+      .icon-enter {
         font-size: 28px;
         margin-bottom: 10px;
       }
     }
   }
-  @keyframes jello-horizontal {
-    0% {
-      transform: scale3d(1, 1, 1);
-    }
-
-    30% {
-      transform: scale3d(1.25, 0.75, 1);
-    }
-
-    40% {
-      transform: scale3d(0.75, 1.25, 1);
-    }
-
-    50% {
-      transform: scale3d(1.15, 0.85, 1);
-    }
-
-    65% {
-      transform: scale3d(0.95, 1.05, 1);
-    }
-
-    75% {
-      transform: scale3d(1.05, 0.95, 1);
-    }
-
-    100% {
-      transform: scale3d(1, 1, 1);
-    }
-  }
+  
 }
 </style>
