@@ -22,21 +22,17 @@
     <div class="tip-content">
       <div class="form-info">
         <div class="form-item">
-          用户名
-          <el-input placeholder="请输入用户名" disabled v-model="appStore.userInfo.userName" />
-        </div>
-        <div class="form-item">
           房间号
-          <el-input placeholder="请输入房间号" v-model.number="roomForm.roomNo" />
+          <el-input placeholder="请输入房间号" v-integer clearable v-model="roomForm.roomNo" />
         </div>
         <div v-if="step == 1" class="form-item">
           房间名
-          <el-input placeholder="请输入房间名" v-model="roomForm.roomName" />
+          <el-input placeholder="请输入房间名" clearable v-model="roomForm.roomName" />
         </div>
       </div>
       
       <button :class="['next-btn',,!appStore.websocketStatus && 'init-fail']" @click="enterRoomFun">
-        {{ step == 1 ? '创建' : '进入' }}
+        {{ step == 1 ? '创建' : '加入' }}
         <svg fill="currentColor" viewBox="0 0 24 24" class="icon">
           <path
             clip-rule="evenodd"
@@ -66,6 +62,16 @@ const roomForm = reactive({
   roomNo:'',
   roomName:''
 })
+
+// v-integer指令
+const vInteger = {
+  mounted: (el: any) => {
+    el.addEventListener('input', event => {
+      const value = event.target.value;
+      event.target.value = value.replace(/\D/g, ''); // 只保留数字
+    });
+  }
+}
 
 const createRoomFun = ()=>{
   dialogVisible.value = true
