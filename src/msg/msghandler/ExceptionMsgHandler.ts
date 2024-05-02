@@ -13,7 +13,6 @@ export default class ExceptionMsgHandler {
         if(msgAck == null){
             return;
         }
-        AQSender.getInstance().heartbeatLoop();
         return {
             code:msgAck.getCode(),
             msg:msgAck.getMsg()

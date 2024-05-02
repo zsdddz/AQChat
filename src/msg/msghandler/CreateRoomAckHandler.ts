@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-22 22:46:30
- * @LastEditTime: 2024-04-24 16:54:23
+ * @LastEditTime: 2024-05-02 13:50:24
  */
 
 import * as AQChatMSg from '../protocol/AQChatMsgProtocol_pb';
@@ -13,7 +13,6 @@ export default class CreateRoomAckHandler {
         if(msgAck == null){
             return;
         }
-        AQSender.getInstance().heartbeatLoop();
         return {
             roomId:msgAck.getRoomid(),
             roomNo:msgAck.getRoomno(),
