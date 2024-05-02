@@ -1,13 +1,14 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-22 22:36:37
- * @LastEditTime: 2024-04-22 22:59:53
+ * @LastEditTime: 2024-05-02 13:22:56
  */
 
 import * as AQChatMSg from '../protocol/AQChatMsgProtocol_pb';
 import GetStsAckHandler from './GetStsAckHandler';
 import UserLoginAckHandler from './UserLoginAckHandler';
 import CreateRoomAckHandler from './CreateRoomAckHandler';
+import RecoverUserAckHandler from './RecoverUserAckHandler';
 import ExceptionMsgHandler from './ExceptionMsgHandler';
 
 export default class AQMsgHandlerFactory {
@@ -24,6 +25,7 @@ export default class AQMsgHandlerFactory {
         this.handlerMap[msgCommand.GET_STS_ACK] = new GetStsAckHandler();
         this.handlerMap[msgCommand.CREATE_ROOM_ACK] = new CreateRoomAckHandler();
         this.handlerMap[msgCommand.EXCEPTION_MSG] = new ExceptionMsgHandler();
+        this.handlerMap[msgCommand.RECOVER_USER_ACK] = new RecoverUserAckHandler();
         this.handlerMap[msgCommand.HEART_BEAT_ACK] = "心跳保活";
     }
 
