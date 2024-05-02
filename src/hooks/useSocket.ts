@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-02 13:50:55
+ * @LastEditTime: 2024-05-02 14:33:44
  * @Description: 
  */
 import AQSender from '@/msg/AQSender'
@@ -24,7 +24,6 @@ export default ()=>{
 
       if(appStore.userInfo?.userId){
         const { userId,userName,userAvatar } = appStore.userInfo
-        console.log("===含有用户信息===",appStore.userInfo);
         const msgArray = [userId,userName,userAvatar]
         if(appStore.roomInfo?.roomId){
           msgArray.push(appStore.roomInfo.roomId)
