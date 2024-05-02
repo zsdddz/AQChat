@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-04-22 23:06:49
+ * @LastEditTime: 2024-05-02 13:55:20
  */
 
 
@@ -12,7 +12,7 @@ import ByteBuffer from './codec/ByteBuffer'
 import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
 
 const SERVER_HOST = import.meta.env.VITE_SOCKET_API;
-
+var loopTimer:any = null;
 
 export default class AQSender {
     /**
@@ -136,7 +136,14 @@ export default class AQSender {
             pack.setPing("AQChat-PING");
             this.sendMsg(AQChatMSg.default.MsgCommand.HEART_BEAT_CMD,pack);
         }
-        setInterval(loop, 3000);
+        loopTimer = setInterval(loop, 3000);
+    }
+
+    /**
+     * 心跳停止
+     */
+    heartbeatStop(){
+        if(loopTimer) clearInterval(loopTimer);
     }
 
     /**
