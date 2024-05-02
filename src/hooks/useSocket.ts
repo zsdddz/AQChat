@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-02 13:43:12
+ * @LastEditTime: 2024-05-02 13:50:55
  * @Description: 
  */
 import AQSender from '@/msg/AQSender'
@@ -85,6 +85,7 @@ export default ()=>{
     ElMessage.warning(result.msg)
     if(result.code === ExceptionEnum.NO_LOGIN || result.code === ExceptionEnum.USER_QUIT || result.code === ExceptionEnum.USER_MISMATCH){
       appStore.resetAllInfo();
+      AQSender.getInstance().heartbeatStop();
       router.push({
         name:'Index'
       })
