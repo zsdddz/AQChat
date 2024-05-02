@@ -56,6 +56,18 @@ const useAppStore = defineStore('app', {
         setWebsocketStatus(status:boolean) {
             this.websocketStatus = status
         },
+        resetAllInfo(){
+            this.roomInfo = {
+                roomId:'',
+                roomNo:'',
+                roomName:''
+            }
+            this.userInfo = {
+                userId:'',
+                userName:'',
+                userAvatar:''
+            }
+        }
     },
     persist: true,
 })
