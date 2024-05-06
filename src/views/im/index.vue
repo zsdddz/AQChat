@@ -43,7 +43,7 @@ const appStore = useAppStore()
       width: 98%;
       background: @im-list-bg;
       position: relative;
-      padding: 20px;
+      padding: 0 20px 20px 20px;
     }
   }
 }
