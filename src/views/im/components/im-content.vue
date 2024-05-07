@@ -7,7 +7,7 @@
     <div class="content-win">
       <el-scrollbar style="max-height: 100%" ref="contentScrollbar">
         <template v-for="item in appStore.msgList" :key="item.msgId">
-          <div v-if="item.user.userId == userInfo.userId">
+          <div v-if="item.user.userId == userInfo.userId" class="mine-box">
             <div class="mine-block">
               <div class="info-box">
                 <div class="user-name">{{ item.user.userName }}</div>
@@ -39,9 +39,8 @@
               </div>
               <div class="mine-avatar" v-html="item.user.userAvatar"></div>
             </div>
-            <div style="clear: both"></div>
           </div>
-          <div v-else>
+          <div v-else class="reciver-box">
             <div class="reciver-block">
               <div class="reciver-avatar" v-html="item.user.userAvatar">
               </div>
@@ -74,7 +73,6 @@
                 </audio>
               </div>
             </div>
-            <div style="clear: both"></div>
           </div>
         </template>
       </el-scrollbar>
@@ -118,98 +116,46 @@ const currentRoomId = ref(0);
     .send-video {
       margin: 0 10px;
     }
-    .mine-block {
-      float: right;
-      margin: 20px 0;
+    .mine-box{
       display: flex;
-      position: relative;
-      font-size: 16px;
-      .info-box{
-        margin-right: 10px;
-        text-align: right;
-        .user-name{
-          font-size: 12px;
-          color: @txt-color;
-          margin-bottom: 6px;
-        }
-      }
-      .mine-image-load {
-        position: absolute;
-        left: -50px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-      .mine-load {
-        position: absolute;
-        left: -50px;
-        top: 50%;
-        transform: translateY(-50%);
-      }
-      .send-image {
-        border-radius: 11px;
-        max-width: 200px;
-        overflow: hidden;
-        max-height: 200px;
-        width: 200px;
-        height: auto;
-        cursor: pointer;
-        background-color: #fff;
-      }
-
-      .text-block {
-        background: @im-txt-bg;
-        color: #2d2e2f;
-        border-top-left-radius: 0;
-        border-bottom-right-radius: 0;
-        word-wrap: break-word;
-        padding: 15px 15px;
-        line-height: 20px;
-        font-size: 16px;
-        border-radius: 10px;
+      justify-content: end;
+      .mine-block {
+        margin: 20px 0;
+        display: flex;
         position: relative;
-        max-width: 350px;
-        text-align: left;
-      }
+        font-size: 16px;
+        .info-box{
+          margin-right: 10px;
+          text-align: right;
+          .user-name{
+            font-size: 12px;
+            color: @txt-color;
+            margin-bottom: 6px;
+          }
+        }
+        .mine-image-load {
+          position: absolute;
+          left: -50px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        .mine-load {
+          position: absolute;
+          left: -50px;
+          top: 50%;
+          transform: translateY(-50%);
+        }
+        .send-image {
+          border-radius: 11px;
+          max-width: 200px;
+          overflow: hidden;
+          max-height: 200px;
+          width: 200px;
+          height: auto;
+          cursor: pointer;
+          background-color: #fff;
+        }
 
-      .mine-avatar {
-        width: 45px;
-        height: 45px;
-        float: right;
-        margin-right: 15px;
-        img {
-          height: 100%;
-          width: 100%;
-        }
-      }
-    }
-    .reciver-block {
-      float: left;
-      margin: 20px 0;
-      display: flex;
-      position: relative;
-      .send-image {
-        border-radius: 11px;
-        max-width: 200px;
-        overflow: hidden;
-        max-height: 200px;
-        width: 200px;
-        height: auto;
-        cursor: pointer;
-        background-color: #fff;
-      }
-      .reciver-avatar {
-        width: 45px;
-        height: 45px;
-        margin-left: 15px;
-      }
-      .info-box{
-        margin-left: 10px;
-        text-align: left;
-        .user-name{
-          font-size: 12px;
-          color: @txt-color;
-          margin-bottom: 6px;
-        }
         .text-block {
           background: @im-txt-bg;
           color: #2d2e2f;
@@ -224,8 +170,68 @@ const currentRoomId = ref(0);
           max-width: 350px;
           text-align: left;
         }
+
+        .mine-avatar {
+          width: 45px;
+          height: 45px;
+          float: right;
+          margin-right: 15px;
+          img {
+            height: 100%;
+            width: 100%;
+          }
+        }
       }
     }
+
+    .reciver-box{
+      display: flex;
+      .reciver-block {
+        margin: 20px 0;
+        display: flex;
+        position: relative;
+        .send-image {
+          border-radius: 11px;
+          max-width: 200px;
+          overflow: hidden;
+          max-height: 200px;
+          width: 200px;
+          height: auto;
+          cursor: pointer;
+          background-color: #fff;
+        }
+        .reciver-avatar {
+          width: 45px;
+          height: 45px;
+          margin-left: 15px;
+        }
+        .info-box{
+          margin-left: 10px;
+          text-align: left;
+          .user-name{
+            font-size: 12px;
+            color: @txt-color;
+            margin-bottom: 6px;
+          }
+          .text-block {
+            background: @im-txt-bg;
+            color: #2d2e2f;
+            border-top-left-radius: 0;
+            border-bottom-right-radius: 0;
+            word-wrap: break-word;
+            padding: 15px 15px;
+            line-height: 20px;
+            font-size: 16px;
+            border-radius: 10px;
+            position: relative;
+            max-width: 350px;
+            text-align: left;
+          }
+        }
+      }
+    }
+    
+    
   }
   .head {
     height: 8%;
