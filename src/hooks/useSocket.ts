@@ -11,7 +11,7 @@ import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtoc
 import useAppStore from "@/store/modules/app"
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
-import ExceptionEnum from "../enums/exception"
+import ExceptionEnum from "../enums/ExceptionEnum"
 export default ()=>{
   const router = useRouter();
   const appStore = useAppStore()
