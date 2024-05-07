@@ -20,6 +20,9 @@
 <script setup lang="ts">
 import { getCurrentInstance, watch, reactive, onMounted, ref,inject,defineExpose } from "vue";
 import E from "wangeditor";
+import Msg from "../../../class/Msg"
+import MsgTypeEnum from "../../../enums/MsgTypeEnum"
+import useAppStore from "@/store/modules/app"
 
 defineProps<{
   value: string;
@@ -27,6 +30,10 @@ defineProps<{
   height: number;
   placeholder: string;
 }>();
+
+const appStore = useAppStore()
+const userInfo = appStore.userInfo
+const roomInfo = appStore.roomInfo
 const { proxy }: any = getCurrentInstance();
 const editorData = ref('')
 const editor = ref<E>()
@@ -58,6 +65,8 @@ watch(
 onMounted(() => {
   initEditor();
 });
+
+
 
 function initEditor() {
   if (editor.value != null) {
@@ -159,8 +168,6 @@ function keyDown(event: any) {
 function sendVerify() {
   if(!editor.value) return
   const sendContent = editor.value?.txt.html()?.trim() || '';
-  // let reciverId = store.reciver?.FormId || store.reciver.Id;
-
   if (sendContent.length == 0) {
     showPopover.value = true;
     setTimeout(() => {
@@ -168,24 +175,17 @@ function sendVerify() {
     }, 1000);
     return;
   } else {
-    // let noCode = +new Date() + "";
-    // let conversition = new Conversition(
-    //   store.sender.Id,
-    //   reciverId,
-    //   sendContent,
-    //   0,
-    //   0,
-    //   noCode,
-    //   "",
-    //   false,
-    //   store.sender.Avatar
-    // );
-    // if (store.socket == null) {
-    //   messageBox.warning("socket实例为空");
-    //   return;
-    // }
-    // store.sendLocal(conversition);
-    // store.sendInfo(conversition);
+    const msg:Msg = {
+      user:{
+        userId:userInfo.userId,
+        userAvatar:userInfo.userAvatar,
+        userName:userInfo.userName,
+      },
+      roomId:roomInfo.roomId,
+      msgType:MsgTypeEnum.TEXT,
+      msg:sendContent
+    }
+    appStore.sendInfoLocalFun(msg)
   }
   clear();
 }
