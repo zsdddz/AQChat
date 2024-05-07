@@ -5,11 +5,9 @@
  */
 
 import { defineStore } from 'pinia'
-interface UserInfo {
-    userId:String,
-    userName:String,
-    userAvatar:String
-}
+import User from '../../class/User'
+import Msg from '../../class/Msg'
+
 
 interface RoomInfo {
     roomId:String,
@@ -20,8 +18,9 @@ interface RoomInfo {
 interface AppState {
     isMobile:boolean,
     websocketStatus:boolean,
-    userInfo:UserInfo,
-    roomInfo:RoomInfo
+    userInfo:User,
+    roomInfo:RoomInfo,
+    msgList:Msg[]
 }
 
 
@@ -38,7 +37,8 @@ const useAppStore = defineStore('app', {
             roomId:'',
             roomNo:'',
             roomName:''
-        }
+        },
+        msgList:[]
     }),
     getters: {
         mobile: (state) => state.isMobile,
@@ -47,7 +47,7 @@ const useAppStore = defineStore('app', {
         setIsMobile(mobile:boolean) {
             this.isMobile = mobile
         },
-        setUserInfo(userInfo:UserInfo) {
+        setUserInfo(userInfo:User) {
             this.userInfo = userInfo
         },
         setRoomInfo(roomInfo:RoomInfo) {
@@ -55,6 +55,9 @@ const useAppStore = defineStore('app', {
         },
         setWebsocketStatus(status:boolean) {
             this.websocketStatus = status
+        },
+        sendInfoLocalFun(msg:Msg){
+            this.msgList.push(msg)
         },
         resetAllInfo(){
             this.roomInfo = {
@@ -67,9 +70,12 @@ const useAppStore = defineStore('app', {
                 userName:'',
                 userAvatar:''
             }
+            this.msgList = []
         }
     },
-    persist: true,
+    persist: {
+        paths:['userInfo','roomInfo']
+    },
 })
 
 export default useAppStore
