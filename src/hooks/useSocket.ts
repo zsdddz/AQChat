@@ -38,7 +38,7 @@ export default ()=>{
       // 消息回调
       AQSender.getInstance().onMsgReceived = (msgCommand,msgBody) =>{
         const result = handlerFactory.handle(msgCommand,msgBody);
-        console.log("result：",result);
+        // console.log("result：",result);
         
         switch(msgCommand){
           // 登录回调
@@ -47,15 +47,19 @@ export default ()=>{
             break;
           // 创建房间回调
           case AQChatMSg.default.MsgCommand.CREATE_ROOM_ACK:
-            appStore.setRoomInfo(result)
+            appStore.setRoomInfo(result);
+            break;
+          // 加入房间回调
+          case AQChatMSg.default.MsgCommand.JOIN_ROOM_ACK:
+            appStore.setRoomInfo(result);
             break;
           // 恢复用户连接
           case AQChatMSg.default.MsgCommand.RECOVER_USER_ACK:
-            recoverUser(result)
+            recoverUser(result);
             break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
-            exceptionFun(result)
+            exceptionFun(result);
             break;
         }
       }
