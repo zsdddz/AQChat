@@ -5,7 +5,7 @@
  * @LastEditTime: 2024-05-02 13:52:45
  * @Description: 错误消息枚举
  */
-enum ExceptionEnum{
+enum ExceptionEnum {
   UN_KNOWN = 10000,
   NO_LOGIN = 10001,
   ROOM_EXIST = 10002,
