@@ -23,6 +23,9 @@ import E from "wangeditor";
 import Msg from "../../../class/Msg"
 import MsgTypeEnum from "../../../enums/MsgTypeEnum"
 import useAppStore from "@/store/modules/app"
+import AQSender from '@/msg/AQSender'
+import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
+import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 
 defineProps<{
   value: string;
@@ -65,8 +68,6 @@ watch(
 onMounted(() => {
   initEditor();
 });
-
-
 
 function initEditor() {
   if (editor.value != null) {
@@ -186,8 +187,18 @@ function sendVerify() {
       msg:sendContent
     }
     appStore.sendInfoLocalFun(msg)
+    sendInfoNetWorkFun(msg)
   }
   clear();
+}
+function sendInfoNetWorkFun(msg:Msg){
+  let sendMsg = new AQChatMSg.default.SendMsgCmd();
+  sendMsg.setMsgtype(msg.msgType);
+  sendMsg.setMsg(msg.msg)
+  sendMsg.setRoomid(roomInfo.roomId);
+  AQSender.getInstance().sendMsg(
+    AQChatMSg.default.MsgCommand.SEND_MSG_CMD,sendMsg
+  )
 }
 // 聚焦取消表情包显示
 function onFous() {
