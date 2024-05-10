@@ -6,7 +6,7 @@
         创建
       </div>
       <div class="option" @click="joinRoomFun">
-        <i class="iconfont icon-enter"></i>
+        <i class="iconfont icon-join"></i>
         加入
       </div>
     </div>
@@ -312,8 +312,8 @@ const enterRoomFun = ()=>{
       &:hover .icon-create{
           font-size: 40px;
       }
-      &:hover .icon-enter{
-          font-size: 34px;
+      &:hover .icon-join{
+          font-size: 40px;
       }
       &:hover .iconfont {
         top: 50%;
@@ -329,8 +329,8 @@ const enterRoomFun = ()=>{
         margin-bottom: 6px;
         
       }
-      .icon-enter {
-        font-size: 28px;
+      .icon-join {
+        font-size: 34px;
         margin-bottom: 10px;
       }
     }
