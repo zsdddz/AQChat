@@ -63,6 +63,10 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.JOIN_ROOM_NOTIFY:
             joinRoomNotifyFun(result);
             break;
+          // 接收广播消息
+          case AQChatMSg.default.MsgCommand.BROADCAST_MSG_ACK:
+            broadcastMsgFun(result);
+            break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
             exceptionFun(result);
@@ -72,9 +76,26 @@ export default ()=>{
     })
   }
 
+  // 接收广播消息
+  const broadcastMsgFun = (result) =>{
+    console.log("接收广播消息",result);
+    
+    if(result.userId === appStore.userInfo.userId) return;
+    const msg:Msg = {
+      user:{
+        userId:result.userId,
+        userAvatar:result.userAvatar,
+        userName:result.userName,
+      },
+      roomId:result.roomId,
+      msgType:result.msgType,
+      msg:result.msg
+    }
+    appStore.sendInfoLocalFun(msg)
+  }
+
   // 其他人加入房间通知
   const joinRoomNotifyFun = (result) =>{
-    console.log(result);
     if(appStore.roomInfo.roomId === result.roomId){
       if(!(result?.user?.array?.length > 0)) return;
       const msgContent = result.user.array[0] === appStore.userInfo.userId ? '您' : result.user.array[1];
@@ -88,6 +109,8 @@ export default ()=>{
   }
   // 恢复用户登录
   const recoverUser = (result)=>{
+    console.log("恢复用户登录",result);
+    
     if(!result?.roomId){
       appStore.setRoomInfo({
         roomId:'',
