@@ -10,6 +10,7 @@ import UserLoginAckHandler from './UserLoginAckHandler';
 import CreateRoomAckHandler from './CreateRoomAckHandler';
 import JoinRoomAckHandler from './JoinRoomAckHandler';
 import RecoverUserAckHandler from './RecoverUserAckHandler';
+import JoInRoomNotifyHandler from './JoInRoomNotifyHandler';
 import ExceptionMsgHandler from './ExceptionMsgHandler';
 
 export default class AQMsgHandlerFactory {
@@ -28,6 +29,7 @@ export default class AQMsgHandlerFactory {
         this.handlerMap[msgCommand.JOIN_ROOM_ACK] = new JoinRoomAckHandler();
         this.handlerMap[msgCommand.EXCEPTION_MSG] = new ExceptionMsgHandler();
         this.handlerMap[msgCommand.RECOVER_USER_ACK] = new RecoverUserAckHandler();
+        this.handlerMap[msgCommand.JOIN_ROOM_NOTIFY] = new JoInRoomNotifyHandler();
         this.handlerMap[msgCommand.HEART_BEAT_ACK] = "心跳保活";
     }
 

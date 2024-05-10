@@ -7,7 +7,10 @@
     <div class="content-win">
       <el-scrollbar style="max-height: 100%" ref="contentScrollbar">
         <template v-for="item in appStore.msgList" :key="item.msgId">
-          <div v-if="item.user.userId == userInfo.userId" class="mine-box">
+          <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip">
+            {{ item.msg }}
+          </div>
+          <div v-else-if="item.user.userId == userInfo.userId" class="mine-box">
             <div class="mine-block">
               <div class="info-box">
                 <div class="user-name">{{ item.user.userName }}</div>
@@ -40,6 +43,7 @@
               <div class="mine-avatar" v-html="item.user.userAvatar"></div>
             </div>
           </div>
+          
           <div v-else class="reciver-box">
             <div class="reciver-block">
               <div class="reciver-avatar" v-html="item.user.userAvatar">
@@ -115,6 +119,15 @@ const currentRoomId = ref(0);
               inset -5px 0px 4px @im-content-shadow2;
     .send-video {
       margin: 0 10px;
+    }
+    .msg-tip{
+      padding: 5px 10px;
+      border-radius: 20px;
+      margin: 0 auto;
+      width: 150px;
+      margin: 20px auto;
+      font-size: 14px;
+      color: #ccc;
     }
     .mine-box{
       display: flex;
