@@ -31,7 +31,6 @@ import useAppStore from "./store/modules/app"
 import useSocket from "./hooks/useSocket"
 
 const themeActive = ref(false);
-const theme = ref('light');
 const appStore = useAppStore()
 const {
   initSocketFun
@@ -48,17 +47,15 @@ const initDeviceFun = ()=> {
 const changeThemeFun = ()=> {
   if (themeActive.value) {
     document.documentElement.className = "theme-light";
-    theme.value = "light";
+    appStore.setTheme("light");
   } else {
     document.documentElement.className = "theme-dark";
-    theme.value = "dark";
+    appStore.setTheme("dark");
   }
-  window.localStorage.setItem("theme", theme.value);
 };
 
 onMounted(() => {
-  theme.value = window.localStorage.getItem("theme") || "light"
-  themeActive.value = theme.value === "light" ? true : false
+  themeActive.value = appStore.theme === "light" ? true : false
   changeThemeFun()
   initDeviceFun()
   setTimeout(()=>{
@@ -77,6 +74,7 @@ onMounted(() => {
     position: absolute;
     top: 10px;
     left: 30px;
+    z-index: 10;
     .iconfont{
       font-size: 14px;
     }

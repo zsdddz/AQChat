@@ -17,6 +17,7 @@ interface RoomInfo {
 
 interface AppState {
     isMobile:boolean,
+    theme:string,
     websocketStatus:boolean,
     userInfo:User,
     roomInfo:RoomInfo,
@@ -27,6 +28,7 @@ interface AppState {
 const useAppStore = defineStore('app', {
     state: ():AppState => ({
         isMobile:false,
+        theme:"light",
         websocketStatus:false,
         userInfo:{
             userId:'',
@@ -46,6 +48,9 @@ const useAppStore = defineStore('app', {
     actions: {
         setIsMobile(mobile:boolean) {
             this.isMobile = mobile
+        },
+        setTheme(theme:string) {
+            this.theme = theme
         },
         setUserInfo(userInfo:User) {
             this.userInfo = userInfo
@@ -74,7 +79,7 @@ const useAppStore = defineStore('app', {
         }
     },
     persist: {
-        paths:['userInfo','roomInfo']
+        paths:['theme','userInfo','roomInfo']
     },
 })
 
