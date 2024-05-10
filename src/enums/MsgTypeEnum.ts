@@ -7,6 +7,8 @@ enum MsgTypeEnum {
   VOICE = 2,
   //视频
   VIDEO = 3,
+  // 提示
+  TIP = 4
 }
 
 export default MsgTypeEnum
