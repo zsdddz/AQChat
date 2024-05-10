@@ -12,6 +12,8 @@ import useAppStore from "@/store/modules/app"
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import ExceptionEnum from "../enums/ExceptionEnum"
+import Msg from "../class/Msg"
+import MsgTypeEnum from "../enums/MsgTypeEnum"
 export default ()=>{
   const router = useRouter();
   const appStore = useAppStore()
@@ -57,6 +59,10 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.RECOVER_USER_ACK:
             recoverUser(result);
             break;
+          // 加入房间通知
+          case AQChatMSg.default.MsgCommand.JOIN_ROOM_NOTIFY:
+            joinRoomNotifyFun(result);
+            break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
             exceptionFun(result);
@@ -66,6 +72,20 @@ export default ()=>{
     })
   }
 
+  // 其他人加入房间通知
+  const joinRoomNotifyFun = (result) =>{
+    console.log(result);
+    if(appStore.roomInfo.roomId === result.roomId){
+      if(!(result?.user?.array?.length > 0)) return;
+      const msgContent = result.user.array[0] === appStore.userInfo.userId ? '您' : result.user.array[1];
+      const msg:Msg = {
+        roomId:result.roomId,
+        msgType:MsgTypeEnum.TIP,
+        msg:`${msgContent} 加入了房间`
+      }
+      appStore.sendInfoLocalFun(msg)
+    }
+  }
   // 恢复用户登录
   const recoverUser = (result)=>{
     if(!result?.roomId){
