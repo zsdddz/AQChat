@@ -114,7 +114,7 @@ export default class AQSender {
                 return;
             }
 
-            console.log(`从服务端收到消息, msgCommand = ${msgCommand}`);
+            // console.log(`从服务端收到消息, msgCommand = ${msgCommand}`);
 
             // 处理消息
             this.onMsgReceived(msgCommand, oMsgBody);
@@ -169,7 +169,7 @@ export default class AQSender {
             return;
         }
 
-        console.log(`发送消息, msgCommand = ${msgCommand}`);
+        // console.log(`发送消息, msgCommand = ${msgCommand}`);
         this._oWebSocket.send(msgPack);
     }
 
