@@ -87,15 +87,15 @@
 </template>
 
 <script setup lang="ts">
-import useAppStore from "@/store/modules/app";
+import useAppStore from '@/store/modules/app';
 import ImChat from "./im-chat.vue"
-import MsgTypeEnum from "../../../enums/MsgTypeEnum"
+import MsgTypeEnum from '@/enums/MsgTypeEnum'
 import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import { watch } from 'vue'
 
 const appStore = useAppStore()
 const userInfo = appStore.userInfo
-
 
 // 监听websocket状态
 watch(() => appStore.websocketStatus,(newV)=>{
