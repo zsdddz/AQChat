@@ -87,15 +87,31 @@
 </template>
 
 <script setup lang="ts">
-import { ref,defineExpose } from "vue"
 import useAppStore from "@/store/modules/app";
 import ImChat from "./im-chat.vue"
-import Msg from "../../../class/Msg"
 import MsgTypeEnum from "../../../enums/MsgTypeEnum"
+import AQSender from '@/msg/AQSender'
+import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 
 const appStore = useAppStore()
 const userInfo = appStore.userInfo
-const currentRoomId = ref(0);
+
+
+// 监听websocket状态
+watch(() => appStore.websocketStatus,(newV)=>{
+  if(newV){
+    syncChatRecordFun();
+  }
+})
+
+// 发送消息同步指令
+const syncChatRecordFun = ()=>{
+  let syncChatRecord = new AQChatMSg.default.SyncChatRecordCmd();
+  syncChatRecord.setRoomid(appStore.roomInfo.roomId);
+  AQSender.getInstance().sendMsg(
+    AQChatMSg.default.MsgCommand.SYNC_CHAT_RECORD_CMD,syncChatRecord
+  )
+}
 
 </script>
 
