@@ -2,6 +2,9 @@
   <div class="im-content">
     <header class="head">
       <span class="name">房间名：{{ appStore.roomInfo.roomName }}</span>
+      <span class="room-no">房间号：
+      <span id="roomNo" @click="copyRoomNo" title="复制">{{ appStore.roomInfo.roomNo }}</span>
+      </span>
     </header>
     <!--聊天内容-->
     <div class="content-win">
@@ -104,6 +107,7 @@ import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import { watch } from 'vue'
 import Loading from "@/components/Loading.vue"
+import { ElMessage } from 'element-plus'
 
 const appStore = useAppStore()
 const userInfo = appStore.userInfo
@@ -117,10 +121,13 @@ watch(() => appStore.websocketStatus,(newV)=>{
 })
 
 watch(() => appStore.msgList,(newV)=>{
-  console.log("消息更新");
-  
   msgList = newV;
 },{deep:true})
+
+const copyRoomNo = ()=>{
+  navigator.clipboard.writeText(appStore.roomInfo.roomNo);
+  ElMessage.success("复制成功")
+}
 
 // 发送消息同步指令
 const syncChatRecordFun = ()=>{
@@ -299,11 +306,19 @@ const syncChatRecordFun = ()=>{
     display: flex;
     width: 100%;
     align-items: center;
+    justify-content: center;
     .name {
       color: @txt-color;
       font-size: 16px;
-      width: 100%;
-      text-align: center;
+    }
+    .room-no{
+      font-size: 16px;
+      margin-left: 20px;
+      color: @txt-color;
+      span{
+        color: @im-primary;
+        cursor: pointer;
+      }
     }
   }
 }
