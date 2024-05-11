@@ -7,7 +7,7 @@
 import { defineStore } from 'pinia'
 import User from '../../class/User'
 import Msg from '../../class/Msg'
-
+import MsgStatusEnum from '../../enums/MsgStatusEnum'
 
 interface RoomInfo {
     roomId:String,
@@ -17,11 +17,18 @@ interface RoomInfo {
 
 interface AppState {
     isMobile:boolean,
+    // 主题
     theme:string,
+    // websocket状态
     websocketStatus:boolean,
+    // 用户信息
     userInfo:User,
+    // 房间信息
     roomInfo:RoomInfo,
-    msgList:Msg[]
+    // 消息列表
+    msgList:Msg[],
+    // 消息状态定时器
+    msgStatusTimer:Object
 }
 
 
@@ -40,7 +47,8 @@ const useAppStore = defineStore('app', {
             roomNo:'',
             roomName:''
         },
-        msgList:[]
+        msgList:[],
+        msgStatusTimer:{}
     }),
     getters: {
         mobile: (state) => state.isMobile,
@@ -63,6 +71,24 @@ const useAppStore = defineStore('app', {
         },
         sendInfoLocalFun(msg:Msg){
             this.msgList.push(msg)
+            // 10s消息未发送成功，则设置消息为发送失败状态
+            this.msgStatusTimer[msg.msgId] = setTimeout(()=>{
+                msg.msgStatus = MsgStatusEnum.REJECTED
+                for(let i = this.msgList.length - 1;i>=0;i++){
+                    if(this.msgList[i].msgId === msg.msgId){
+                        const newMsg = {...msg};
+                        newMsg.msgStatus = MsgStatusEnum.REJECTED;
+                        this.msgList.splice(i,1,newMsg)
+                        break; 
+                    }
+                }
+            },10000)
+        },
+        clearMsgStatusTimer(id:string){
+            if(this.msgStatusTimer[id]){
+                clearTimeout(this.msgStatusTimer[id]);
+                delete this.msgStatusTimer[id]
+            }
         },
         setMsgRecord(msg:Msg){
             this.msgList.unshift(msg)

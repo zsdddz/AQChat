@@ -22,6 +22,7 @@ import { getCurrentInstance, watch, reactive, onMounted, ref,inject,defineExpose
 import E from "wangeditor";
 import Msg from "../../../class/Msg"
 import MsgTypeEnum from "../../../enums/MsgTypeEnum"
+import MsgStatusEnum from "../../../enums/MsgStatusEnum"
 import useAppStore from "@/store/modules/app"
 import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
@@ -189,7 +190,7 @@ function sendVerify() {
       msgId:msgId,
       msgType:MsgTypeEnum.TEXT,
       msg:sendContent,
-      msgStatus:false
+      msgStatus:MsgStatusEnum.PENDING
     }
     appStore.sendInfoLocalFun(msg)
     sendInfoNetWorkFun(msg)

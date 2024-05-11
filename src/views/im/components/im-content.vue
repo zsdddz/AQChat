@@ -6,12 +6,17 @@
     <!--聊天内容-->
     <div class="content-win">
       <el-scrollbar style="max-height: 100%" ref="contentScrollbar">
-        <template v-for="item in appStore.msgList" :key="item.msgId">
+        <template v-for="item in msgList" :key="item.msgId">
           <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip">
             {{ item.msg }}
           </div>
           <div v-else-if="item.user.userId == userInfo.userId" class="mine-box">
             <div class="mine-block">
+              <loading
+                v-if="item.msgStatus === MsgStatusEnum.PENDING"
+                class="mine-load"
+              />
+              <div v-else-if="item.msgStatus === MsgStatusEnum.REJECTED" class="msg-failed">!</div>
               <div class="info-box">
                 <div class="user-name">{{ item.user.userName }}</div>
                 <div
@@ -39,11 +44,15 @@
                   <source :src="item.msg" type="audio/mpeg" />
                   您的浏览器不支持该音频格式。
                 </audio>
+                <!-- <div v-else-if="item.msgType">
+                  <span class="item.Type == 1 ? 'sendImageError':'sendError'"
+                    >!</span
+                  >
+                </div> -->
               </div>
               <div class="mine-avatar" v-html="item.user.userAvatar"></div>
             </div>
           </div>
-          
           <div v-else class="reciver-box">
             <div class="reciver-block">
               <div class="reciver-avatar" v-html="item.user.userAvatar">
@@ -89,13 +98,16 @@
 <script setup lang="ts">
 import useAppStore from '@/store/modules/app';
 import ImChat from "./im-chat.vue"
-import MsgTypeEnum from '@/enums/MsgTypeEnum'
+import MsgTypeEnum from '../../../enums/MsgTypeEnum'
+import MsgStatusEnum from '../../../enums/MsgStatusEnum'
 import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import { watch } from 'vue'
+import Loading from "@/components/Loading.vue"
 
 const appStore = useAppStore()
 const userInfo = appStore.userInfo
+let msgList = appStore.msgList
 
 // 监听websocket状态
 watch(() => appStore.websocketStatus,(newV)=>{
@@ -103,6 +115,12 @@ watch(() => appStore.websocketStatus,(newV)=>{
     syncChatRecordFun();
   }
 })
+
+watch(() => appStore.msgList,(newV)=>{
+  console.log("消息更新");
+  
+  msgList = newV;
+},{deep:true})
 
 // 发送消息同步指令
 const syncChatRecordFun = ()=>{
@@ -133,6 +151,11 @@ const syncChatRecordFun = ()=>{
     background: @im-list-bg;
     box-shadow: inset 5px 5px 4px @im-content-shadow1,
               inset -5px 0px 4px @im-content-shadow2;
+    .text-block{
+      *{
+        white-space: wrap;
+      }
+    }
     .send-video {
       margin: 0 10px;
     }
@@ -162,17 +185,25 @@ const syncChatRecordFun = ()=>{
             margin-bottom: 6px;
           }
         }
-        .mine-image-load {
-          position: absolute;
-          left: -50px;
-          top: 50%;
-          transform: translateY(-50%);
-        }
         .mine-load {
           position: absolute;
-          left: -50px;
-          top: 50%;
+          left: -30px;
+          top: calc(50% + 13px);
           transform: translateY(-50%);
+        }
+        .msg-failed{
+          height: 20px;
+          width: 20px;
+          background-color: red;
+          color: #fff;
+          line-height: 20px;
+          text-align: center;
+          border-radius: 50%;
+          position: absolute;
+          left: -30px;
+          top: calc(50% + 13px);
+          transform: translateY(-50%);
+          cursor: pointer;
         }
         .send-image {
           border-radius: 11px;
@@ -196,7 +227,7 @@ const syncChatRecordFun = ()=>{
           font-size: 16px;
           border-radius: 10px;
           position: relative;
-          max-width: 350px;
+          max-width: 500px;
           text-align: left;
         }
 
@@ -253,7 +284,7 @@ const syncChatRecordFun = ()=>{
             font-size: 16px;
             border-radius: 10px;
             position: relative;
-            max-width: 350px;
+            max-width: 500px;
             text-align: left;
           }
         }

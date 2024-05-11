@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-11 15:14:27
+ * @LastEditTime: 2024-05-11 16:43:56
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -12,6 +12,7 @@ import useAppStore from "@/store/modules/app"
 import { ElMessage } from 'element-plus'
 import { useRouter } from 'vue-router'
 import ExceptionEnum from "../enums/ExceptionEnum"
+import MsgStatusEnum from "../enums/MsgStatusEnum"
 import Msg from "../class/Msg"
 import MsgTypeEnum from "../enums/MsgTypeEnum"
 export default ()=>{
@@ -92,7 +93,8 @@ export default ()=>{
   const sendMsgStatusFun = (result) =>{
     for(let i = appStore.msgList.length-1;i>=0;i--){
       if(appStore.msgList[i].msgId == result.msgId){
-        appStore.msgList[i].msgStatus = true;
+        appStore.msgList[i].msgStatus = MsgStatusEnum.FULFILLED;
+        appStore.clearMsgStatusTimer(result.msgId)
       }
     }
   }
