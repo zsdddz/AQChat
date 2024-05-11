@@ -1,7 +1,7 @@
 <!--
  * @Author: zsdddz
  * @Date: 2024-04-21 00:31:05
- * @LastEditTime: 2024-04-25 20:55:16
+ * @LastEditTime: 2024-05-11 11:57:30
 -->
 <template>
   <div>
@@ -15,6 +15,7 @@
     <input v-model="roomId" placeholder="输入房间ID" />
     <button @click="testSendMsg">测试发送消息</button>
     <button @click="testAliOss">测试阿里临时凭证</button>
+    <button @click="testId">生成雪花ID</button>
 
     <el-upload
     ref="upload"
@@ -46,6 +47,7 @@ import AQSender from '../msg/AQSender';
 import AQMsgHandlerFactory from '../msg/msghandler/AQMsgHandlerFactory';
 import AQChatMsgProtocol_pb, * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
 import { ref } from 'vue';
+import CustomSnowflake from "../utils/CustomSnowflake"
 
 import { genFileId } from 'element-plus'
 import type { UploadInstance, UploadProps, UploadRawFile } from 'element-plus'
@@ -72,6 +74,14 @@ const handleExceed: UploadProps['onExceed'] = (files) => {
   console.log(file)
   file.uid = genFileId()
   upload.value!.handleStart(file)
+}
+
+const testId = ()=>{
+  
+  // 使用示例
+  const customSnowflake = new CustomSnowflake(1); // 设置机器ID为1
+  const id = customSnowflake.nextId();
+  console.log(`生成的ID为：${id}`);
 }
 
 const submitUpload = () => {
