@@ -24,8 +24,8 @@ import Msg from "../../../class/Msg"
 import MsgTypeEnum from "../../../enums/MsgTypeEnum"
 import useAppStore from "@/store/modules/app"
 import AQSender from '@/msg/AQSender'
-import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
-import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import CustomSnowflake from "@/utils/CustomSnowflake"
 
 defineProps<{
   value: string;
@@ -42,6 +42,8 @@ const editorData = ref('')
 const editor = ref<E>()
 const showPopover = ref(false)
 const { changeExpression } = inject('changeExpression', { changeExpression: (flag)=>{} })
+const epoch = +new Date();
+const customSnowflake = new CustomSnowflake(1,epoch);
 
 watch(
   () => proxy.value,
@@ -176,6 +178,7 @@ function sendVerify() {
     }, 1000);
     return;
   } else {
+    const msgId = customSnowflake.nextId();
     const msg:Msg = {
       user:{
         userId:userInfo.userId,
@@ -183,8 +186,10 @@ function sendVerify() {
         userName:userInfo.userName,
       },
       roomId:roomInfo.roomId,
+      msgId:msgId,
       msgType:MsgTypeEnum.TEXT,
-      msg:sendContent
+      msg:sendContent,
+      msgStatus:false
     }
     appStore.sendInfoLocalFun(msg)
     sendInfoNetWorkFun(msg)
@@ -193,6 +198,7 @@ function sendVerify() {
 }
 function sendInfoNetWorkFun(msg:Msg){
   let sendMsg = new AQChatMSg.default.SendMsgCmd();
+  sendMsg.setMsgid(msg.msgId);
   sendMsg.setMsgtype(msg.msgType);
   sendMsg.setMsg(msg.msg)
   sendMsg.setRoomid(roomInfo.roomId);
