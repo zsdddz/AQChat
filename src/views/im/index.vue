@@ -19,16 +19,26 @@ import ImContent from "./components/im-content.vue"
 import ImDomain from "./components/im-domain.vue"
 import useAppStore from "@/store/modules/app"
 import { useRouter } from "vue-router";
+import AQSender from '@/msg/AQSender'
+import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 
 const appStore = useAppStore()
 const router = useRouter();
 
 // 退出
 const quitFun = ()=>{
-  appStore.resetAllInfo();
-  router.replace({
-    name:'Index'
-  })
+  let userLogout = new AQChatMSg.default.UserLogoutCmd();
+  userLogout.setUserid(appStore.userInfo.userId);
+  
+  AQSender.getInstance().sendMsg(
+    AQChatMSg.default.MsgCommand.USER_LOGOUT_CMD,userLogout
+  )
+  setTimeout(()=>{
+    appStore.resetAllInfo();
+    router.replace({
+      name:'Index'
+    })
+  },100)
 }
 
 </script>
