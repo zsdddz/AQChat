@@ -64,6 +64,9 @@ const useAppStore = defineStore('app', {
         sendInfoLocalFun(msg:Msg){
             this.msgList.push(msg)
         },
+        setMsgRecord(msg:Msg){
+            this.msgList.unshift(msg)
+        },
         resetAllInfo(){
             this.roomInfo = {
                 roomId:'',
