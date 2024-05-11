@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-11 09:37:20
+ * @LastEditTime: 2024-05-11 14:58:42
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -75,6 +75,10 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.SYNC_CHAT_RECORD_ACK:
             syncChatRecordFun(result);
             break;
+          // 消息发送状态
+          case AQChatMSg.default.MsgCommand.SEND_MSG_ACK:
+            sendMsgStatusFun(result);
+            break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
             exceptionFun(result);
@@ -83,11 +87,28 @@ export default ()=>{
       }
     })
   }
+
+  // 消息发送状态
+  const sendMsgStatusFun = (result) =>{
+    console.log("消息发送状态:",result);
+    console.log(appStore.msgList);
+    
+    for(let i = appStore.msgList.length-1;i>=0;i--){
+      if(appStore.msgList[i].msgId == result.msgId){
+        appStore.msgList[i].msgStatus = true;
+        console.log("修改消息状态");
+        
+      }
+    }
+    console.log(appStore.msgList);
+  }
   
   // 消息同步
   const syncChatRecordFun = (result) =>{
-    console.log("消息记录：",result);
-    
+    for(let i = 0;i<result.length;i++){
+      const msg:Msg = result[i]
+      appStore.setMsgRecord(msg)
+    }
   }
 
   // 用户退出登录
@@ -102,7 +123,7 @@ export default ()=>{
 
   // 接收广播消息
   const broadcastMsgFun = (result) =>{
-    console.log("接收广播消息",result);
+    // console.log("接收广播消息",result);
     
     if(result.userId === appStore.userInfo.userId) return;
     const msg:Msg = {
@@ -113,7 +134,8 @@ export default ()=>{
       },
       roomId:result.roomId,
       msgType:result.msgType,
-      msg:result.msg
+      msg:result.msg,
+      msgId:result.msgId
     }
     appStore.sendInfoLocalFun(msg)
   }
