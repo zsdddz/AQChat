@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-11 14:58:42
+ * @LastEditTime: 2024-05-11 15:14:27
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -40,7 +40,7 @@ export default ()=>{
       // 消息回调
       AQSender.getInstance().onMsgReceived = (msgCommand,msgBody) =>{
         const result = handlerFactory.handle(msgCommand,msgBody);
-        // console.log("result：",result);
+        console.log("result：",result);
         
         switch(msgCommand){
           // 登录回调
@@ -90,17 +90,11 @@ export default ()=>{
 
   // 消息发送状态
   const sendMsgStatusFun = (result) =>{
-    console.log("消息发送状态:",result);
-    console.log(appStore.msgList);
-    
     for(let i = appStore.msgList.length-1;i>=0;i--){
       if(appStore.msgList[i].msgId == result.msgId){
         appStore.msgList[i].msgStatus = true;
-        console.log("修改消息状态");
-        
       }
     }
-    console.log(appStore.msgList);
   }
   
   // 消息同步
