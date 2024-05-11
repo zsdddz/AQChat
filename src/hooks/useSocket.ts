@@ -2,8 +2,8 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-02 14:33:44
- * @Description: 
+ * @LastEditTime: 2024-05-11 09:37:20
+ * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
 import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
@@ -57,7 +57,7 @@ export default ()=>{
             break;
           // 恢复用户连接
           case AQChatMSg.default.MsgCommand.RECOVER_USER_ACK:
-            recoverUser(result);
+            recoverUserFun(result);
             break;
           // 加入房间通知
           case AQChatMSg.default.MsgCommand.JOIN_ROOM_NOTIFY:
@@ -67,6 +67,14 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.BROADCAST_MSG_ACK:
             broadcastMsgFun(result);
             break;
+          // 用户退出登录
+          case AQChatMSg.default.MsgCommand.USER_LOGOUT_ACK:
+            userLogoutFun(result);
+            break;
+          // 消息同步
+          case AQChatMSg.default.MsgCommand.SYNC_CHAT_RECORD_ACK:
+            syncChatRecordFun(result);
+            break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
             exceptionFun(result);
@@ -74,6 +82,22 @@ export default ()=>{
         }
       }
     })
+  }
+  
+  // 消息同步
+  const syncChatRecordFun = (result) =>{
+    console.log("消息记录：",result);
+    
+  }
+
+  // 用户退出登录
+  const userLogoutFun = (result) =>{
+    if(result?.userId === appStore.userInfo.userId){
+      appStore.resetAllInfo();
+      router.replace({
+        name:'Index'
+      })
+    }
   }
 
   // 接收广播消息
@@ -96,6 +120,8 @@ export default ()=>{
 
   // 其他人加入房间通知
   const joinRoomNotifyFun = (result) =>{
+    console.log('其他人加入房间通知',result);
+    
     if(appStore.roomInfo.roomId === result.roomId){
       if(!(result?.user?.array?.length > 0)) return;
       const msgContent = result.user.array[0] === appStore.userInfo.userId ? '您' : result.user.array[1];
@@ -108,7 +134,7 @@ export default ()=>{
     }
   }
   // 恢复用户登录
-  const recoverUser = (result)=>{
+  const recoverUserFun = (result)=>{
     console.log("恢复用户登录",result);
     
     if(!result?.roomId){
