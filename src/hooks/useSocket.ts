@@ -1,12 +1,13 @@
 /*
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
- * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-16 17:31:23
+ * @LastEditors: zsdddz hitd@foxmail.com
+ * @LastEditTime: 2024-05-16 18:01:23
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
 import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
+import CallbackMethodManager from '@/msg/CallbackMethodManager';
 import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app"
 import { ElMessage } from 'element-plus'
@@ -80,6 +81,14 @@ export default ()=>{
           // 消息发送状态
           case AQChatMSg.default.MsgCommand.SEND_MSG_ACK:
             sendMsgStatusFun(result);
+            break;
+          case AQChatMSg.default.MsgCommand.GET_STS_ACK:
+            let callbackMethod = CallbackMethodManager.getCallback(msgCommand);
+            //执行回调函数
+            if (callbackMethod) {
+              callbackMethod(result);
+              CallbackMethodManager.getCallback(10100)();
+            }
             break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:

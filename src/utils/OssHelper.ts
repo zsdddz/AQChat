@@ -2,12 +2,11 @@
  * @Author: zsdddz hitd@foxmail.com
  * @Date: 2024-04-25 18:41:38
  * @LastEditors: zsdddz hitd@foxmail.com
- * @LastEditTime: 2024-04-25 21:15:55
+ * @LastEditTime: 2024-05-16 18:02:36
  */
 import OSS from 'ali-oss';
 import AQSender from '../msg/AQSender';
-import AQMsgHandlerFactory from '../msg/msghandler/AQMsgHandlerFactory';
-import AQChatMsgProtocol_pb, * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
+import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
 import CallbackMethodManager from '../msg/CallbackMethodManager';
 
 export class OssHelper {
@@ -21,21 +20,9 @@ export class OssHelper {
 
     //初始化
     init(msgType: AQChatMSg.default.MsgType,callback:Function) {
-        let handlerFactory = AQMsgHandlerFactory.getInstance();
-        //重写onMsgReceived方法
-        AQSender.getInstance().onMsgReceived = (msgCommand, msgBody) => {
-            let aliOss = handlerFactory.handle(msgCommand, msgBody);
-            //获取回调函数
-            let callbackMethod = CallbackMethodManager.getCallback(msgCommand);
-            //执行回调函数
-            if (callbackMethod) {
-                callbackMethod(aliOss);
-                callback()
-            }
-        }
         //注册获取sts回调函数
         CallbackMethodManager.registerCallback(AQChatMSg.default.MsgCommand.GET_STS_ACK, (res) => { this.setOssInfo(res) });
-
+        CallbackMethodManager.registerCallback(10100, callback);
         AQSender.getInstance().sendMsg(
             AQChatMSg.default.MsgCommand.GET_STS_CMD,
             new AQChatMSg.default.GetStsCmd([msgType])
