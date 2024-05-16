@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: zsdddz hitd@foxmail.com
- * @LastEditTime: 2024-05-16 18:01:23
+ * @LastEditTime: 2024-05-16 18:11:54
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -83,12 +83,7 @@ export default ()=>{
             sendMsgStatusFun(result);
             break;
           case AQChatMSg.default.MsgCommand.GET_STS_ACK:
-            let callbackMethod = CallbackMethodManager.getCallback(msgCommand);
-            //执行回调函数
-            if (callbackMethod) {
-              callbackMethod(result);
-              CallbackMethodManager.getCallback(10100)();
-            }
+            uploadFileFun(msgCommand,result)
             break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
@@ -97,6 +92,16 @@ export default ()=>{
         }
       }
     })
+  }
+
+  // 上传文件
+  const uploadFileFun = (msgCommand,file)=>{
+    let callbackMethod = CallbackMethodManager.getCallback(msgCommand);
+    //执行回调函数
+    if (callbackMethod) {
+      callbackMethod(file);
+      CallbackMethodManager.getCallback(10100)();
+    }
   }
 
   // 消息发送状态修改
