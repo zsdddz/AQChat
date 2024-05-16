@@ -105,13 +105,14 @@ import MsgTypeEnum from '../../../enums/MsgTypeEnum'
 import MsgStatusEnum from '../../../enums/MsgStatusEnum'
 import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
-import { watch } from 'vue'
+import { watch,ref } from 'vue'
 import Loading from "@/components/Loading.vue"
 import { ElMessage } from 'element-plus'
 
 const appStore = useAppStore()
 const userInfo = appStore.userInfo
 let msgList = appStore.msgList
+const contentScrollbar = ref(null)
 
 // 监听websocket状态
 watch(() => appStore.websocketStatus,(newV)=>{
@@ -122,8 +123,10 @@ watch(() => appStore.websocketStatus,(newV)=>{
 
 watch(() => appStore.msgList,(newV)=>{
   msgList = newV;
+  toBottom()
 },{deep:true})
 
+// 复制房间号
 const copyRoomNo = ()=>{
   navigator.clipboard.writeText(appStore.roomInfo.roomNo);
   ElMessage.success("复制成功")
@@ -136,6 +139,13 @@ const syncChatRecordFun = ()=>{
   AQSender.getInstance().sendMsg(
     AQChatMSg.default.MsgCommand.SYNC_CHAT_RECORD_CMD,syncChatRecord
   )
+}
+
+// 滚动底部
+const toBottom = ()=>{
+  setTimeout(()=>{
+    contentScrollbar.value && contentScrollbar.value.setScrollTop(99999)
+  },100)
 }
 
 </script>
