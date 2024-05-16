@@ -9,7 +9,7 @@
         <li @click="expressionShow = false">
           <img class="icon icon-image" src="@/assets/images/icon-image.png" alt="">
           <input
-            ref="referenceUpload"
+            ref="imgUploadRef"
             class="file-image"
             name="customerService"
             type="file"
@@ -56,7 +56,12 @@
 <script setup lang="ts">
 import ImEditor from "./im-editor.vue";
 import { ref,defineExpose,inject } from "vue";
+import { OssHelper } from '@/utils/OssHelper';
+import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb';
+import useAppStore from "@/store/modules/app"
+import MsgTypeEnum from "@/enums/MsgTypeEnum"
 
+const appStore = useAppStore()
 const expressionShow = ref(false)
 const imContent = ref('')
 const imEditorRef = ref()
@@ -195,6 +200,7 @@ const expressions = [
     "icon": "https://aqchat.oss-cn-shenzhen.aliyuncs.com/emo/中毒.png"
   }
 ]
+const imgUploadRef = ref(null)
 
 defineExpose({changeExpression})
 // 切换表情包
@@ -213,8 +219,16 @@ function selectIcon(icon: string) {
 
 
 //发送图片
-async function sendImage(e: any) {
-  
+async function sendImage() {
+  let file =  imgUploadRef.value && imgUploadRef.value.files[0]
+  OssHelper.getInstance().init(AQChatMSg.default.MsgType.IMAGE,()=>{
+    OssHelper.getInstance().uploadFile(file)
+    .then((res)=>{
+      appStore.sendInfo(res.url,MsgTypeEnum.IMAGE)
+    }).catch((err)=>{
+      console.log("上传失败,错误为:"+err)
+    });
+  });
 }
 
 //发送视频

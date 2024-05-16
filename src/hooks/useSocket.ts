@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-16 16:33:50
+ * @LastEditTime: 2024-05-16 17:31:23
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -90,8 +90,9 @@ export default ()=>{
     })
   }
 
-  // 消息发送状态
+  // 消息发送状态修改
   const sendMsgStatusFun = (result) =>{
+    console.log("消息发送状态修改",result);
     for(let i = appStore.msgList.length-1;i>=0;i--){
       if(appStore.msgList[i].msgId == result.msgId){
         appStore.msgList[i].msgStatus = MsgStatusEnum.FULFILLED;
