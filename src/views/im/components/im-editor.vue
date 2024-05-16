@@ -179,34 +179,11 @@ function sendVerify() {
     }, 1000);
     return;
   } else {
-    const msgId = customSnowflake.nextId();
-    const msg:Msg = {
-      user:{
-        userId:userInfo.userId,
-        userAvatar:userInfo.userAvatar,
-        userName:userInfo.userName,
-      },
-      roomId:roomInfo.roomId,
-      msgId:msgId,
-      msgType:MsgTypeEnum.TEXT,
-      msg:sendContent,
-      msgStatus:MsgStatusEnum.PENDING
-    }
-    appStore.sendInfoLocalFun(msg)
-    sendInfoNetWorkFun(msg)
+    appStore.sendInfo(sendContent,MsgTypeEnum.TEXT)
   }
   clear();
 }
-function sendInfoNetWorkFun(msg:Msg){
-  let sendMsg = new AQChatMSg.default.SendMsgCmd();
-  sendMsg.setMsgid(msg.msgId);
-  sendMsg.setMsgtype(msg.msgType);
-  sendMsg.setMsg(msg.msg)
-  sendMsg.setRoomid(roomInfo.roomId);
-  AQSender.getInstance().sendMsg(
-    AQChatMSg.default.MsgCommand.SEND_MSG_CMD,sendMsg
-  )
-}
+
 // 聚焦取消表情包显示
 function onFous() {
   changeExpression(false);

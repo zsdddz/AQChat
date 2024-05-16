@@ -8,6 +8,10 @@ import { defineStore } from 'pinia'
 import User from '../../class/User'
 import Msg from '../../class/Msg'
 import MsgStatusEnum from '../../enums/MsgStatusEnum'
+import AQSender from '@/msg/AQSender'
+import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import CustomSnowflake from "@/utils/CustomSnowflake"
+import MsgTypeEnum from "@/enums/MsgTypeEnum"
 
 interface RoomInfo {
     roomId:String,
@@ -30,6 +34,9 @@ interface AppState {
     // 消息状态定时器
     msgStatusTimer:Object
 }
+
+const epoch = +new Date();
+const customSnowflake = new CustomSnowflake(1,epoch);
 
 
 const useAppStore = defineStore('app', {
@@ -69,6 +76,23 @@ const useAppStore = defineStore('app', {
         setWebsocketStatus(status:boolean) {
             this.websocketStatus = status
         },
+        sendInfo(msg:string,msgType:MsgTypeEnum){
+            const msgId = customSnowflake.nextId();
+            const msgInfo:Msg = {
+                user:{
+                    userId:this.userInfo.userId,
+                    userAvatar:this.userInfo.userAvatar,
+                    userName:this.userInfo.userName,
+                },
+                roomId:this.roomInfo.roomId,
+                msgId:msgId,
+                msgType:msgType,
+                msg:msg,
+                msgStatus:MsgStatusEnum.PENDING
+            }
+            this.sendInfoLocalFun(msgInfo)
+            this.sendInfoNetWorkFun(msgInfo)
+        },
         sendInfoLocalFun(msg:Msg){
             this.msgList.push(msg)
             // 10s消息未发送成功，则设置消息为发送失败状态
@@ -83,6 +107,16 @@ const useAppStore = defineStore('app', {
                     }
                 }
             },10000)
+        },
+        sendInfoNetWorkFun(msg:Msg){
+            let sendMsg = new AQChatMSg.default.SendMsgCmd();
+            sendMsg.setMsgid(msg.msgId);
+            sendMsg.setMsgtype(msg.msgType);
+            sendMsg.setMsg(msg.msg)
+            sendMsg.setRoomid(this.roomInfo.roomId);
+            AQSender.getInstance().sendMsg(
+                AQChatMSg.default.MsgCommand.SEND_MSG_CMD,sendMsg
+            )
         },
         clearMsgStatusTimer(id:string){
             if(this.msgStatusTimer[id]){
