@@ -58,7 +58,7 @@ import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtoc
 const appStore = useAppStore()
 const step = ref(0);
 const dialogVisible = ref(false)
-const roomForm = reactive({
+const roomForm = ref({
   roomNo:'',
   roomName:''
 })
@@ -90,28 +90,28 @@ const enterRoomFun = ()=>{
       return
     }
     if(step.value == 1){
-      console.log(roomForm);
+      console.log(roomForm.value);
       
-      if(!roomForm.roomNo){
+      if(!roomForm.value.roomNo){
         ElMessage.warning("请输入房间号")
         return
       }
-      if(!roomForm.roomName.trim()){
+      if(!roomForm.value.roomName.trim()){
         ElMessage.warning("请输入房间名")
         return
       }
       AQSender.getInstance().sendMsg(
         AQChatMSg.default.MsgCommand.CREATE_ROOM_CMD,
-        new AQChatMSg.default.CreateRoomCmd([roomForm.roomNo.toString(),roomForm.roomName.trim()])
+        new AQChatMSg.default.CreateRoomCmd([roomForm.value.roomNo.toString(),roomForm.value.roomName.trim()])
       )
     }else if(step.value == 2){
-      if(!roomForm.roomNo.trim()){
+      if(!roomForm.value.roomNo.trim()){
         ElMessage.warning("请输入房间号")
         return
       }
       
       let msg = new AQChatMSg.default.JoinRoomCmd();
-      msg.setRoomno(roomForm.roomNo);
+      msg.setRoomno(roomForm.value.roomNo);
       AQSender.getInstance().sendMsg(
         AQChatMSg.default.MsgCommand.JOIN_ROOM_CMD,msg
       )
