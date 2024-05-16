@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-05-02 13:55:20
+ * @LastEditTime: 2024-05-16 16:47:45
  */
 
 
@@ -18,22 +18,22 @@ export default class AQSender {
     /**
     * 单例对象
     */
-    private static _oInstance: AQSender = new AQSender();
+    private static instance: AQSender = new AQSender();
 
     /**
      * WebSocket
      */
-    private _oWebSocket: w3cwebsocket | null = null;
+    private webSocket: w3cwebsocket | null = null;
 
     /**
      * 消息编码器
      */
-    private readonly _oMsgEncoder: AQMsgEncoder = new AQMsgEncoder();
+    private readonly msgEncoder: AQMsgEncoder = new AQMsgEncoder();
 
     /**
      * 消息解码器
      */
-    private readonly _oMsgDecoder: AQMsgDecoder = new AQMsgDecoder();
+    private readonly msgDecoder: AQMsgDecoder = new AQMsgDecoder();
 
     /**
      * 私有化类默认构造器
@@ -45,7 +45,7 @@ export default class AQSender {
      * 获取单例对象
      */
     static getInstance(): AQSender {
-        return AQSender._oInstance;
+        return AQSender.instance;
     }
 
     /**
@@ -63,7 +63,7 @@ export default class AQSender {
         // 连接服务器
         oWebSocket.onopen = (): void => {
             console.log(`已连接服务器, URL = ${strURL}`);
-            this._oWebSocket = oWebSocket;
+            this.webSocket = oWebSocket;
             
             if (null != funCallback) {
                 funCallback();
@@ -73,13 +73,13 @@ export default class AQSender {
         // 异常
         oWebSocket.onerror = (): void => {
             console.error(`连接异常, URL = ${strURL}`);
-            this._oWebSocket = null;
+            this.webSocket = null;
         }
 
         // 断开服务器
         oWebSocket.onclose = (): void => {
             console.warn("服务器连接已关闭");
-            this._oWebSocket = null;
+            this.webSocket = null;
         }
 
         // 收到消息
@@ -107,7 +107,7 @@ export default class AQSender {
             let msgBody = unpack[2];
 
             // 构建消息体
-            let oMsgBody = this._oMsgDecoder.decode(msgCommand, msgBody);
+            let oMsgBody = this.msgDecoder.decode(msgCommand, msgBody);
 
             if (null == oMsgBody) {
                 console.error(`构建消息体为空, msgCommand = ${msgCommand}`);
@@ -127,7 +127,7 @@ export default class AQSender {
      */
     heartbeatLoop() {
         let loop = () =>{
-            if(this._oWebSocket == null){
+            if(this.webSocket == null){
                 console.error("[心跳失败]未连接")
                 return;
             }
@@ -158,19 +158,19 @@ export default class AQSender {
             return;
         }
 
-        if (null == this._oWebSocket) {
+        if (null == this.webSocket) {
             console.error("WebSocket 尚未初始化");
             return;
         }
 
-        let msgPack = this._oMsgEncoder.encode(msgCommand, msgBody);
+        let msgPack = this.msgEncoder.encode(msgCommand, msgBody);
         if (null == msgPack || msgPack.byteLength <= 0) {
             console.error(`字节数组为空, msgCommand = ${msgCommand}`);
             return;
         }
 
         // console.log(`发送消息, msgCommand = ${msgCommand}`);
-        this._oWebSocket.send(msgPack);
+        this.webSocket.send(msgPack);
     }
 
     /**
