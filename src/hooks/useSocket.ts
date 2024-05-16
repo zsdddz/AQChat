@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-11 16:43:56
+ * @LastEditTime: 2024-05-16 16:33:50
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -41,8 +41,9 @@ export default ()=>{
       // 消息回调
       AQSender.getInstance().onMsgReceived = (msgCommand,msgBody) =>{
         const result = handlerFactory.handle(msgCommand,msgBody);
-        console.log("result：",result);
-        
+        if(result !== '心跳保活'){
+          // console.log("result：",result);
+        }
         switch(msgCommand){
           // 登录回调
           case AQChatMSg.default.MsgCommand.USER_LOGIN_ACK:
@@ -101,6 +102,8 @@ export default ()=>{
   
   // 消息同步
   const syncChatRecordFun = (result) =>{
+    console.log("消息同步",result);
+    
     for(let i = 0;i<result.length;i++){
       const msg:Msg = result[i]
       appStore.setMsgRecord(msg)
@@ -119,8 +122,7 @@ export default ()=>{
 
   // 接收广播消息
   const broadcastMsgFun = (result) =>{
-    // console.log("接收广播消息",result);
-    
+    console.log("接收广播消息",result);
     if(result.userId === appStore.userInfo.userId) return;
     const msg:Msg = {
       user:{
@@ -139,7 +141,6 @@ export default ()=>{
   // 其他人加入房间通知
   const joinRoomNotifyFun = (result) =>{
     console.log('其他人加入房间通知',result);
-    
     if(appStore.roomInfo.roomId === result.roomId){
       if(!(result?.user?.array?.length > 0)) return;
       const msgContent = result.user.array[0] === appStore.userInfo.userId ? '您' : result.user.array[1];
@@ -153,8 +154,7 @@ export default ()=>{
   }
   // 恢复用户登录
   const recoverUserFun = (result)=>{
-    console.log("恢复用户登录",result);
-    
+    console.log('恢复用户登录',result);
     if(!result?.roomId){
       appStore.setRoomInfo({
         roomId:'',
