@@ -173,7 +173,7 @@ const toBottom = ()=>{
   width: 100%;
   border-radius: 10px;
   background: @im-content-bg2;
-  box-shadow: inset 20px 20px 14px @im-content-shadow1, inset -20px -20px 14px @im-content-shadow2;
+  // box-shadow: inset 20px 20px 14px @im-content-shadow1, inset -20px -20px 14px @im-content-shadow2;
   overflow: hidden;
   .content-win {
     width: 100%;
@@ -326,14 +326,12 @@ const toBottom = ()=>{
     
   }
   .head {
-    height: 8%;
-    padding: 0 20px;
+    height: 7%;
     display: flex;
     width: 100%;
-    align-items: center;
     justify-content: center;
-    background-color: @im-head-bg;
-    color: #2c3e50;
+    background: @im-bg1;
+    color: @im-head-txt;
     .name {
       font-size: 16px;
     }

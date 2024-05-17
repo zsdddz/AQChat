@@ -255,8 +255,8 @@ const enterRoomFun = ()=>{
   // border-top-right-radius: 30px;
   border-radius: 10px;
   background: @im-list-bg;
-  box-shadow: inset 5px 5px 4px @im-content-shadow1,
-              inset -5px -5px 4px @im-content-shadow2;
+  // box-shadow: inset 5px 5px 4px @im-content-shadow1,
+  //             inset -5px -5px 4px @im-content-shadow2;
   display:flex;
   flex-direction: column-reverse;
   align-items: end;

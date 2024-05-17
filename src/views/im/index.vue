@@ -48,7 +48,7 @@ const quitFun = ()=>{
   width: 100%;
   min-width: 1200px;
   height: 100%;
-  background-color: #f2f2f2;
+  background-color: @bg-color;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,14 +67,15 @@ const quitFun = ()=>{
     width: 1200px;
     height: 620px;
     border-radius: 30px;
-    // background: linear-gradient(315deg, @im-content-bg1, @im-content-bg2);
-    // background-color: @im-content-bg1;
+    background: @im-bg1;
+    // box-shadow:  -17px -17px 19px @im-shadow1,
+    //             17px 17px 19px @im-shadow2;
     overflow: hidden;
     display: flex;
     .content-info{
       height: 100%;
       width: 98%;
-      background-color: @im-content-bg1;
+      // background-color: @im-content-bg1;
       position: relative;
       padding: 20px;
       padding-left: 0;

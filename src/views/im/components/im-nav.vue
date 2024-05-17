@@ -21,7 +21,7 @@ const userInfo = appStore.userInfo
   height: 100%;
   width: 8%;
   position: relative;
-  background-color: @im-nav-bg;
+  // background-color: @im-nav-bg;
   .nav-my {
     width: 100%;
     position: absolute;
