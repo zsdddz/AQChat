@@ -171,14 +171,18 @@ const toBottom = ()=>{
 .im-content {
   height: 100%;
   width: 100%;
-  border-bottom-right-radius: 30px;
-  border-top-right-radius: 30px;
+  border-radius: 10px;
+  background: @im-content-bg2;
+  box-shadow: inset 20px 20px 14px @im-content-shadow1, inset -20px -20px 14px @im-content-shadow2;
+  overflow: hidden;
   .content-win {
     width: 100%;
     height: 62%;
-    background: @im-list-bg;
-    box-shadow: inset 5px 5px 4px @im-content-shadow1,
-              inset -5px 0px 4px @im-content-shadow2;
+    // box-shadow: inset 20px 20px 14px  @im-content-shadow1,
+    //             inset -20px -20px 14px @im-content-shadow2;
+//     background: linear-gradient(145deg, #e6e6e6, #ffffff);
+// box-shadow:  17px 17px 34px #d9d9d9,
+//              -17px -17px 34px #ffffff;
     .text-block{
       *{
         white-space: wrap;
@@ -328,14 +332,14 @@ const toBottom = ()=>{
     width: 100%;
     align-items: center;
     justify-content: center;
+    background-color: @im-head-bg;
+    color: #2c3e50;
     .name {
-      color: @txt-color;
       font-size: 16px;
     }
     .room-no{
       font-size: 16px;
       margin-left: 20px;
-      color: @txt-color;
       span{
         color: @im-primary;
         cursor: pointer;

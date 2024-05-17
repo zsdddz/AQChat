@@ -251,8 +251,9 @@ const enterRoomFun = ()=>{
 .im-domain {
   height: 100%;
   width: 100%;
-  border-bottom-right-radius: 30px;
-  border-top-right-radius: 30px;
+  // border-bottom-right-radius: 30px;
+  // border-top-right-radius: 30px;
+  border-radius: 10px;
   background: @im-list-bg;
   box-shadow: inset 5px 5px 4px @im-content-shadow1,
               inset -5px -5px 4px @im-content-shadow2;

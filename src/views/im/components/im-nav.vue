@@ -21,6 +21,7 @@ const userInfo = appStore.userInfo
   height: 100%;
   width: 8%;
   position: relative;
+  background-color: @im-nav-bg;
   .nav-my {
     width: 100%;
     position: absolute;
@@ -32,9 +33,7 @@ const userInfo = appStore.userInfo
       width: 50px;
       border-radius: 50%;
       margin: auto;
-      // background: linear-gradient(315deg, @im-list-avatar-bg1, @im-list-avatar-bg2);
-      // box-shadow:  -5px -5px 10px @im-list-avatar-shadow1,
-      //             5px 5px 10px @im-list-avatar-shadow2;
+      // box-shadow:  0px 0px 10px @im-list-avatar-shadow1;
     }
   }
 }
