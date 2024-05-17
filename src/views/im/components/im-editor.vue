@@ -1,11 +1,11 @@
 <template>
   <div :height="135" class="edit-box">
-    <el-scrollbar style="height: 70%">
-      <div class="editor">
-        <div id="imEditor" @keydown.enter="keyDown($event)" @click="onFous" />
-        <input ref="upload" @change="handleChange" type="file" style="opacity: 0; display: none" />
-      </div>
-    </el-scrollbar>
+    <!-- <el-scrollbar style="height: 70%">
+      
+    </el-scrollbar> -->
+    <div class="editor">
+      <div class="input-editor" id="imEditor" @keydown.enter="keyDown($event)" @click="onFous" />
+    </div>
 
     <el-tooltip :visible="showPopover" placement="bottom">
       <template #content>
@@ -20,12 +20,8 @@
 <script setup lang="ts">
 import { getCurrentInstance, watch, reactive, onMounted, ref,inject,defineExpose } from "vue";
 import E from "wangeditor";
-import Msg from "../../../class/Msg"
 import MsgTypeEnum from "../../../enums/MsgTypeEnum"
-import MsgStatusEnum from "../../../enums/MsgStatusEnum"
 import useAppStore from "@/store/modules/app"
-import AQSender from '@/msg/AQSender'
-import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import CustomSnowflake from "@/utils/CustomSnowflake"
 
 defineProps<{
@@ -207,14 +203,25 @@ defineExpose({
 
   .editor {
     text-align: left;
+    height: 70%;
+    .input-editor{
+      height: 100%;
+    }
+  }
+
+  /deep/ .w-e-text p{
+    margin:0;
+    line-height: 22px;
+  }
+  /deep/ .w-e-text-container .placeholder{
+    line-height: 0;
   }
 
   /deep/ .w-e-text-container {
     border: none !important;
     height: 100% !important;
-
     >div {
-      min-height: 135px;
+      // min-height: 120px;
     }
   }
 
