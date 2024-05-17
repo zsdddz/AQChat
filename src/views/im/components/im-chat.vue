@@ -33,7 +33,7 @@
       </ul>
     </div>
     <!--表情包-->
-    <div v-show="expressionShow" class="emjon">
+    <div v-click-outside="cancleExpression" v-show="expressionShow" class="emjon">
       <el-scrollbar style="max-height: 100%">
         <ul>
           <li
@@ -60,6 +60,7 @@ import { OssHelper } from '@/utils/OssHelper';
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb';
 import useAppStore from "@/store/modules/app"
 import MsgTypeEnum from "@/enums/MsgTypeEnum"
+import { ClickOutside as vClickOutside } from "element-plus";
 
 const appStore = useAppStore()
 const expressionShow = ref(false)
@@ -206,6 +207,10 @@ defineExpose({changeExpression})
 // 切换表情包
 function changeExpression(flag?:undefined) {
   expressionShow.value = flag !==undefined ? flag :!expressionShow.value;
+}
+
+function cancleExpression(){
+  expressionShow.value = false;
 }
 
 // 选择表情
