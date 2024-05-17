@@ -31,6 +31,7 @@
                   v-else-if="item.msgType === MsgTypeEnum.IMAGE"
                   class="send-image"
                   v-bind:src="item.msg"
+                  @click="privewImage(item.msg)"
                   preview="1"
                 />
                 <video
@@ -71,6 +72,7 @@
                   v-else-if="item.msgType === MsgTypeEnum.IMAGE"
                   class="send-image"
                   v-bind:src="item.msg"
+                  @click="privewImage(item.msg)"
                   preview="1"
                 />
                 <video
@@ -105,11 +107,12 @@ import MsgTypeEnum from '../../../enums/MsgTypeEnum'
 import MsgStatusEnum from '../../../enums/MsgStatusEnum'
 import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
-import { watch,ref } from 'vue'
+import { watch,ref,getCurrentInstance } from 'vue'
 import Loading from "@/components/Loading.vue"
 import { ElMessage } from 'element-plus'
 
 const appStore = useAppStore()
+const { proxy }: any = getCurrentInstance();
 const userInfo = appStore.userInfo
 let msgList = appStore.msgList
 const contentScrollbar = ref(null)
@@ -125,6 +128,14 @@ watch(() => appStore.msgList,(newV)=>{
   msgList = newV;
   toBottom()
 },{deep:true})
+
+//查看大图
+const privewImage = (img: string) =>{
+  let images = [img];
+  proxy.$viewerApi({
+    images: images,
+  });
+}
 
 // 复制房间号
 const copyRoomNo = ()=>{
