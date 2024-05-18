@@ -1,8 +1,8 @@
 /*
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
- * @LastEditors: zsdddz hitd@foxmail.com
- * @LastEditTime: 2024-05-16 18:11:54
+ * @LastEditors: howcode 1051495009@qq.com
+ * @LastEditTime: 2024-05-18 15:26:35
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -11,13 +11,14 @@ import CallbackMethodManager from '@/msg/CallbackMethodManager';
 import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app"
 import { ElMessage } from 'element-plus'
-import { useRouter } from 'vue-router'
+import { useRouter,useRoute } from 'vue-router'
 import ExceptionEnum from "../enums/ExceptionEnum"
 import MsgStatusEnum from "../enums/MsgStatusEnum"
 import Msg from "../class/Msg"
 import MsgTypeEnum from "../enums/MsgTypeEnum"
 export default ()=>{
   const router = useRouter();
+  const route = useRoute();
   const appStore = useAppStore()
   
   // 初始化websocket
@@ -32,10 +33,12 @@ export default ()=>{
         if(appStore.roomInfo?.roomId){
           msgArray.push(appStore.roomInfo.roomId)
         }
-        AQSender.getInstance().sendMsg(
-          AQChatMSg.default.MsgCommand.RECOVER_USER_CMD,
-          new AQChatMSg.default.RecoverUserCmd(msgArray)
-        )
+        if(route.name === 'IM'){
+          AQSender.getInstance().sendMsg(
+            AQChatMSg.default.MsgCommand.RECOVER_USER_CMD,
+            new AQChatMSg.default.RecoverUserCmd(msgArray)
+          )
+        }
       }
 
       let handlerFactory = AQMsgHandlerFactory.getInstance();
