@@ -253,7 +253,7 @@ const enterRoomFun = ()=>{
   width: 100%;
   // border-bottom-right-radius: 30px;
   // border-top-right-radius: 30px;
-  border-radius: 10px;
+  border-radius: 30px;
   background: @im-list-bg;
   // box-shadow: inset 5px 5px 4px @im-content-shadow1,
   //             inset -5px -5px 4px @im-content-shadow2;
@@ -261,6 +261,12 @@ const enterRoomFun = ()=>{
   flex-direction: column-reverse;
   align-items: end;
   position: relative;
+// background: #F8F8F8;
+// box-shadow: inset 13px 13px 18px #e7e7e7,
+//             inset -13px -13px 18px #ffffff;
+// background: #272A2F;
+// box-shadow: inset 13px 13px 18px #24272c,
+//             inset -13px -13px 18px #2a2d32;
   .lottie-box{
     width: 70%;
     height: 80%;

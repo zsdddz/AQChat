@@ -312,12 +312,11 @@ function sendVerify(content: string, type: number) {
     left: 30px;
     top: -262px;
     background: #fff;
-    // box-shadow: 2px 2px 4px #888888;
+    box-shadow: 2px 2px 4px #888888;
     overflow: auto;
-    border-top-left-radius: 14px;
-    border-bottom-right-radius: 14px;
+    border-radius: 6px;
+    padding: 10px;
     ul {
-      padding: 10px;
       display: flex;
       flex-wrap: wrap;
       li {

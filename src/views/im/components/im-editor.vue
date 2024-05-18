@@ -199,8 +199,9 @@ defineExpose({
   position: relative;
   width: 100%;
   height: 70%;
-  border: 1px solid #ccc;
-
+  border: 1px solid rgba(204,204,204,.5);
+  border-radius: 10px;
+  overflow: hidden;
   .editor {
     text-align: left;
     height: 70%;
@@ -215,6 +216,11 @@ defineExpose({
   }
   /deep/ .w-e-text-container .placeholder{
     line-height: 0;
+  }
+
+  /deep/ .w-e-toolbar{
+    border-bottom:none!important;
+    border:none!important;
   }
 
   /deep/ .w-e-text-container {

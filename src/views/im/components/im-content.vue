@@ -171,7 +171,7 @@ const toBottom = ()=>{
 .im-content {
   height: 100%;
   width: 100%;
-  border-radius: 10px;
+  border-radius: 30px;
   background: @im-content-bg2;
   // box-shadow: inset 20px 20px 14px @im-content-shadow1, inset -20px -20px 14px @im-content-shadow2;
   overflow: hidden;

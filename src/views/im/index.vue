@@ -68,8 +68,8 @@ const quitFun = ()=>{
     height: 620px;
     border-radius: 30px;
     background: @im-bg1;
-    // box-shadow:  -17px -17px 19px @im-shadow1,
-    //             17px 17px 19px @im-shadow2;
+    box-shadow:  -17px -17px 19px @im-shadow1,
+                17px 17px 19px @im-shadow2;
     overflow: hidden;
     display: flex;
     .content-info{
