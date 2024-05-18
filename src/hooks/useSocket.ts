@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-18 15:26:35
+ * @LastEditTime: 2024-05-18 16:41:41
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -16,10 +16,16 @@ import ExceptionEnum from "../enums/ExceptionEnum"
 import MsgStatusEnum from "../enums/MsgStatusEnum"
 import Msg from "../class/Msg"
 import MsgTypeEnum from "../enums/MsgTypeEnum"
+import { onMounted } from 'vue';
 export default ()=>{
+  let appStore = null
+  onMounted(()=>{
+    appStore = useAppStore()
+  })
+
   const router = useRouter();
   const route = useRoute();
-  const appStore = useAppStore()
+  
   
   // 初始化websocket
   const initSocketFun = ()=>{
@@ -88,6 +94,10 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.GET_STS_ACK:
             uploadFileFun(msgCommand,result)
             break;
+          // 好友离线
+          case AQChatMSg.default.MsgCommand.OFFLINE_NOTIFY:
+            offlineNotyfyFun(result)
+            break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
             exceptionFun(result);
@@ -95,6 +105,11 @@ export default ()=>{
         }
       }
     })
+  }
+
+  // 好友离线
+  const offlineNotyfyFun = (result)=>{
+    console.log("好友离线",result);
   }
 
   // 上传文件
