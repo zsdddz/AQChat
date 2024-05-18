@@ -98,7 +98,7 @@ const useAppStore = defineStore('app', {
             // 10s消息未发送成功，则设置消息为发送失败状态
             this.msgStatusTimer[msg.msgId] = setTimeout(()=>{
                 msg.msgStatus = MsgStatusEnum.REJECTED
-                for(let i = this.msgList.length - 1;i>=0;i++){
+                for(let i = this.msgList.length - 1;i>=0;i--){
                     if(this.msgList[i].msgId === msg.msgId){
                         const newMsg = {...msg};
                         newMsg.msgStatus = MsgStatusEnum.REJECTED;
@@ -137,6 +137,14 @@ const useAppStore = defineStore('app', {
                 userId:'',
                 userName:'',
                 userAvatar:''
+            }
+            this.msgList = []
+        },
+        resetRoomInfo(){
+            this.roomInfo = {
+                roomId:'',
+                roomNo:'',
+                roomName:''
             }
             this.msgList = []
         }
