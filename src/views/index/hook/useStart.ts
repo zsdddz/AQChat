@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-22 20:26:00
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-04-22 22:44:47
+ * @LastEditTime: 2024-05-18 17:29:21
  * @Description: 
  */
 
@@ -101,6 +101,9 @@ export default ()=>{
         AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
         new AQChatMSg.default.UserLoginCmd([userForm.userName.trim(),userForm.userAvatar])
       );
+      setTimeout(()=>{
+        appStore.resetRoomInfo();
+      })
     }else if(step.value == 3){
       if(!userForm.roomId.trim()){
         ElMessage.warning("请输入房间名")
