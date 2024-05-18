@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-18 16:41:41
+ * @LastEditTime: 2024-05-18 18:07:50
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -18,10 +18,10 @@ import Msg from "../class/Msg"
 import MsgTypeEnum from "../enums/MsgTypeEnum"
 import { onMounted } from 'vue';
 export default ()=>{
-  let appStore = null
-  onMounted(()=>{
-    appStore = useAppStore()
-  })
+  let appStore = useAppStore()
+  // onMounted(()=>{
+  //   appStore = useAppStore()
+  // })
 
   const router = useRouter();
   const route = useRoute();
@@ -96,7 +96,11 @@ export default ()=>{
             break;
           // 好友离线
           case AQChatMSg.default.MsgCommand.OFFLINE_NOTIFY:
-            offlineNotyfyFun(result)
+            // offlineNotyfyFun(result)
+            break;
+          // 离线通知
+          case AQChatMSg.default.MsgCommand.LEAVE_ROOM_NOTIFY:
+            leaveRoomNotufyFun(result)
             break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
@@ -107,9 +111,18 @@ export default ()=>{
     })
   }
 
-  // 好友离线
-  const offlineNotyfyFun = (result)=>{
-    console.log("好友离线",result);
+  // 离开房间
+  const leaveRoomNotufyFun = (result)=>{
+    console.log("离开房间",result);
+    if(appStore.roomInfo.roomId === result.roomId){
+      const msg:Msg = {
+        roomId:result.roomId,
+        msgId:+new Date()+'',
+        msgType:MsgTypeEnum.TIP,
+        msg:`${result.userName} 离开了房间`
+      }
+      appStore.sendInfoLocalFun(msg)
+    }
   }
 
   // 上传文件
@@ -125,6 +138,8 @@ export default ()=>{
   // 消息发送状态修改
   const sendMsgStatusFun = (result) =>{
     console.log("消息发送状态修改",result);
+    console.log("msgList",appStore.msgList);
+    
     for(let i = appStore.msgList.length-1;i>=0;i--){
       if(appStore.msgList[i].msgId == result.msgId){
         appStore.msgList[i].msgStatus = MsgStatusEnum.FULFILLED;
@@ -179,6 +194,7 @@ export default ()=>{
       const msgContent = result.user.array[0] === appStore.userInfo.userId ? '您' : result.user.array[1];
       const msg:Msg = {
         roomId:result.roomId,
+        msgId:+new Date()+'',
         msgType:MsgTypeEnum.TIP,
         msg:`${msgContent} 加入了房间`
       }
@@ -188,13 +204,11 @@ export default ()=>{
   // 恢复用户登录
   const recoverUserFun = (result)=>{
     console.log('恢复用户登录',result);
-    if(!result?.roomId){
-      appStore.setRoomInfo({
-        roomId:'',
-        roomNo:'',
-        roomName:''
-      })
-    }
+    appStore.setRoomInfo({
+      roomId:result.roomId || '',
+      roomNo:result.roomNo || '',
+      roomName:result.roomName || ''
+    })
   }
   // 用户登录
   const loginFun = (result)=>{
