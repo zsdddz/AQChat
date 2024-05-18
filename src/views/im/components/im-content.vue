@@ -5,6 +5,7 @@
       <span class="room-no">房间号：
       <span id="roomNo" @click="copyRoomNo" title="复制">{{ appStore.roomInfo.roomNo }}</span>
       </span>
+      <span @click="leaveRoomFun" title="离开当前房间" class="offline">离开</span>
     </header>
     <!--聊天内容-->
     <div class="content-win">
@@ -128,6 +129,18 @@ watch(() => appStore.msgList,(newV)=>{
   msgList = newV;
   toBottom()
 },{deep:true})
+
+// 离开房间
+const leaveRoomFun = ()=>{
+  let model = new AQChatMSg.default.LeaveRoomCmd();
+  model.setRoomid(appStore.roomInfo.roomId);
+  AQSender.getInstance().sendMsg(
+    AQChatMSg.default.MsgCommand.LEAVE_ROOM_CMD,model
+  )
+  setTimeout(()=>{
+    appStore.resetRoomInfo();
+  },100)
+}
 
 //查看大图
 const privewImage = (img: string) =>{
@@ -332,6 +345,13 @@ const toBottom = ()=>{
     justify-content: center;
     background: @im-bg1;
     color: @im-head-txt;
+    position: relative;
+    .offline{
+      cursor: pointer;
+      position: absolute;
+      right: 20px;
+      color: #f40909;
+    }
     .name {
       font-size: 16px;
     }
