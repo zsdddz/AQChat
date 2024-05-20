@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-05-16 16:47:45
+ * @LastEditTime: 2024-05-20 16:43:44
  */
 
 
@@ -80,6 +80,7 @@ export default class AQSender {
         oWebSocket.onclose = (): void => {
             console.warn("服务器连接已关闭");
             this.webSocket = null;
+            this.closeService()
         }
 
         // 收到消息
@@ -185,4 +186,6 @@ export default class AQSender {
             return;
         }
     }
+
+    closeService(){}
 }

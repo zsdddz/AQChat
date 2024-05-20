@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-18 18:07:50
+ * @LastEditTime: 2024-05-20 16:40:08
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -16,7 +16,7 @@ import ExceptionEnum from "../enums/ExceptionEnum"
 import MsgStatusEnum from "../enums/MsgStatusEnum"
 import Msg from "../class/Msg"
 import MsgTypeEnum from "../enums/MsgTypeEnum"
-import { onMounted } from 'vue';
+
 export default ()=>{
   let appStore = useAppStore()
   // onMounted(()=>{
@@ -108,7 +108,17 @@ export default ()=>{
             break;
         }
       }
+      
     })
+    AQSender.getInstance().closeService = ()=>{
+      ElMessage.error("websocket初始化失败，请稍后再试")
+      appStore.resetAllInfo();
+      appStore.setWebsocketStatus(false);
+      AQSender.getInstance().heartbeatStop();
+      router && router.replace({
+        name:'Index'
+      })
+    }
   }
 
   // 离开房间
