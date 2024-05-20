@@ -110,7 +110,7 @@ import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import { watch,ref,getCurrentInstance } from 'vue'
 import Loading from "@/components/Loading.vue"
-import { ElMessage } from 'element-plus'
+import { ElMessage,ElMessageBox } from 'element-plus'
 
 const appStore = useAppStore()
 const { proxy }: any = getCurrentInstance();
@@ -132,14 +132,20 @@ watch(() => appStore.msgList,(newV)=>{
 
 // 离开房间
 const leaveRoomFun = ()=>{
-  let model = new AQChatMSg.default.LeaveRoomCmd();
-  model.setRoomid(appStore.roomInfo.roomId);
-  AQSender.getInstance().sendMsg(
-    AQChatMSg.default.MsgCommand.LEAVE_ROOM_CMD,model
-  )
-  setTimeout(()=>{
-    appStore.resetRoomInfo();
-  },100)
+  ElMessageBox.confirm("确认离开房间？", "系统提示", {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: "warning",
+  }).then(res=>{
+    let model = new AQChatMSg.default.LeaveRoomCmd();
+    model.setRoomid(appStore.roomInfo.roomId);
+    AQSender.getInstance().sendMsg(
+      AQChatMSg.default.MsgCommand.LEAVE_ROOM_CMD,model
+    )
+    setTimeout(()=>{
+      appStore.resetRoomInfo();
+    },100)
+  })
 }
 
 //查看大图
