@@ -226,6 +226,7 @@ defineExpose({
   /deep/ .w-e-text-container {
     border: none !important;
     height: 100% !important;
+    z-index: 10 !important;
     >div {
       // min-height: 120px;
     }
