@@ -1,3 +1,10 @@
+<!--
+ * @Author: howcode 1051495009@qq.com
+ * @Date: 2024-04-26 11:00:18
+ * @LastEditors: howcode 1051495009@qq.com
+ * @LastEditTime: 2024-05-20 16:10:30
+ * @Description: 
+-->
 <template>
   <div class="im-container">
     <el-tooltip class="item" :effect="appStore.theme === 'dark' ? 'light':'dark'" content="有空再聊，再见" placement="bottom-start">
@@ -14,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import { ElMessageBox } from 'element-plus'
 import ImNav from "./components/im-nav.vue"
 import ImContent from "./components/im-content.vue"
 import ImDomain from "./components/im-domain.vue"
@@ -27,18 +35,25 @@ const router = useRouter();
 
 // 退出
 const quitFun = ()=>{
-  let userLogout = new AQChatMSg.default.UserLogoutCmd();
-  userLogout.setUserid(appStore.userInfo.userId);
-  
-  AQSender.getInstance().sendMsg(
-    AQChatMSg.default.MsgCommand.USER_LOGOUT_CMD,userLogout
-  )
-  setTimeout(()=>{
-    appStore.resetAllInfo();
-    router.replace({
-      name:'Index'
-    })
-  },100)
+  ElMessageBox.confirm("确认退出登录？", "系统提示", {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: "warning",
+  }).then(res=>{
+    let userLogout = new AQChatMSg.default.UserLogoutCmd();
+    userLogout.setUserid(appStore.userInfo.userId);
+    
+    AQSender.getInstance().sendMsg(
+      AQChatMSg.default.MsgCommand.USER_LOGOUT_CMD,userLogout
+    )
+    setTimeout(()=>{
+      appStore.resetAllInfo();
+      AQSender.getInstance().heartbeatStop();
+      router.replace({
+        name:'Index'
+      })
+    },100)
+  })
 }
 
 </script>
