@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-22 20:26:00
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-18 17:29:21
+ * @LastEditTime: 2024-05-20 16:34:58
  * @Description: 
  */
 
@@ -15,9 +15,13 @@ import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
 import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app";
 import { ElMessage } from 'element-plus'
+import useSocket from "@/hooks/useSocket"
+
+const {
+  initSocketFun
+} = useSocket()
 
 export default ()=>{
-
   interface UserForm {
     userName:string,
     roomId:string,
@@ -74,6 +78,10 @@ export default ()=>{
     step.value = 1;
     userForm.userName =  generateUsernameFun(4);
     initUserAvatar();
+
+    if(!appStore.websocketStatus){
+      initSocketFun();
+    }
   }
 
   // 重新生成用户头像、姓名
@@ -97,6 +105,8 @@ export default ()=>{
         ElMessage.warning("请输入用户名")
         return
       }
+      console.log(userForm.userName);
+      
       AQSender.getInstance().sendMsg(
         AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
         new AQChatMSg.default.UserLoginCmd([userForm.userName.trim(),userForm.userAvatar])
