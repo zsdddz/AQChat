@@ -2,24 +2,19 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-22 20:26:00
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-20 16:34:58
+ * @LastEditTime: 2024-05-21 09:52:38
  * @Description: 
  */
 
 import { ref,reactive,onMounted } from 'vue'
-import { useRouter } from 'vue-router'
 import multiavatar from '@multiavatar/multiavatar/esm'
 import type { FormInstance, FormRules } from 'element-plus'
 import AQSender from '@/msg/AQSender'
-import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
-import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app";
 import { ElMessage } from 'element-plus'
 import useSocket from "@/hooks/useSocket"
 
-const {
-  initSocketFun
-} = useSocket()
 
 export default ()=>{
   interface UserForm {
@@ -36,6 +31,7 @@ export default ()=>{
     roomId:'',
     userAvatar:''
   })
+  const { initSocketFun } = useSocket()
   const userRules = reactive<FormRules<UserForm>>({
     userName: [
       { required: true, message: '请输入用户昵称', trigger: 'blur' },
@@ -78,7 +74,6 @@ export default ()=>{
     step.value = 1;
     userForm.userName =  generateUsernameFun(4);
     initUserAvatar();
-
     if(!appStore.websocketStatus){
       initSocketFun();
     }
@@ -105,7 +100,6 @@ export default ()=>{
         ElMessage.warning("请输入用户名")
         return
       }
-      console.log(userForm.userName);
       
       AQSender.getInstance().sendMsg(
         AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
