@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:16:54
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-04-22 23:18:00
+ * @LastEditTime: 2024-05-21 09:46:52
  * @Description: 首页
 -->
 <template>
@@ -44,18 +44,6 @@
     width="500px"
     class="pop-start"
   >
-    <!-- <div v-if="step == 1" class="tip-content tip-2">
-      <div class="select-option">
-        <div class="option" @click="createRoomFun">
-          <i class="iconfont icon-create"></i>
-          创建
-        </div>
-        <div class="option" @click="joinRoomFun">
-          <i class="iconfont icon-enter"></i>
-          加入
-        </div>
-      </div>
-    </div> -->
     <div v-if="step == 1" class="tip-content">
       <div class="user-info">
         <div class="user-avatar" v-html="userForm.userAvatar"></div>
@@ -396,14 +384,16 @@ setTimeout(() => {
   }
 
   .advantage-list {
-    display: grid;
+    display: flex;
     width: 80%;
-    gap: 20px;
-    grid-template-columns: 1fr 1fr 1fr;
+    // gap: 20px;
+    // grid-template-columns: 1fr 1fr 1fr;
+    justify-content: space-between;
     .ad-item {
       transition: all 0.5s;
       padding: 40px 10px;
       color: @txt-color;
+      width: 30%;
       &:hover {
         border-radius: 11px;
         background: @bg-color;
