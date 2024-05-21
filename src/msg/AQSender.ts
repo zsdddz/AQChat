@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-05-20 16:43:44
+ * @LastEditTime: 2024-05-21 09:06:43
  */
 
 
@@ -161,6 +161,7 @@ export default class AQSender {
 
         if (null == this.webSocket) {
             console.error("WebSocket 尚未初始化");
+            this.closeService();
             return;
         }
 
