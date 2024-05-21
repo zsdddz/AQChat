@@ -2,15 +2,15 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-20 16:40:08
+ * @LastEditTime: 2024-05-21 09:41:36
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
 import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
 import CallbackMethodManager from '@/msg/CallbackMethodManager';
-import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app"
-import { ElMessage } from 'element-plus'
+import { ElMessage,ElMessageBox } from 'element-plus'
 import { useRouter,useRoute } from 'vue-router'
 import ExceptionEnum from "../enums/ExceptionEnum"
 import MsgStatusEnum from "../enums/MsgStatusEnum"
@@ -25,7 +25,6 @@ export default ()=>{
 
   const router = useRouter();
   const route = useRoute();
-  
   
   // 初始化websocket
   const initSocketFun = ()=>{
@@ -111,13 +110,23 @@ export default ()=>{
       
     })
     AQSender.getInstance().closeService = ()=>{
-      ElMessage.error("websocket初始化失败，请稍后再试")
-      appStore.resetAllInfo();
+      if(route.name === 'IM'){
+        ElMessageBox.confirm("服务已关闭，是否重新登录", "系统提示", {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: "warning",
+        }).then(res=>{
+          router.replace({
+            name:'Index'
+          })
+          appStore.resetAllInfo();
+        })
+      }else{
+        ElMessage.error("websocket初始化失败，请稍后再试")
+        appStore.resetAllInfo();
+      }
       appStore.setWebsocketStatus(false);
       AQSender.getInstance().heartbeatStop();
-      router && router.replace({
-        name:'Index'
-      })
     }
   }
 
