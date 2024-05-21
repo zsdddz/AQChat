@@ -46,14 +46,14 @@
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from "vue"
+import { ref } from "vue"
 import useAppStore from "@/store/modules/app"
 import LottieAni from "@/components/Lottie.vue";
 import lottieContent from "@/assets/json/lottie-content.json";
-import { ElMessage } from 'element-plus'
+import { ElMessage,ElMessageBox } from 'element-plus'
 import AQSender from '@/msg/AQSender'
-import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
-import AQChatMsgProtocol_pb, * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import { useRouter } from "vue-router";
 
 const appStore = useAppStore()
 const step = ref(0);
@@ -62,6 +62,7 @@ const roomForm = ref({
   roomNo:'',
   roomName:''
 })
+const router = useRouter();
 
 // v-integer指令
 const vInteger = {
@@ -74,11 +75,37 @@ const vInteger = {
 }
 
 const createRoomFun = ()=>{
+  if(!appStore.websocketStatus){
+    ElMessageBox.confirm("服务已关闭，是否重新登录", "系统提示", {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: "warning",
+      }).then(res=>{
+        router.replace({
+          name:'Index'
+        })
+        appStore.resetAllInfo();
+      })
+    return
+  }
   dialogVisible.value = true
   step.value = 1;
 }
 
 const joinRoomFun = ()=>{
+  if(!appStore.websocketStatus){
+    ElMessageBox.confirm("服务已关闭，是否重新登录", "系统提示", {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: "warning",
+      }).then(res=>{
+        router.replace({
+          name:'Index'
+        })
+        appStore.resetAllInfo();
+      })
+    return
+  }
   dialogVisible.value = true
   step.value = 2;
 }
@@ -86,7 +113,16 @@ const joinRoomFun = ()=>{
 // 进入聊天室
 const enterRoomFun = ()=>{
     if(!appStore.websocketStatus){
-      ElMessage.error("websocket初始化失败，请稍后再试")
+      ElMessageBox.confirm("服务已关闭，是否重新登录", "系统提示", {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: "warning",
+        }).then(res=>{
+          router.replace({
+            name:'Index'
+          })
+          appStore.resetAllInfo();
+        })
       return
     }
     if(step.value == 1){
