@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:16:54
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-21 09:46:52
+ * @LastEditTime: 2024-05-21 10:32:27
  * @Description: 首页
 -->
 <template>
@@ -15,7 +15,19 @@
     <div class="advantage-list">
       <div v-for="item in advantageList" :key="item.title" class="ad-item">
         <div class="label">{{ item.title }}</div>
-        <div class="ad-desc">{{ item.desc }}</div>
+        <div class="ad-desc" v-html="item.desc"></div>
+      </div>
+      <div class="ad-item">
+        <div class="label">🚝仓库</div>
+        <div class="ad-desc flex-c" >
+          <div class="info">
+            <div class="git-name"><el-link href="https://gitee.com/static/images/logo-en.svg" target="_blank">AQChat</el-link></div>
+            <a href='https://gitee.com/howcode/aq-chat/stargazers'><img src='https://gitee.com/howcode/aq-chat/badge/star.svg?theme=dark' alt='star'></img></a>
+            <a href='https://gitee.com/howcode/aq-chat/members'><img src='https://gitee.com/howcode/aq-chat/badge/fork.svg?theme=dark' alt='fork'></img></a>
+          </div>
+          
+          
+        </div>
       </div>
     </div>
     <div class="start-btn" @click="toStartFun">
@@ -96,24 +108,26 @@ const {
   reloadLoading,
   toStartFun,
   reloadFun,
-  enterRoomFun,
-  joinRoomFun,
-  createRoomFun
+  enterRoomFun
 } = useStart();
 const advantageList = [
   {
     title: "🚀即使通讯",
-    desc: "采用Netty实现高效处理，protobuf协议轻便快捷",
+    desc: "protobuf协议轻便快捷</br>采用Netty实现高效处理",
   },
   {
     title: "🎯便捷",
-    desc: "即开即用，无需一切繁琐操作",
+    desc: "即开即用</br>无需一切繁琐操作",
   },
   {
     title: "✨简单",
-    desc: "所见即所得，0引导",
+    desc: "0引导</br>所见即所得",
   },
 ];
+
+function toGitee(){
+  window.open('https://gitee.com/howcode/aq-chat')
+}
 
 setTimeout(() => {
   startTyping("一个极速、便捷的在线匿名聊天室", appDesc);
@@ -290,7 +304,9 @@ setTimeout(() => {
     }
   }
 }
-
+.pointer{
+  cursor: pointer;
+}
 .main {
   width: 100%;
   height: 100%;
@@ -393,7 +409,7 @@ setTimeout(() => {
       transition: all 0.5s;
       padding: 40px 10px;
       color: @txt-color;
-      width: 30%;
+      width: 24%;
       &:hover {
         border-radius: 11px;
         background: @bg-color;
@@ -404,6 +420,25 @@ setTimeout(() => {
       }
       .ad-desc {
         margin-top: 10px;
+        .info{
+          margin-left: 10px;
+          text-align: center;
+          .git-name{
+            margin-bottom: 5px;
+            font-size: 14px;
+          }
+        }
+        .icon{
+          height: 30px;
+          width: 30px;
+          border-radius: 50%;
+          overflow: hidden;
+        }
+      }
+      .flex-c{
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
     }
   }
