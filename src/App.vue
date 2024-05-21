@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-21 09:48:22
+ * @LastEditTime: 2024-05-21 10:34:56
  * @Description: 
 -->
 <template>
@@ -68,7 +68,7 @@ onMounted(() => {
 .app-container{
   height: 100%;
   width: 100%;
-  min-width: 800px;
+  min-width: 1000px;
   position: relative;
   .theme-btn{
     display: flex;
