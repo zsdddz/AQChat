@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-22 20:26:00
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-21 09:52:38
+ * @LastEditTime: 2024-05-22 23:15:20
  * @Description: 
  */
 
@@ -14,7 +14,8 @@ import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app";
 import { ElMessage } from 'element-plus'
 import useSocket from "@/hooks/useSocket"
-
+import { useRouter } from 'vue-router'
+import AQSender from '@/msg/AQSender'
 
 export default ()=>{
   interface UserForm {
@@ -46,6 +47,7 @@ export default ()=>{
     ],
   })
   const reloadLoading = ref(true)
+  const router = useRouter();
 
   onMounted(()=>{
     userForm.userName =  generateUsernameFun(4)
@@ -70,6 +72,22 @@ export default ()=>{
 
   // 点击开启
   const toStartFun = ()=>{
+    // 如果本地存在用户信息，直接恢复登录
+    if(appStore.userInfo.userId){
+      router.push({
+        name:'IM'
+      })
+      const { userId,userName,userAvatar } = appStore.userInfo
+      const msgArray = [userId,userName,userAvatar]
+      if(appStore.roomInfo?.roomId){
+        msgArray.push(appStore.roomInfo.roomId)
+      }
+      AQSender.getInstance().sendMsg(
+        AQChatMSg.default.MsgCommand.RECOVER_USER_CMD,
+        new AQChatMSg.default.RecoverUserCmd(msgArray)
+      )
+      return
+    }
     dialogStartVisible.value = true;
     step.value = 1;
     userForm.userName =  generateUsernameFun(4);
