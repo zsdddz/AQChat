@@ -207,26 +207,20 @@ const expressions = [
 ]
 const imgUploadRef = ref(null)
 
-
-
 // 切换表情包
-const changeExpression = ()=>{
+const changeExpression = (flag?:undefined)=>{
   expressionShow.value = flag !==undefined ? flag :!expressionShow.value;
 }
-
 // 关闭表情包
 const cancleExpression = ()=>{
   expressionShow.value = false;
 }
-
 // 选择表情
 const selectIcon = (icon:string) =>{
   changeExpression();
   let iconContent = `<img src='${icon}' class='emo-image' />`;
   imEditorRef.value.editor.cmd.do("insertHTML", iconContent);
 }
-
-
 // 发送图片
 const sendImage = async ()=>{
   const file =  imgUploadRef.value && imgUploadRef.value.files[0]
@@ -258,7 +252,6 @@ const sendImage = async ()=>{
   };
   reader.readAsDataURL(file);
 }
-
 // 上传文件到服务器
 const uploadToOss = (msgInfo,file:File)=>{
   OssHelper.getInstance().init(AQChatMSg.default.MsgType.IMAGE,()=>{
