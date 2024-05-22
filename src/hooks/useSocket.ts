@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-22 16:41:24
+ * @LastEditTime: 2024-05-22 22:53:41
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -10,7 +10,7 @@ import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
 import CallbackMethodManager from '@/msg/CallbackMethodManager';
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app"
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { ElMessage,ElMessageBox,ElLoading } from 'element-plus'
 import { useRouter,useRoute } from 'vue-router'
 import ExceptionEnum from "../enums/ExceptionEnum"
 import MsgStatusEnum from "../enums/MsgStatusEnum"
@@ -27,9 +27,17 @@ export default ()=>{
   const router = useRouter();
   const route = useRoute();
   const showTip = ref(false)
+  let loading:any = null
   
   // 初始化websocket
   const initSocketFun = ()=>{
+    if(route.name === 'IM'){
+      loading = ElLoading.service({
+        lock: true,
+        text: '恢复用户登录...',
+        background: 'rgba(0, 0, 0, 0.7)',
+      })
+    }
     AQSender.getInstance().connect(()=>{
       console.log("连接成功...");
       appStore.setWebsocketStatus(true);
@@ -130,6 +138,7 @@ export default ()=>{
       }
       appStore.setWebsocketStatus(false);
       AQSender.getInstance().heartbeatStop();
+      loading && loading.close();
     }
   }
 
@@ -176,8 +185,6 @@ export default ()=>{
   // 消息发送状态修改
   const sendMsgStatusFun = (result) =>{
     console.log("消息发送状态修改",result);
-    console.log("msgList",appStore.msgList);
-    
     for(let i = appStore.msgList.length-1;i>=0;i--){
       if(appStore.msgList[i].msgId == result.msgId){
         appStore.msgList[i].msgStatus = MsgStatusEnum.FULFILLED;
@@ -188,7 +195,6 @@ export default ()=>{
   // 消息同步
   const syncChatRecordFun = (result) =>{
     console.log("消息同步",result);
-    
     for(let i = 0;i<result.length;i++){
       const msg:Msg = result[i]
       appStore.setMsgRecord(msg)
@@ -239,6 +245,7 @@ export default ()=>{
   // 恢复用户登录
   const recoverUserFun = (result)=>{
     console.log('恢复用户登录',result);
+    loading.close();
     appStore.setRoomInfo({
       roomId:result.roomId || '',
       roomNo:result.roomNo || '',
