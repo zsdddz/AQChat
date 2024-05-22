@@ -23,7 +23,7 @@
       <div class="form-info">
         <div class="form-item">
           房间号
-          <el-input placeholder="请输入房间号" v-integer clearable v-model="roomForm.roomNo" />
+          <el-input ref="roomNoRef" placeholder="请输入房间号" v-integer clearable v-model="roomForm.roomNo" />
         </div>
         <div v-if="step == 1" class="form-item">
           房间名
@@ -46,7 +46,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue"
+import { ref,nextTick } from "vue"
 import useAppStore from "@/store/modules/app"
 import LottieAni from "@/components/Lottie.vue";
 import lottieContent from "@/assets/json/lottie-content.json";
@@ -63,6 +63,7 @@ const roomForm = ref({
   roomName:''
 })
 const router = useRouter();
+const roomNoRef = ref()
 
 // v-integer指令
 const vInteger = {
@@ -88,8 +89,20 @@ const createRoomFun = ()=>{
       })
     return
   }
-  dialogVisible.value = true
+  
   step.value = 1;
+  initForm();
+}
+
+const initForm = ()=>{
+  dialogVisible.value = true
+  roomForm.value.roomName = '';
+  roomForm.value.roomNo = '';
+  nextTick(()=>{
+    setTimeout(()=>{
+      roomNoRef.value.focus();
+    },500)
+  })
 }
 
 const joinRoomFun = ()=>{
@@ -106,8 +119,8 @@ const joinRoomFun = ()=>{
       })
     return
   }
-  dialogVisible.value = true
   step.value = 2;
+  initForm();
 }
 
 // 进入聊天室
@@ -126,8 +139,6 @@ const enterRoomFun = ()=>{
       return
     }
     if(step.value == 1){
-      console.log(roomForm.value);
-      
       if(!roomForm.value.roomNo){
         ElMessage.warning("请输入房间号")
         return
