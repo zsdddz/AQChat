@@ -114,6 +114,7 @@ const useAppStore = defineStore('app', {
             sendMsg.setMsgtype(msg.msgType);
             sendMsg.setMsg(msg.msg)
             sendMsg.setRoomid(this.roomInfo.roomId);
+            sendMsg.setExt(msg.ext);
             AQSender.getInstance().sendMsg(
                 AQChatMSg.default.MsgCommand.SEND_MSG_CMD,sendMsg
             )

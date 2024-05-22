@@ -26,8 +26,20 @@
             name="customerService"
             type="file"
             value=""
-            accept="video/*"
+            accept="video/*,audio/*"
             v-on:change="sendFile(videoUploadRef)"
+          />
+        </li>
+        <li  @click="expressionShow = false">
+          <img class="icon icon-video" src="@/assets/images/icon-video.png" alt="">
+          <input
+            ref="fileUploadRef"
+            class="file-image"
+            name="customerService"
+            type="file"
+            value=""
+            accept="*"
+            v-on:change="sendFile(fileUploadRef)"
           />
         </li>
       </ul>
@@ -207,6 +219,7 @@ const expressions = [
 ]
 const imgUploadRef = ref(null)
 const videoUploadRef = ref(null)
+const fileUploadRef = ref(null)
 
 // 检测是否为视频文件
 const isVideoType = (str:string) =>{
@@ -233,6 +246,8 @@ const selectIcon = (icon:string) =>{
 // 发送文件
 const sendFile = async (fileRef:any)=>{
   const file =  fileRef && fileRef.files[0]
+  console.log(file);
+  
   if(!file) {
     ElMessage.error("解析文件异常")
     return;
@@ -242,6 +257,8 @@ const sendFile = async (fileRef:any)=>{
     fileType = MsgTypeEnum.IMAGE
   } else if(isVideoType(file.type)){
     fileType = MsgTypeEnum.VIDEO
+  }else {
+    fileType = MsgTypeEnum.FILE
   }
   const msgId = customSnowflake.nextId();
   let msgInfo:Msg = {
@@ -254,7 +271,8 @@ const sendFile = async (fileRef:any)=>{
     msgId:msgId,
     msgType:fileType,
     msg:null,
-    msgStatus:MsgStatusEnum.PENDING
+    msgStatus:MsgStatusEnum.PENDING,
+    ext:file.name
   }
   // 临时转成DataURL虚拟发送
   let reader = new FileReader();

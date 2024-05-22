@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-21 09:41:36
+ * @LastEditTime: 2024-05-22 14:53:56
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -200,7 +200,8 @@ export default ()=>{
       roomId:result.roomId,
       msgType:result.msgType,
       msg:result.msg,
-      msgId:result.msgId
+      msgId:result.msgId,
+      ext:result.ext
     }
     appStore.sendInfoLocalFun(msg)
   }

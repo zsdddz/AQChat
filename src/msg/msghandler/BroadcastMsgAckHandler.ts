@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:55:23
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-10 16:04:01
+ * @LastEditTime: 2024-05-22 14:53:09
  * @Description: 加入房间通知处理器
  */
 
@@ -22,7 +22,8 @@ export default class BroadcastMsgAckHandler {
             userName:msgAck.getUser()?.getUsername(),
             msg:msgAck.getMsg(),
             msgType:msgAck.getMsgtype(),
-            msgId:msgAck.getMsgid()
+            msgId:msgAck.getMsgid(),
+            ext:msgAck.getExt()
         }
     }
 }
