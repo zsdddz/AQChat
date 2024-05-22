@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-21 10:34:56
+ * @LastEditTime: 2024-05-22 22:52:58
  * @Description: 
 -->
 <template>
@@ -58,9 +58,7 @@ onMounted(() => {
   themeActive.value = appStore.theme === "light" ? true : false
   changeThemeFun()
   initDeviceFun()
-  setTimeout(()=>{
-    initSocketFun();
-  },1000)
+  initSocketFun();
 });
 </script>
 
