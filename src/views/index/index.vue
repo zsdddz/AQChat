@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:16:54
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-21 10:32:27
+ * @LastEditTime: 2024-05-22 17:03:42
  * @Description: 首页
 -->
 <template>
@@ -136,13 +136,12 @@ setTimeout(() => {
 </script>
 <style>
 .pop-start {
-  background: #fff;
+  background: var(--bg-color);
+  border-radius: 10px;
 }
 </style>
 <style scoped lang="less">
 .pop-start {
-  border-radius: 17px;
-  background: #ffffff;
   box-shadow:  16px 16px 32px #d9d9d9,
               -16px -16px 32px #ffffff;
   .tip-content {

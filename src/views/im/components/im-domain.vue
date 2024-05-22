@@ -168,7 +168,6 @@ const enterRoomFun = ()=>{
 <style>
 .pop-start {
   background: var(--bg-color);
-  /* background: #fff; */
   border-radius: 10px;
 }
 </style>
