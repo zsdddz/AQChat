@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-26 11:00:18
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-20 16:10:30
+ * @LastEditTime: 2024-05-22 15:24:07
  * @Description: 
 -->
 <template>
@@ -33,8 +33,19 @@ import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 const appStore = useAppStore()
 const router = useRouter();
 
+// 判断当前是否存在用户登录
+const hasUserFun = () =>{
+  if(!appStore?.userInfo?.userId){
+    appStore.resetAllInfo();
+    AQSender.getInstance().heartbeatStop();
+    router.replace({
+      name:'Index'
+    })
+  }
+}
+
 // 退出
-const quitFun = ()=>{
+const quitFun = () =>{
   ElMessageBox.confirm("确认退出登录？", "系统提示", {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
@@ -55,6 +66,8 @@ const quitFun = ()=>{
     },100)
   })
 }
+
+hasUserFun();
 
 </script>
 
