@@ -167,7 +167,9 @@ const enterRoomFun = ()=>{
 </script>
 <style>
 .pop-start {
-  background: #fff;
+  background: var(--bg-color);
+  /* background: #fff; */
+  border-radius: 10px;
 }
 </style>
 <style lang="less" scoped>
@@ -261,6 +263,7 @@ const enterRoomFun = ()=>{
         display: flex;
         align-items: center;
         margin-top: 30px;
+        color: @txt-color;
         .el-input{
           outline: none;
           border: none;
