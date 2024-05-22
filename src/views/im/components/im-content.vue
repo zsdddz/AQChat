@@ -49,11 +49,22 @@
                   <source :src="item.msg" type="audio/mpeg" />
                   您的浏览器不支持该音频格式。
                 </audio>
-                <!-- <div v-else-if="item.msgType">
-                  <span class="item.Type == 1 ? 'sendImageError':'sendError'"
-                    >!</span
-                  >
-                </div> -->
+                <el-dropdown v-else-if="item.msgType === MsgTypeEnum.FILE" trigger="click">
+                  <div class="file-card">
+                    <div class="file-top">
+                      <div class="info nowrap-2">
+                        {{item.ext}}
+                      </div>
+                      <img class="icon-file" src="@/assets/images/icon-file.png" alt="">
+                    </div>
+                    <div class="file-bottom">文件</div>
+                  </div>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="downloadFileFun(item.msg,item.ext)">下载</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
               </div>
               <div class="mine-avatar" v-html="item.user.userAvatar"></div>
             </div>
@@ -90,6 +101,22 @@
                   <source :src="item.msg" type="audio/mpeg" />
                   您的浏览器不支持该音频格式。
                 </audio>
+                <el-dropdown v-else-if="item.msgType === MsgTypeEnum.FILE" trigger="click">
+                  <div class="file-card">
+                    <div class="file-top">
+                      <div class="info nowrap-2">
+                        {{item.ext}}
+                      </div>
+                      <img class="icon-file" src="@/assets/images/icon-file.png" alt="">
+                    </div>
+                    <div class="file-bottom">文件</div>
+                  </div>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="downloadFileFun(item.msg,item.ext)">下载</el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
               </div>
             </div>
           </div>
@@ -129,6 +156,21 @@ watch(() => appStore.msgList,(newV)=>{
   msgList = newV;
   toBottom()
 },{deep:true})
+
+// 下载文件
+const downloadFileFun = (url:string,fileName:string) => {
+    const x = new XMLHttpRequest()
+    x.open('GET', url, true)
+    x.responseType = 'blob'
+    x.onload =  ()=> {
+      const url = window.URL.createObjectURL(x.response)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = fileName
+      a.click()
+    }
+    x.send()
+  }
 
 // 离开房间
 const leaveRoomFun = ()=>{
@@ -219,6 +261,44 @@ const toBottom = ()=>{
       font-size: 14px;
       color: #ccc;
     }
+
+    .file-card{
+      width: 190px;
+      height: 80px;
+      border-radius: 4px;
+      background-color: @file-card-bg;
+      cursor: pointer;
+      &:focus-visible {
+        outline: none;
+      }
+      .file-top{
+        padding: 5px;
+        height: calc(100% - 25px);
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        .info{
+          width: calc(100% - 50px);
+          font-size: 14px;
+          color: @file-card-txt;
+          text-align: left;
+          line-height: 20px;
+        }
+        .icon-file {
+          width: 40px;
+          height: auto;
+        }
+      }
+      .file-bottom{
+        height: 25px;
+        line-height: 25px;
+        font-size: 12px;
+        color: @file-card-desc;
+        text-align: left;
+        padding-left: 5px;
+        border-top: 1px solid rgba(231, 231, 231, .5);
+      }
+    }
     .mine-box{
       display: flex;
       justify-content: end;
@@ -265,6 +345,10 @@ const toBottom = ()=>{
           height: auto;
           cursor: pointer;
           background-color: #fff;
+        }
+
+        .mine-file {
+          
         }
 
         .text-block {
