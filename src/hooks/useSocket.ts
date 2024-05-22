@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-22 14:53:56
+ * @LastEditTime: 2024-05-22 16:41:24
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -16,6 +16,7 @@ import ExceptionEnum from "../enums/ExceptionEnum"
 import MsgStatusEnum from "../enums/MsgStatusEnum"
 import Msg from "../class/Msg"
 import MsgTypeEnum from "../enums/MsgTypeEnum"
+import { ref } from 'vue'
 
 export default ()=>{
   let appStore = useAppStore()
@@ -25,6 +26,7 @@ export default ()=>{
 
   const router = useRouter();
   const route = useRoute();
+  const showTip = ref(false)
   
   // 初始化websocket
   const initSocketFun = ()=>{
@@ -50,9 +52,6 @@ export default ()=>{
       // 消息回调
       AQSender.getInstance().onMsgReceived = (msgCommand,msgBody) =>{
         const result = handlerFactory.handle(msgCommand,msgBody);
-        if(result !== '心跳保活'){
-          // console.log("result：",result);
-        }
         switch(msgCommand){
           // 登录回调
           case AQChatMSg.default.MsgCommand.USER_LOGIN_ACK:
@@ -97,6 +96,10 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.OFFLINE_NOTIFY:
             // offlineNotyfyFun(result)
             break;
+          // 当前用户离线
+          case AQChatMSg.default.MsgCommand.OFFLINE_MSG:
+            userOfflineFun(result)
+            break;
           // 离线通知
           case AQChatMSg.default.MsgCommand.LEAVE_ROOM_NOTIFY:
             leaveRoomNotufyFun(result)
@@ -130,8 +133,26 @@ export default ()=>{
     }
   }
 
+  // 当前用户离线
+  const userOfflineFun = (result) =>{
+    console.log("当前用户离线",result);
+    if(result.userId === appStore.userInfo.userId){
+      if(showTip.value) return;
+      showTip.value = true;
+      ElMessageBox.confirm("检测到您长时间置于后台，可能会影响消息实时性", "系统提示", {
+        confirmButtonText: '刷新试试',
+        cancelButtonText: '不管',
+        type: "warning",
+      }).then(res=>{
+      }).finally(()=>{
+        // AQSender.getInstance().heartbeatLoop();
+        showTip.value = false;
+        window.location.reload();
+      })
+    }
+  }
   // 离开房间
-  const leaveRoomNotufyFun = (result)=>{
+  const leaveRoomNotufyFun = (result) =>{
     console.log("离开房间",result);
     if(appStore.roomInfo.roomId === result.roomId){
       const msg:Msg = {
@@ -143,9 +164,8 @@ export default ()=>{
       appStore.sendInfoLocalFun(msg)
     }
   }
-
   // 上传文件
-  const uploadFileFun = (msgCommand,file)=>{
+  const uploadFileFun = (msgCommand,file) =>{
     let callbackMethod = CallbackMethodManager.getCallback(msgCommand);
     //执行回调函数
     if (callbackMethod) {
@@ -153,7 +173,6 @@ export default ()=>{
       CallbackMethodManager.getCallback(10100)();
     }
   }
-
   // 消息发送状态修改
   const sendMsgStatusFun = (result) =>{
     console.log("消息发送状态修改",result);
@@ -166,7 +185,6 @@ export default ()=>{
       }
     }
   }
-  
   // 消息同步
   const syncChatRecordFun = (result) =>{
     console.log("消息同步",result);
@@ -176,7 +194,6 @@ export default ()=>{
       appStore.setMsgRecord(msg)
     }
   }
-
   // 用户退出登录
   const userLogoutFun = (result) =>{
     if(result?.userId === appStore.userInfo.userId){
@@ -186,7 +203,6 @@ export default ()=>{
       })
     }
   }
-
   // 接收广播消息
   const broadcastMsgFun = (result) =>{
     console.log("接收广播消息",result);
@@ -205,7 +221,6 @@ export default ()=>{
     }
     appStore.sendInfoLocalFun(msg)
   }
-
   // 其他人加入房间通知
   const joinRoomNotifyFun = (result) =>{
     console.log('其他人加入房间通知',result);
