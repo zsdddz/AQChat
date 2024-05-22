@@ -15,19 +15,19 @@
             type="file"
             value=""
             accept="image/*"
-            v-on:change="sendImage"
+            v-on:change="sendFile(imgUploadRef)"
           />
         </li>
         <li  @click="expressionShow = false">
           <img class="icon icon-video" src="@/assets/images/icon-video.png" alt="">
           <input
-            ref="referenceUploadVideo"
+            ref="videoUploadRef"
             class="file-image"
             name="customerService"
             type="file"
             value=""
             accept="video/*"
-            v-on:change="sendVideo"
+            v-on:change="sendFile(videoUploadRef)"
           />
         </li>
       </ul>
@@ -206,7 +206,16 @@ const expressions = [
   }
 ]
 const imgUploadRef = ref(null)
+const videoUploadRef = ref(null)
 
+// 检测是否为视频文件
+const isVideoType = (str:string) =>{
+    return /^video\/\w+/.test(str);
+}
+// 检测是否为图片文件
+const isImgType = (str:string) =>{
+    return /^image\/\w+/.test(str);
+}
 // 切换表情包
 const changeExpression = (flag?:undefined)=>{
   expressionShow.value = flag !==undefined ? flag :!expressionShow.value;
@@ -221,14 +230,19 @@ const selectIcon = (icon:string) =>{
   let iconContent = `<img src='${icon}' class='emo-image' />`;
   imEditorRef.value.editor.cmd.do("insertHTML", iconContent);
 }
-// 发送图片
-const sendImage = async ()=>{
-  const file =  imgUploadRef.value && imgUploadRef.value.files[0]
+// 发送文件
+const sendFile = async (fileRef:any)=>{
+  const file =  fileRef && fileRef.files[0]
   if(!file) {
-    ElMessage.error("解析图片异常")
+    ElMessage.error("解析文件异常")
     return;
   }
-
+  let fileType = null;
+  if(isImgType(file.type)){
+    fileType = MsgTypeEnum.IMAGE
+  } else if(isVideoType(file.type)){
+    fileType = MsgTypeEnum.VIDEO
+  }
   const msgId = customSnowflake.nextId();
   let msgInfo:Msg = {
     user:{
@@ -238,7 +252,7 @@ const sendImage = async ()=>{
     },
     roomId:appStore.roomInfo.roomId,
     msgId:msgId,
-    msgType:MsgTypeEnum.IMAGE,
+    msgType:fileType,
     msg:null,
     msgStatus:MsgStatusEnum.PENDING
   }
@@ -254,7 +268,8 @@ const sendImage = async ()=>{
 }
 // 上传文件到服务器
 const uploadToOss = (msgInfo,file:File)=>{
-  OssHelper.getInstance().init(AQChatMSg.default.MsgType.IMAGE,()=>{
+  AQChatMSg.default.MsgType.VIDEO
+  OssHelper.getInstance().init(msgInfo.msgType,()=>{
     OssHelper.getInstance().uploadFile(file)
     .then((res)=>{
       msgInfo.msg = res.url;
@@ -264,11 +279,6 @@ const uploadToOss = (msgInfo,file:File)=>{
       ElMessage.error("上传失败,错误为:"+err)
     });
   });
-}
-
-//发送视频
-async function sendVideo(e: any) {
-  
 }
 
 defineExpose({changeExpression})
