@@ -60,13 +60,17 @@ import { OssHelper } from '@/utils/OssHelper';
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb';
 import useAppStore from "@/store/modules/app"
 import MsgTypeEnum from "@/enums/MsgTypeEnum"
-import { ClickOutside as vClickOutside } from "element-plus";
+import { ClickOutside as vClickOutside, ElMessage } from "element-plus";
+import CustomSnowflake from "@/utils/CustomSnowflake"
+import Msg from '@/class/Msg'
+import MsgStatusEnum from '@/enums/MsgStatusEnum'
 
+const epoch = +new Date();
+const customSnowflake = new CustomSnowflake(1,epoch);
 const appStore = useAppStore()
 const expressionShow = ref(false)
 const imContent = ref('')
 const imEditorRef = ref()
-const editor = inject("editor",null)
 const expressions = [
   {
     "title": "[闭嘴]",
@@ -203,35 +207,68 @@ const expressions = [
 ]
 const imgUploadRef = ref(null)
 
-defineExpose({changeExpression})
+
+
 // 切换表情包
-function changeExpression(flag?:undefined) {
+const changeExpression = ()=>{
   expressionShow.value = flag !==undefined ? flag :!expressionShow.value;
 }
 
-function cancleExpression(){
+// 关闭表情包
+const cancleExpression = ()=>{
   expressionShow.value = false;
 }
 
 // 选择表情
-function selectIcon(icon: string) {
+const selectIcon = (icon:string) =>{
   changeExpression();
   let iconContent = `<img src='${icon}' class='emo-image' />`;
-  // console.log(imEditorRef.value.editor.cmd.do());
-  
   imEditorRef.value.editor.cmd.do("insertHTML", iconContent);
 }
 
 
-//发送图片
-async function sendImage() {
-  let file =  imgUploadRef.value && imgUploadRef.value.files[0]
+// 发送图片
+const sendImage = async ()=>{
+  const file =  imgUploadRef.value && imgUploadRef.value.files[0]
+  if(!file) {
+    ElMessage.error("解析图片异常")
+    return;
+  }
+
+  const msgId = customSnowflake.nextId();
+  let msgInfo:Msg = {
+    user:{
+        userId:appStore.userInfo.userId,
+        userAvatar:appStore.userInfo.userAvatar,
+        userName:appStore.userInfo.userName,
+    },
+    roomId:appStore.roomInfo.roomId,
+    msgId:msgId,
+    msgType:MsgTypeEnum.IMAGE,
+    msg:null,
+    msgStatus:MsgStatusEnum.PENDING
+  }
+  // 临时转成DataURL虚拟发送
+  let reader = new FileReader();
+  reader.onload = (e)=> {
+    if(!e.target?.result) return;
+    msgInfo.msg = e.target.result;
+    appStore.sendInfoLocalFun(msgInfo)
+    uploadToOss(msgInfo,file)
+  };
+  reader.readAsDataURL(file);
+}
+
+// 上传文件到服务器
+const uploadToOss = (msgInfo,file:File)=>{
   OssHelper.getInstance().init(AQChatMSg.default.MsgType.IMAGE,()=>{
     OssHelper.getInstance().uploadFile(file)
     .then((res)=>{
-      appStore.sendInfo(res.url,MsgTypeEnum.IMAGE)
+      msgInfo.msg = res.url;
+      // 上传到Oss成功后再将文件发送到真实网络中
+      appStore.sendInfoNetWorkFun(msgInfo)
     }).catch((err)=>{
-      console.log("上传失败,错误为:"+err)
+      ElMessage.error("上传失败,错误为:"+err)
     });
   });
 }
@@ -241,28 +278,7 @@ async function sendVideo(e: any) {
   
 }
 
-// 发送校验
-function sendVerify(content: string, type: number) {
-  // let noCode = +new Date() + "";
-  // let reciverId = store.reciver?.FormId || store.reciver.Id;
-  // let conversition = new Conversition(
-  //   store.sender.Id,
-  //   reciverId,
-  //   content,
-  //   type,
-  //   0,
-  //   noCode,
-  //   "",
-  //   false,
-  //   store.sender.Avatar
-  // );
-  // if (store.socket == null) {
-  //   // messageBox.warning("socket实例为空");
-  //   return;
-  // }
-  // store.sendLocal(conversition);
-  // store.sendInfo(conversition);
-}
+defineExpose({changeExpression})
 </script>
 
 <style scoped lang="less">
