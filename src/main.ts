@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-17 14:20:22
+ * @LastEditTime: 2024-05-22 22:48:47
  * @Description: 
  */
 
@@ -28,9 +28,12 @@ const options = {
   }
 }
 
-createApp(App)
-.use(router)
-.use(ElementPlus)
-.use(store)
-.use(VueViewer,options)
-.mount('#app')
+
+const vueApp = createApp(App)
+
+vueApp.use(store).use(router).use(ElementPlus).use(VueViewer,options)
+
+router.isReady().then(() =>{
+  vueApp.mount('#app')
+})
+
