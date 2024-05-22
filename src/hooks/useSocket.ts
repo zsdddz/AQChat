@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-22 22:53:41
+ * @LastEditTime: 2024-05-22 23:14:20
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -43,12 +43,12 @@ export default ()=>{
       appStore.setWebsocketStatus(true);
 
       if(appStore.userInfo?.userId){
-        const { userId,userName,userAvatar } = appStore.userInfo
-        const msgArray = [userId,userName,userAvatar]
-        if(appStore.roomInfo?.roomId){
-          msgArray.push(appStore.roomInfo.roomId)
-        }
         if(route.name === 'IM'){
+          const { userId,userName,userAvatar } = appStore.userInfo
+          const msgArray = [userId,userName,userAvatar]
+          if(appStore.roomInfo?.roomId){
+            msgArray.push(appStore.roomInfo.roomId)
+          }
           AQSender.getInstance().sendMsg(
             AQChatMSg.default.MsgCommand.RECOVER_USER_CMD,
             new AQChatMSg.default.RecoverUserCmd(msgArray)
@@ -245,7 +245,7 @@ export default ()=>{
   // 恢复用户登录
   const recoverUserFun = (result)=>{
     console.log('恢复用户登录',result);
-    loading.close();
+    loading && loading.close();
     appStore.setRoomInfo({
       roomId:result.roomId || '',
       roomNo:result.roomNo || '',
