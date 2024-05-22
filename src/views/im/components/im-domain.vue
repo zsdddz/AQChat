@@ -21,14 +21,14 @@
   >
     <div class="tip-content">
       <div class="form-info">
-        <div class="form-item">
-          房间号
-          <el-input ref="roomNoRef" placeholder="请输入房间号" v-integer clearable v-model="roomForm.roomNo" />
-        </div>
-        <div v-if="step == 1" class="form-item">
-          房间名
-          <el-input placeholder="请输入房间名" clearable v-model="roomForm.roomName" />
-        </div>
+        <el-form :model="roomForm" label-width="100px" ref="roomFormRef" :rules="rules">
+          <el-form-item :inline-message="true" class="form-item" prop="roomNo" label="房间号">
+            <el-input ref="roomNoRef" placeholder="请输入房间号" v-integer clearable v-model="roomForm.roomNo" />
+          </el-form-item>
+          <el-form-item :inline-message="true" class="form-item" v-if="step == 1" label="房间名" prop="roomName">
+            <el-input style="height: 40px;" placeholder="请输入房间名" clearable v-model="roomForm.roomName" />
+          </el-form-item>
+        </el-form>
       </div>
       
       <button :class="['next-btn',,!appStore.websocketStatus && 'init-fail']" @click="enterRoomFun">
@@ -46,24 +46,38 @@
 </template>
 
 <script setup lang="ts">
-import { ref,nextTick } from "vue"
+import { ref,nextTick,reactive } from "vue"
 import useAppStore from "@/store/modules/app"
 import LottieAni from "@/components/Lottie.vue";
 import lottieContent from "@/assets/json/lottie-content.json";
-import { ElMessage,ElMessageBox } from 'element-plus'
+import { ElMessageBox,FormRules  } from 'element-plus'
 import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import { useRouter } from "vue-router";
 
+interface RoomForm {
+  roomNo:string,
+  roomName?:string
+}
 const appStore = useAppStore()
 const step = ref(0);
 const dialogVisible = ref(false)
-const roomForm = ref({
+const roomForm = ref<RoomForm>({
   roomNo:'',
   roomName:''
 })
 const router = useRouter();
 const roomNoRef = ref()
+const rules =  reactive<FormRules<RoomForm>>({
+  roomNo: [
+    { required: true, message: '请输入房间号', trigger: 'change' },
+    { min: 4, max: 8, message: '长度在4~8之间', trigger: 'change' },
+  ],
+  roomName: [
+    { required: true, message: '请输入房间名', trigger: 'change' },
+  ],
+})
+const roomFormRef = ref();
 
 // v-integer指令
 const vInteger = {
@@ -99,7 +113,9 @@ const initForm = ()=>{
   roomForm.value.roomName = '';
   roomForm.value.roomNo = '';
   nextTick(()=>{
+    roomFormRef.value.resetFields()
     setTimeout(()=>{
+      
       roomNoRef.value.focus();
     },500)
   })
@@ -124,7 +140,7 @@ const joinRoomFun = ()=>{
 }
 
 // 进入聊天室
-const enterRoomFun = ()=>{
+const enterRoomFun = async ()=>{
     if(!appStore.websocketStatus){
       ElMessageBox.confirm("服务已关闭，是否重新登录", "系统提示", {
           confirmButtonText: '确定',
@@ -139,29 +155,30 @@ const enterRoomFun = ()=>{
       return
     }
     if(step.value == 1){
-      if(!roomForm.value.roomNo){
-        ElMessage.warning("请输入房间号")
-        return
-      }
-      if(!roomForm.value.roomName.trim()){
-        ElMessage.warning("请输入房间名")
-        return
-      }
-      AQSender.getInstance().sendMsg(
-        AQChatMSg.default.MsgCommand.CREATE_ROOM_CMD,
-        new AQChatMSg.default.CreateRoomCmd([roomForm.value.roomNo.toString(),roomForm.value.roomName.trim()])
-      )
+      if (!roomFormRef.value) return
+      await roomFormRef.value.validate((valid, fields) => {
+        if (valid) {
+          AQSender.getInstance().sendMsg(
+          AQChatMSg.default.MsgCommand.CREATE_ROOM_CMD,
+          new AQChatMSg.default.CreateRoomCmd([roomForm.value.roomNo.toString(),roomForm.value.roomName.trim()])
+        )
+        } else {
+          console.log('error submit!', fields)
+        }
+      })
     }else if(step.value == 2){
-      if(!roomForm.value.roomNo.trim()){
-        ElMessage.warning("请输入房间号")
-        return
-      }
-      
-      let msg = new AQChatMSg.default.JoinRoomCmd();
-      msg.setRoomno(roomForm.value.roomNo);
-      AQSender.getInstance().sendMsg(
-        AQChatMSg.default.MsgCommand.JOIN_ROOM_CMD,msg
-      )
+      if (!roomFormRef.value) return
+      await roomFormRef.value.validate((valid, fields) => {
+        if (valid) {
+          let msg = new AQChatMSg.default.JoinRoomCmd();
+          msg.setRoomno(roomForm.value.roomNo);
+          AQSender.getInstance().sendMsg(
+            AQChatMSg.default.MsgCommand.JOIN_ROOM_CMD,msg
+          )
+        } else {
+          console.log('error submit!', fields)
+        }
+      })
     }
   }
 </script>
@@ -256,25 +273,26 @@ const enterRoomFun = ()=>{
       display: flex;
       flex-direction: column;
       align-items: center;
+      .el-form{
+        width: 100%;
+      }
       .form-item{
-        height: 40px;
         position: relative;
         display: flex;
         align-items: center;
-        margin-top: 30px;
         color: @txt-color;
+        margin-top: 40px;
+        width: 100%;
         .el-input{
           outline: none;
           border: none;
-          height: 100%;
-          width: 150px;
+          height: 40px;
+          width: 255px;
           border-radius: 17px;
           background: #ffffff;
           box-shadow: inset 6px 6px 8px #cfcfcf,
                       inset -6px -6px 8px #ffffff;
           padding: 0 10px;
-          margin-right: 20px;
-          margin-left: 10px;
           text-align: center;
           
         }
