@@ -7,39 +7,13 @@
           <img class="icon icon-expression" src="@/assets/images/icon-expression.png" alt="">
         </li>
         <li @click="expressionShow = false">
-          <img class="icon icon-image" src="@/assets/images/icon-image.png" alt="">
+          <img class="icon icon-image" src="@/assets/images/icon-files.png" alt="">
           <input
-            ref="imgUploadRef"
+            ref="uploadRef"
             class="file-image"
-            name="customerService"
             type="file"
             value=""
-            accept="image/*"
-            v-on:change="sendFile(imgUploadRef)"
-          />
-        </li>
-        <li  @click="expressionShow = false">
-          <img class="icon icon-video" src="@/assets/images/icon-video.png" alt="">
-          <input
-            ref="videoUploadRef"
-            class="file-image"
-            name="customerService"
-            type="file"
-            value=""
-            accept="video/*,audio/*"
-            v-on:change="sendFile(videoUploadRef)"
-          />
-        </li>
-        <li  @click="expressionShow = false">
-          <img class="icon icon-video" src="@/assets/images/icon-video.png" alt="">
-          <input
-            ref="fileUploadRef"
-            class="file-image"
-            name="customerService"
-            type="file"
-            value=""
-            accept="*"
-            v-on:change="sendFile(fileUploadRef)"
+            v-on:change="sendFile()"
           />
         </li>
       </ul>
@@ -217,7 +191,7 @@ const expressions = [
     "icon": "https://aqchat.oss-cn-shenzhen.aliyuncs.com/emo/中毒.png"
   }
 ]
-const imgUploadRef = ref(null)
+const uploadRef = ref(null)
 const videoUploadRef = ref(null)
 const fileUploadRef = ref(null)
 
@@ -244,8 +218,8 @@ const selectIcon = (icon:string) =>{
   imEditorRef.value.editor.cmd.do("insertHTML", iconContent);
 }
 // 发送文件
-const sendFile = async (fileRef:any)=>{
-  const file =  fileRef && fileRef.files[0]
+const sendFile = async ()=>{
+  const file =  uploadRef.value && uploadRef.value.files[0]
   console.log(file);
   
   if(!file) {
@@ -257,7 +231,7 @@ const sendFile = async (fileRef:any)=>{
     fileType = MsgTypeEnum.IMAGE
   } else if(isVideoType(file.type)){
     fileType = MsgTypeEnum.VIDEO
-  }else {
+  } else {
     fileType = MsgTypeEnum.FILE
   }
   const msgId = customSnowflake.nextId();
@@ -309,6 +283,7 @@ defineExpose({changeExpression})
   width: 100%;
   background-color: #fff;
   position: relative;
+  border-top: 1px solid rgba(204,204,204,.3);
   .foot-top {
     width: 100%;
     height: 25%;
@@ -325,10 +300,16 @@ defineExpose({changeExpression})
     li {
       margin: 5px 10px;
       position: relative;
+      display: flex;
+      align-items: center;
       .icon{
         height: 24px;
         width: 24px;
         cursor: pointer;
+      }
+      .icon-image{
+        height: 36px;
+        width: 36px;
       }
     }
     .file-image {
@@ -338,8 +319,8 @@ defineExpose({changeExpression})
       opacity: 0;
       bottom: 0px;
       left: 0px;
-      height: 40px;
-      width: 25px;
+      height: 36px;
+      width: 36px;
     }
   }
   .emjon {
