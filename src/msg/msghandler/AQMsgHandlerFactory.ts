@@ -14,6 +14,7 @@ import JoInRoomNotifyHandler from './JoInRoomNotifyHandler';
 import BroadcastMsgAckHandler from './BroadcastMsgAckHandler';
 import UserLogoutAckHandler from './UserLogoutAckHandler';
 import SyncChatRecordAckHandler from './SyncChatRecordAckHandler';
+import SyncRoomMembersAckHandler from './SyncRoomMembersAckHandler';
 import SendMsgAckHandler from './SendMsgAckHandler';
 import OfflineNotifyHandler from './OfflineNotifyHandler';
 import OfflineMsgHandler from './OfflineMsgHandler';
@@ -40,6 +41,7 @@ export default class AQMsgHandlerFactory {
         this.handlerMap[msgCommand.BROADCAST_MSG_ACK] = new BroadcastMsgAckHandler();
         this.handlerMap[msgCommand.USER_LOGOUT_ACK] = new UserLogoutAckHandler();
         this.handlerMap[msgCommand.SYNC_CHAT_RECORD_ACK] = new SyncChatRecordAckHandler();
+        this.handlerMap[msgCommand.SYNC_ROOM_MEMBERS_ACK] = new SyncRoomMembersAckHandler();
         this.handlerMap[msgCommand.SEND_MSG_ACK] = new SendMsgAckHandler();
         this.handlerMap[msgCommand.OFFLINE_NOTIFY] = new OfflineNotifyHandler();
         this.handlerMap[msgCommand.OFFLINE_MSG] = new OfflineMsgHandler();
