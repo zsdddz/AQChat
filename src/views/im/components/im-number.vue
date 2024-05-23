@@ -22,7 +22,7 @@ const appStore = useAppStore()
 .chat-number {
   width: 20%;
   height: 100%;
-  border-left: 1px solid rgba(204,204,204,.3);
+  border-left: 1px solid @member-boder;
   padding: 20px;
   .room-txt{
     width: 100%;
@@ -40,6 +40,7 @@ const appStore = useAppStore()
     .user-name{
       width: calc(100% - 30px - 10px);
       text-align: left;
+      color: @txt-color;
     }
     .user-avatar {
       width: 30px;
