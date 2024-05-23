@@ -32,7 +32,9 @@ interface AppState {
     // 消息列表
     msgList:Msg[],
     // 消息状态定时器
-    msgStatusTimer:Object
+    msgStatusTimer:Object,
+    // 房间成员
+    numberList:User[]
 }
 
 const epoch = +new Date();
@@ -55,7 +57,8 @@ const useAppStore = defineStore('app', {
             roomName:''
         },
         msgList:[],
-        msgStatusTimer:{}
+        msgStatusTimer:{},
+        numberList:[]
     }),
     getters: {
         mobile: (state) => state.isMobile,
@@ -148,6 +151,19 @@ const useAppStore = defineStore('app', {
                 roomName:''
             }
             this.msgList = []
+        },
+        // 新增聊天室成员
+        addNumberList(user:User){
+            const userObjet = this.numberList.find((x:User)=>x.userId == user.userId);
+            if(!userObjet?.userId){
+                this.numberList.push(user)
+            }
+            console.log("用户成员：",this.numberList);
+            
+        },
+        // 删除聊天室成员
+        deleteNumberList(user:User){
+            this.numberList = this.numberList.filter((x:User)=>x.userId != user.userId);
         }
     },
     persist: {

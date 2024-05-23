@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-22 23:14:20
+ * @LastEditTime: 2024-05-23 11:48:26
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -168,9 +168,10 @@ export default ()=>{
         roomId:result.roomId,
         msgId:+new Date()+'',
         msgType:MsgTypeEnum.TIP,
-        msg:`${result.userName} 离开了房间`
+        msg:`${result.user.userName} 离开了房间`
       }
       appStore.sendInfoLocalFun(msg)
+      appStore.deleteNumberList(result.user)
     }
   }
   // 上传文件
@@ -231,8 +232,8 @@ export default ()=>{
   const joinRoomNotifyFun = (result) =>{
     console.log('其他人加入房间通知',result);
     if(appStore.roomInfo.roomId === result.roomId){
-      if(!(result?.user?.array?.length > 0)) return;
-      const msgContent = result.user.array[0] === appStore.userInfo.userId ? '您' : result.user.array[1];
+      if(!(result?.user?.userId)) return;
+      const msgContent = result.user.userId === appStore.userInfo.userId ? '您' : result.user.userName;
       const msg:Msg = {
         roomId:result.roomId,
         msgId:+new Date()+'',
@@ -240,6 +241,7 @@ export default ()=>{
         msg:`${msgContent} 加入了房间`
       }
       appStore.sendInfoLocalFun(msg)
+      appStore.addNumberList(result.user)
     }
   }
   // 恢复用户登录
