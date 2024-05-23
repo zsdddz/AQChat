@@ -21,7 +21,7 @@
                   <loading v-if="item.msgStatus === MsgStatusEnum.PENDING" class="mine-load" />
                   <div v-else-if="item.msgStatus === MsgStatusEnum.REJECTED" class="msg-failed">!</div>
                   <div class="info-box">
-                    <div class="user-name">{{ item.user.userName }}</div>
+                    <div class="user-name text-ellipsis">{{ item.user.userName }}</div>
                     <div v-if="item.msgType === MsgTypeEnum.TEXT" class="text-block" v-html="item.msg"></div>
                     <img v-else-if="item.msgType === MsgTypeEnum.IMAGE" class="send-image" v-bind:src="item.msg"
                       @click="privewImage(item.msg)" preview="1" />
@@ -59,7 +59,7 @@
                   <div class="reciver-avatar" v-html="item.user.userAvatar">
                   </div>
                   <div class="info-box">
-                    <div class="user-name">{{ item.user.userName }}</div>
+                    <div class="user-name text-ellipsis">{{ item.user.userName }}</div>
                     <div v-if="item.msgType === MsgTypeEnum.TEXT" class="text-block" v-html="item.msg"></div>
                     <img v-else-if="item.msgType === MsgTypeEnum.IMAGE" class="send-image" v-bind:src="item.msg"
                       @click="privewImage(item.msg)" preview="1" />
@@ -321,11 +321,15 @@ const toBottom = () => {
             .info-box {
               margin-right: 10px;
               text-align: right;
-
+              position: relative;
+              padding-top: 20px;
               .user-name {
                 font-size: 12px;
                 color: @txt-color;
-                margin-bottom: 6px;
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 200px;
               }
             }
 
@@ -421,11 +425,15 @@ const toBottom = () => {
             .info-box {
               margin-left: 10px;
               text-align: left;
-
+              position: relative;
+              padding-top: 20px;
               .user-name {
                 font-size: 12px;
                 color: @txt-color;
-                margin-bottom: 6px;
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 200px;
               }
 
               .text-block {

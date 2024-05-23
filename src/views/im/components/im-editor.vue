@@ -204,7 +204,7 @@ defineExpose({
   overflow: hidden;
   .editor {
     text-align: left;
-    height: 70%;
+    height: 66%;
     .input-editor{
       height: 100%;
     }
