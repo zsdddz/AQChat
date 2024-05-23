@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:48:45
- * @LastEditTime: 2024-04-21 20:15:55
+ * @LastEditTime: 2024-05-23 21:56:29
  */
 
 
@@ -26,7 +26,7 @@ export default class AQMsgEncoder {
         var msgLen =msgBodySerialize.length;
 
         let pack = new ByteBuffer(null, 0);
-        pack.short(msgLen).short(msgCommand).byteArray(msgBodySerialize,msgBodySerialize.length)
+        pack.int32(msgLen).short(msgCommand).byteArray(msgBodySerialize,msgBodySerialize.length)
 
         return pack.pack(false);
     }

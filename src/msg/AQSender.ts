@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-05-21 09:06:43
+ * @LastEditTime: 2024-05-23 22:08:56
  */
 
 
@@ -54,7 +54,7 @@ export default class AQSender {
      * @param funCallback 回调函数
      */
     connect(funCallback: () => void): void {
-        let strURL = `ws://${SERVER_HOST}`;
+        let strURL = `wss://${SERVER_HOST}`;
         console.log(`准备连接服务器, URL = ${strURL}`);
 
         let oWebSocket = new w3cwebsocket(strURL);
@@ -94,12 +94,12 @@ export default class AQSender {
             let bytebuf = new ByteBuffer(oEvent.data);
 
             //解包
-            let byteBuffer = bytebuf.short().short().unpack();
+            let byteBuffer = bytebuf.int32().short().unpack();
             //解析bodylen
             let bodyLen = byteBuffer[0];
             //解析command
             let msgCommand = byteBuffer[1];
-            if (msgCommand < 0) {
+            if (msgCommand < 0 || bodyLen <= 0) {
                 console.error("从服务端收到无效的消息");
                 return;
             }
