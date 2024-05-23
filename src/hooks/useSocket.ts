@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-23 11:48:26
+ * @LastEditTime: 2024-05-23 15:40:09
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -93,6 +93,10 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.SYNC_CHAT_RECORD_ACK:
             syncChatRecordFun(result);
             break;
+          // 同步房间成员
+          case AQChatMSg.default.MsgCommand.SYNC_ROOM_MEMBERS_ACK:
+            syncRoomMembersFun(result);
+            break;
           // 消息发送状态
           case AQChatMSg.default.MsgCommand.SEND_MSG_ACK:
             sendMsgStatusFun(result);
@@ -142,6 +146,10 @@ export default ()=>{
     }
   }
 
+  // 房间成员同步
+  const syncRoomMembersFun = (result) =>{
+    appStore.memberList = result;
+  }
   // 当前用户离线
   const userOfflineFun = (result) =>{
     console.log("当前用户离线",result);
@@ -153,10 +161,9 @@ export default ()=>{
         cancelButtonText: '不管',
         type: "warning",
       }).then(res=>{
-      }).finally(()=>{
-        // AQSender.getInstance().heartbeatLoop();
         showTip.value = false;
         window.location.reload();
+      }).finally(()=>{
       })
     }
   }
@@ -230,7 +237,7 @@ export default ()=>{
   }
   // 其他人加入房间通知
   const joinRoomNotifyFun = (result) =>{
-    console.log('其他人加入房间通知',result);
+    // console.log('其他人加入房间通知',result);
     if(appStore.roomInfo.roomId === result.roomId){
       if(!(result?.user?.userId)) return;
       const msgContent = result.user.userId === appStore.userInfo.userId ? '您' : result.user.userName;
@@ -241,12 +248,17 @@ export default ()=>{
         msg:`${msgContent} 加入了房间`
       }
       appStore.sendInfoLocalFun(msg)
-      appStore.addNumberList(result.user)
+      // 同步房间用户
+      let model = new AQChatMSg.default.SyncRoomMembersCmd();
+      model.setRoomid(result.roomId)
+      AQSender.getInstance().sendMsg(
+        AQChatMSg.default.MsgCommand.SYNC_ROOM_MEMBERS_CMD,model
+      )
     }
   }
   // 恢复用户登录
   const recoverUserFun = (result)=>{
-    console.log('恢复用户登录',result);
+    // console.log('恢复用户登录',result);
     loading && loading.close();
     appStore.setRoomInfo({
       roomId:result.roomId || '',
@@ -264,6 +276,7 @@ export default ()=>{
   // 消息异常
   const exceptionFun = (result)=>{
     ElMessage.warning(result.msg)
+    loading && loading.close();
     if(result.code === ExceptionEnum.NO_LOGIN || result.code === ExceptionEnum.USER_QUIT || result.code === ExceptionEnum.USER_MISMATCH){
       appStore.resetAllInfo();
       AQSender.getInstance().heartbeatStop();
