@@ -8,8 +8,11 @@ export default class LeaveRoomNotifyHandler {
         }
         return {
             roomId:msgAck.getRoomid(),
-            userId:msgAck.getUser()?.getUserid(),
-            userName:msgAck.getUser()?.getUsername()
+            user:{
+                userId:msgAck.getUser()?.getUserid(),
+                userName:msgAck.getUser()?.getUsername(),
+                userAvatar:msgAck.getUser()?.getUseravatar(),
+            }
         }
     }
 }

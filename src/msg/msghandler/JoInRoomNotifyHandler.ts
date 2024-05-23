@@ -17,7 +17,11 @@ export default class JoInRoomNotifyHandler {
         }
         return {
             roomId:msgAck.getRoomid(),
-            user:msgAck.getUser()
+            user:{
+                userId:msgAck.getUser()?.getUserid(),
+                userName:msgAck.getUser()?.getUsername(),
+                userAvatar:msgAck.getUser()?.getUseravatar(),
+            }
         }
     }
 }
