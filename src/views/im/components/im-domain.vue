@@ -16,7 +16,7 @@
   </div>
   <el-dialog
     v-model="dialogVisible"
-    width="500px"
+    width="510px"
     class="pop-start"
   >
     <div class="tip-content">
@@ -75,6 +75,7 @@ const rules =  reactive<FormRules<RoomForm>>({
   ],
   roomName: [
     { required: true, message: '请输入房间名', trigger: 'change' },
+    { min: 2, max: 10, message: '长度在2~10之间', trigger: 'change' },
   ],
 })
 const roomFormRef = ref();
@@ -84,6 +85,7 @@ const vInteger = {
   mounted: (el: any) => {
     el.addEventListener('input', event => {
       const value = event.target.value;
+      roomForm.value.roomNo = value.replace(/\D/g, ''); // 只保留数字
       event.target.value = value.replace(/\D/g, ''); // 只保留数字
     });
   }
