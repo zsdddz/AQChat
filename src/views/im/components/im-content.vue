@@ -11,12 +11,12 @@
       <div class="main">
         <!--聊天内容-->
         <div class="content-win">
-          <el-scrollbar style="max-height: 100%" ref="contentScrollbar">
+          <el-scrollbar style="max-height: 100%" ref="contentScrollbarRef">
             <template v-for="(item,index) in msgList" :key="item.msgId">
-              <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip">
+              <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip msg-box">
                 {{ item.msg }}
               </div>
-              <div v-else-if="item.user.userId == userInfo.userId" class="mine-box">
+              <div v-else-if="item.user.userId == userInfo.userId" class="mine-box msg-box">
                 <div class="mine-block">
                   <loading v-if="item.msgStatus === MsgStatusEnum.PENDING" class="mine-load" />
                   <div v-else-if="item.msgStatus === MsgStatusEnum.REJECTED" class="msg-failed" @click="reSendMsgFun(item,index)">!</div>
@@ -54,7 +54,7 @@
                   <div class="mine-avatar" v-html="item.user.userAvatar"></div>
                 </div>
               </div>
-              <div v-else class="reciver-box">
+              <div v-else class="reciver-box msg-box">
                 <div class="reciver-block">
                   <div class="reciver-avatar" v-html="item.user.userAvatar">
                   </div>
@@ -93,6 +93,10 @@
               </div>
             </template>
           </el-scrollbar>
+          <div @click="toBottom" v-show="!isIntersecting && newMsgCount > 0" class="new-msg-tip">
+            <i class="iconfont icon-down"></i>
+            {{ newMsgCount }}条新消息
+          </div>
         </div>
         <!--聊天框底部-->
         <im-chat></im-chat>
@@ -119,7 +123,22 @@ const appStore = useAppStore()
 const { proxy }: any = getCurrentInstance();
 const userInfo = appStore.userInfo
 let msgList = appStore.msgList
-const contentScrollbar = ref(null)
+// 滚动条Ref
+const contentScrollbarRef = ref(null)
+// 新消息条数
+const newMsgCount = ref(0);
+// 观察元素
+const watchDom = ref();
+// 是否进入相交
+const isIntersecting = ref(true)
+// 初始化交叉观察器
+const watchObject = new IntersectionObserver((entries)=>{
+  const entry = entries[0]
+  isIntersecting.value = entry.isIntersecting
+  if(isIntersecting.value){
+    newMsgCount.value = 0;
+  }
+},{root:null,threshold:0})
 
 // 监听websocket状态
 watch(() => appStore.websocketStatus, (newV) => {
@@ -130,8 +149,24 @@ watch(() => appStore.websocketStatus, (newV) => {
 
 watch(() => appStore.msgList, (newV) => {
   msgList = newV;
-  toBottom()
+  newMsgCount.value +=1 ;
+  initIntersectionObserver();
+  if(isIntersecting.value){
+    toBottom()
+  }
 }, { deep: true })
+
+// 绑定/解绑观察对象
+const initIntersectionObserver = ()=>{
+  const dom = document.querySelectorAll(".msg-box");
+  if(dom.length > 0 ){
+    if(watchDom.value){
+      watchObject.unobserve(watchDom.value)
+    }
+    watchDom.value = dom[dom.length-1];
+    watchObject.observe(watchDom.value)
+  }
+}
 
 // 消息重发
 const reSendMsgFun = (msg:Msg,index:number) =>{
@@ -204,7 +239,8 @@ const syncChatRecordFun = () => {
 // 滚动底部
 const toBottom = () => {
   setTimeout(() => {
-    contentScrollbar.value && contentScrollbar.value.setScrollTop(99999)
+    contentScrollbarRef.value && contentScrollbarRef.value.setScrollTop(99999)
+    newMsgCount.value = 0
   }, 100)
 }
 
@@ -257,7 +293,28 @@ const toBottom = () => {
       .content-win {
         width: 100%;
         height: 70%;
-
+        position: relative;
+        .new-msg-tip{
+          height: 30px;
+          padding: 0 10px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          color: #333;
+          position: absolute;
+          bottom: 20px;
+          right: 20px;
+          box-shadow: 0px 0px 5px #ccc;
+          background-color: #fff;
+          z-index: 2;
+          border-radius: 20px;
+          color:@im-primary;
+          cursor: pointer;
+          .icon-down{
+            margin-right: 2px;
+          }
+        }
         .text-block {
           * {
             white-space: wrap;
