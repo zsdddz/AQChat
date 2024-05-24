@@ -104,20 +104,6 @@ const useAppStore = defineStore('app', {
         },
         sendInfoLocalFun(msg:Msg){
             this.msgList.push(msg)
-            // 10s消息未发送成功，则设置消息为发送失败状态
-            if(msg.msgType === MsgTypeEnum.TEXT){
-                this.msgStatusTimer[msg.msgId] = setTimeout(()=>{
-                    msg.msgStatus = MsgStatusEnum.REJECTED
-                    for(let i = this.msgList.length - 1;i>=0;i--){
-                        if(this.msgList[i].msgId === msg.msgId){
-                            const newMsg = {...msg};
-                            newMsg.msgStatus = MsgStatusEnum.REJECTED;
-                            this.msgList.splice(i,1,newMsg)
-                            break; 
-                        }
-                    }
-                },10000)
-            }
         },
         sendInfoNetWorkFun(msg:Msg){
             let sendMsg = new AQChatMSg.default.SendMsgCmd();
@@ -129,6 +115,18 @@ const useAppStore = defineStore('app', {
             AQSender.getInstance().sendMsg(
                 AQChatMSg.default.MsgCommand.SEND_MSG_CMD,sendMsg
             )
+            // 10s消息未发送成功，则设置消息为发送失败状态
+            this.msgStatusTimer[msg.msgId] = setTimeout(()=>{
+                msg.msgStatus = MsgStatusEnum.REJECTED
+                for(let i = this.msgList.length - 1;i>=0;i--){
+                    if(this.msgList[i].msgId === msg.msgId){
+                        const newMsg = {...msg};
+                        newMsg.msgStatus = MsgStatusEnum.REJECTED;
+                        this.msgList.splice(i,1,newMsg)
+                        break; 
+                    }
+                }
+            },10000)
         },
         clearMsgStatusTimer(id:string){
             if(this.msgStatusTimer[id]){
