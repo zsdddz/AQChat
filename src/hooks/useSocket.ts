@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-23 15:40:09
+ * @LastEditTime: 2024-05-24 09:26:22
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -234,6 +234,9 @@ export default ()=>{
       ext:result.ext
     }
     appStore.sendInfoLocalFun(msg)
+    if(appStore.soundActive){
+      appStore.soundDom && appStore.soundDom.play();
+    }
   }
   // 其他人加入房间通知
   const joinRoomNotifyFun = (result) =>{

@@ -34,7 +34,11 @@ interface AppState {
     // 消息状态定时器
     msgStatusTimer:Object,
     // 房间成员
-    memberList:User[]
+    memberList:User[],
+    // 声音开启状态
+    soundActive:boolean,
+    // 声音dom
+    soundDom:any
 }
 
 const epoch = +new Date();
@@ -58,7 +62,9 @@ const useAppStore = defineStore('app', {
         },
         msgList:[],
         msgStatusTimer:{},
-        memberList:[]
+        memberList:[],
+        soundActive:false,
+        soundDom:null
     }),
     getters: {
         mobile: (state) => state.isMobile,
@@ -164,6 +170,10 @@ const useAppStore = defineStore('app', {
         // 删除聊天室成员
         deleteNumberList(user:User){
             this.memberList = this.memberList.filter((x:User)=>x.userId != user.userId);
+        },
+        // 修改声音开启状态
+        setSoundActive(status:boolean){
+            this.soundActive = status
         }
     },
     persist: {

@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-26 11:00:18
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-22 15:24:07
+ * @LastEditTime: 2024-05-24 09:32:00
  * @Description: 
 -->
 <template>
@@ -10,6 +10,27 @@
     <el-tooltip class="item" :effect="appStore.theme === 'dark' ? 'light':'dark'" content="有空再聊，再见" placement="bottom-start">
       <i @click="quitFun" class="iconfont icon-enter"></i>
     </el-tooltip>
+    <el-switch
+      class="sound-btn"
+      size="large"
+      style="--el-switch-on-color: #0FB560;--el-switch-off-color: #EC3214"
+      v-model="soundActive"
+      @change="changeSoundFun"
+      inline-prompt
+      active-text="不会错过重要提醒啦"
+      inactive-text="开启声音提醒"
+    >
+      <template #active-action>
+        <i class="iconfont icon-sound"></i>
+      </template>
+      <template #inactive-action>
+        <i class="iconfont icon-mute"></i>
+      </template>
+    </el-switch>
+    <!--接收信息提示音-->
+    <audio id="tipMusic">
+      <source src="/mp3/msgTip.mp3" type="audio/mp3" />
+    </audio>
     <div class="content">
       <im-nav />
       <div class="content-info">
@@ -29,10 +50,17 @@ import useAppStore from "@/store/modules/app"
 import { useRouter } from "vue-router";
 import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import { ref } from 'vue'
 
 const appStore = useAppStore()
 const router = useRouter();
+const soundActive = ref(false)
 
+// 切换声音开启状态
+const changeSoundFun = () =>{
+  appStore.setSoundActive(soundActive.value)
+  appStore.soundDom = document.getElementById("tipMusic")
+}
 // 判断当前是否存在用户登录
 const hasUserFun = () =>{
   if(!appStore?.userInfo?.userId){
@@ -81,6 +109,12 @@ hasUserFun();
   align-items: center;
   justify-content: center;
   position: relative;
+  .sound-btn{
+    position: absolute;
+    top: 10px;
+    left: 30px;
+    z-index: 10;
+  }
   .icon-enter{
     position: absolute;
     top: 10px;
