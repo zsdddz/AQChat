@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-26 11:00:18
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-24 09:32:00
+ * @LastEditTime: 2024-05-24 16:39:17
  * @Description: 
 -->
 <template>
@@ -47,13 +47,15 @@ import ImNav from "./components/im-nav.vue"
 import ImContent from "./components/im-content.vue"
 import ImDomain from "./components/im-domain.vue"
 import useAppStore from "@/store/modules/app"
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import AQSender from '@/msg/AQSender'
 import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
 import { ref } from 'vue'
+import { sendMessage, listenMessage,removeListenMsg } from '@/utils/CrossTagMsg'
 
 const appStore = useAppStore()
 const router = useRouter();
+const route = useRoute();
 const soundActive = ref(false)
 
 // 切换声音开启状态
@@ -71,7 +73,6 @@ const hasUserFun = () =>{
     })
   }
 }
-
 // 退出
 const quitFun = () =>{
   ElMessageBox.confirm("确认退出登录？", "系统提示", {
@@ -79,23 +80,50 @@ const quitFun = () =>{
     cancelButtonText: '取消',
     type: "warning",
   }).then(res=>{
-    let userLogout = new AQChatMSg.default.UserLogoutCmd();
-    userLogout.setUserid(appStore.userInfo.userId);
-    
-    AQSender.getInstance().sendMsg(
-      AQChatMSg.default.MsgCommand.USER_LOGOUT_CMD,userLogout
-    )
-    setTimeout(()=>{
-      appStore.resetAllInfo();
-      AQSender.getInstance().heartbeatStop();
-      router.replace({
-        name:'Index'
-      })
-    },100)
+    logoutFun();
   })
 }
 
+const logoutFun = ()=>{
+  let userLogout = new AQChatMSg.default.UserLogoutCmd();
+  userLogout.setUserid(appStore.userInfo.userId);
+  
+  AQSender.getInstance().sendMsg(
+    AQChatMSg.default.MsgCommand.USER_LOGOUT_CMD,userLogout
+  )
+  setTimeout(()=>{
+    appStore.resetAllInfo();
+    AQSender.getInstance().heartbeatStop();
+    router.replace({
+      name:'Index'
+    })
+  },100)
+}
+
 hasUserFun();
+
+sendMessage("repeact-im");
+
+listenMessage((info:MessageEvent)=>{
+  if(route.name == 'IM'){
+    switch(info.data){
+      case "repeact-im":
+        ElMessageBox.confirm("已在新标签页打开，强制关闭当前页", "系统提示", {
+          confirmButtonText: '我已知晓',
+          showClose:false,
+          showCancelButton:false,
+          type: "warning",
+        }).finally(()=>{
+          
+        })
+        router.replace({
+          name:'Index'
+        })
+        AQSender.getInstance().close();
+        break;
+    }
+  }
+})
 
 </script>
 
