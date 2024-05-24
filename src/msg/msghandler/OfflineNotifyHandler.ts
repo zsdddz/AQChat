@@ -15,8 +15,10 @@ export default class OfflineNotifyHandler {
         }
         return {
             roomId:msgAck.getRoomid(),
-            userId:msgAck.getUser()?.getUserid(),
-            userName:msgAck.getUser()?.getUsername(),
+            user:{
+                userId:msgAck.getUser()?.getUserid(),
+                userName:msgAck.getUser()?.getUsername(),
+            }
         }
     }
 }

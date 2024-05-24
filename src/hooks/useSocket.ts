@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-24 09:26:22
+ * @LastEditTime: 2024-05-24 11:14:35
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -101,9 +101,9 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.GET_STS_ACK:
             uploadFileFun(msgCommand,result)
             break;
-          // 好友离线
+          // 房间成员离线
           case AQChatMSg.default.MsgCommand.OFFLINE_NOTIFY:
-            // offlineNotyfyFun(result)
+            offlineNotyfyFun(result)
             break;
           // 当前用户离线
           case AQChatMSg.default.MsgCommand.OFFLINE_MSG:
@@ -143,12 +143,25 @@ export default ()=>{
     }
   }
 
+  // 房间成员离线
+  const offlineNotyfyFun = (result:any) =>{
+    console.log("房间成员离线",result);
+    if(appStore.roomInfo.roomId === result.roomId){
+      const msg:Msg = {
+        roomId:result.roomId,
+        msgType:MsgTypeEnum.TIP,
+        msg:`${result.user.userName} 已离线`
+      }
+      appStore.sendInfoLocalFun(msg)
+      appStore.deleteNumberList(result.user)
+    }
+  }
   // 房间成员同步
-  const syncRoomMembersFun = (result) =>{
+  const syncRoomMembersFun = (result:any) =>{
     appStore.memberList = result;
   }
   // 当前用户离线
-  const userOfflineFun = (result) =>{
+  const userOfflineFun = (result:any) =>{
     console.log("当前用户离线",result);
     if(result.userId === appStore.userInfo.userId){
       if(showTip.value) return;
@@ -165,12 +178,11 @@ export default ()=>{
     }
   }
   // 离开房间
-  const leaveRoomNotufyFun = (result) =>{
+  const leaveRoomNotufyFun = (result:any) =>{
     console.log("离开房间",result);
     if(appStore.roomInfo.roomId === result.roomId){
       const msg:Msg = {
         roomId:result.roomId,
-        msgId:+new Date()+'',
         msgType:MsgTypeEnum.TIP,
         msg:`${result.user.userName} 离开了房间`
       }
@@ -188,7 +200,7 @@ export default ()=>{
     }
   }
   // 消息发送状态修改
-  const sendMsgStatusFun = (result) =>{
+  const sendMsgStatusFun = (result:any) =>{
     console.log("消息发送状态修改",result);
     for(let i = appStore.msgList.length-1;i>=0;i--){
       if(appStore.msgList[i].msgId == result.msgId){
@@ -198,7 +210,7 @@ export default ()=>{
     }
   }
   // 消息同步
-  const syncChatRecordFun = (result) =>{
+  const syncChatRecordFun = (result:any) =>{
     console.log("消息同步",result);
     for(let i = 0;i<result.length;i++){
       const msg:Msg = result[i]
@@ -206,7 +218,7 @@ export default ()=>{
     }
   }
   // 用户退出登录
-  const userLogoutFun = (result) =>{
+  const userLogoutFun = (result:any) =>{
     if(result?.userId === appStore.userInfo.userId){
       appStore.resetAllInfo();
       router.replace({
@@ -215,7 +227,7 @@ export default ()=>{
     }
   }
   // 接收广播消息
-  const broadcastMsgFun = (result) =>{
+  const broadcastMsgFun = (result:any) =>{
     console.log("接收广播消息",result);
     if(result.userId === appStore.userInfo.userId) return;
     const msg:Msg = {
@@ -236,14 +248,13 @@ export default ()=>{
     }
   }
   // 其他人加入房间通知
-  const joinRoomNotifyFun = (result) =>{
+  const joinRoomNotifyFun = (result:any) =>{
     // console.log('其他人加入房间通知',result);
     if(appStore.roomInfo.roomId === result.roomId){
       if(!(result?.user?.userId)) return;
       const msgContent = result.user.userId === appStore.userInfo.userId ? '您' : result.user.userName;
       const msg:Msg = {
         roomId:result.roomId,
-        msgId:+new Date()+'',
         msgType:MsgTypeEnum.TIP,
         msg:`${msgContent} 加入了房间`
       }
@@ -257,7 +268,7 @@ export default ()=>{
     }
   }
   // 恢复用户登录
-  const recoverUserFun = (result)=>{
+  const recoverUserFun = (result:any)=>{
     // console.log('恢复用户登录',result);
     loading && loading.close();
     appStore.setRoomInfo({
@@ -267,17 +278,21 @@ export default ()=>{
     })
   }
   // 用户登录
-  const loginFun = (result)=>{
+  const loginFun = (result:any)=>{
     appStore.setUserInfo(result)
     router.push({
       name:"IM"
     })
   }
   // 消息异常
-  const exceptionFun = (result)=>{
+  const exceptionFun = (result:any)=>{
+    console.log("消息异常",result);
+    
     ElMessage.warning(result.msg)
     loading && loading.close();
     if(result.code === ExceptionEnum.NO_LOGIN || result.code === ExceptionEnum.USER_QUIT || result.code === ExceptionEnum.USER_MISMATCH){
+      console.log("关闭心态");
+      
       appStore.resetAllInfo();
       AQSender.getInstance().heartbeatStop();
       router.push({
