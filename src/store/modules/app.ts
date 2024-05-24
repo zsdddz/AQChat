@@ -174,6 +174,10 @@ const useAppStore = defineStore('app', {
         // 修改声音开启状态
         setSoundActive(status:boolean){
             this.soundActive = status
+        },
+        // 设置消息状态
+        setMsgStatus(index:number,status:MsgStatusEnum){
+            this.msgList[index].msgStatus = status;
         }
     },
     persist: {

@@ -12,14 +12,14 @@
         <!--聊天内容-->
         <div class="content-win">
           <el-scrollbar style="max-height: 100%" ref="contentScrollbar">
-            <template v-for="item in msgList" :key="item.msgId">
+            <template v-for="(item,index) in msgList" :key="item.msgId">
               <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip">
                 {{ item.msg }}
               </div>
               <div v-else-if="item.user.userId == userInfo.userId" class="mine-box">
                 <div class="mine-block">
                   <loading v-if="item.msgStatus === MsgStatusEnum.PENDING" class="mine-load" />
-                  <div v-else-if="item.msgStatus === MsgStatusEnum.REJECTED" class="msg-failed">!</div>
+                  <div v-else-if="item.msgStatus === MsgStatusEnum.REJECTED" class="msg-failed" @click="reSendMsgFun(item,index)">!</div>
                   <div class="info-box">
                     <div class="user-name text-ellipsis">{{ item.user.userName }}</div>
                     <div v-if="item.msgType === MsgTypeEnum.TEXT" class="text-block" v-html="item.msg"></div>
@@ -113,6 +113,7 @@ import { watch, ref, getCurrentInstance } from 'vue'
 import Loading from "@/components/Loading.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'
 import ImNumber from "./im-number.vue"
+import Msg from '@/class/Msg'
 
 const appStore = useAppStore()
 const { proxy }: any = getCurrentInstance();
@@ -131,6 +132,18 @@ watch(() => appStore.msgList, (newV) => {
   msgList = newV;
   toBottom()
 }, { deep: true })
+
+// 消息重发
+const reSendMsgFun = (msg:Msg,index:number) =>{
+  ElMessageBox.confirm("消息发送失败，是否重发", "系统提示", {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: "warning",
+  }).then(res=>{
+    appStore.setMsgStatus(index,MsgStatusEnum.PENDING)
+    appStore.sendInfoNetWorkFun(msg)
+  })
+}
 
 // 下载文件
 const downloadFileFun = (url: string, fileName: string) => {
