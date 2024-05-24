@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-11 11:53:19
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-11 15:01:02
+ * @LastEditTime: 2024-05-24 16:30:06
  * @Description: 雪花id生成
  */
 export default class CustomSnowflake {
@@ -20,7 +20,6 @@ export default class CustomSnowflake {
   // 生成下一个ID的方法
   nextId() {
       let timestamp = Date.now();
-
       // 如果当前时间小于上次生成ID的时间，抛出异常
       if (timestamp < this.lastTimestamp) {
           throw new Error('Clock moved backwards, refusing to generate id');
@@ -46,7 +45,7 @@ export default class CustomSnowflake {
   }
 
   // 等待下一毫秒的方法
-  waitNextMillis(timestamp) {
+  waitNextMillis(timestamp:number) {
       while (timestamp <= this.lastTimestamp) {
           timestamp = Date.now();
       }
