@@ -1,8 +1,8 @@
 /*
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
- * @LastEditors: zsdddz hitd@foxmail.com
- * @LastEditTime: 2024-04-24 00:03:27
+ * @LastEditors: howcode 1051495009@qq.com
+ * @LastEditTime: 2024-05-24 09:49:31
  * @Description: 
  */
 import { defineConfig } from 'vite'
@@ -15,7 +15,7 @@ export default defineConfig({
   root: process.cwd(),
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "src"), // 路径别名
+      "@": path.resolve(__dirname, "./src"), // 路径别名
     },
     extensions: [".js", ".json", ".ts"], // 使用路径别名时想要省略的后缀名，可以自己 增减
   },
