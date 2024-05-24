@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-24 11:14:35
+ * @LastEditTime: 2024-05-24 16:42:53
  * @Description: websocket消息处理
  */
 import AQSender from '@/msg/AQSender'
@@ -28,12 +28,14 @@ export default ()=>{
   
   // 初始化websocket
   const initSocketFun = ()=>{
-    if(route.name === 'IM'){
+    if(route.name === 'IM' && appStore.userInfo.userId){
       loading = ElLoading.service({
         lock: true,
         text: '恢复用户登录...',
         background: 'rgba(0, 0, 0, 0.7)',
       })
+    }else{
+      loading && loading.close();
     }
     AQSender.getInstance().connect(()=>{
       console.log("连接成功...");
@@ -134,8 +136,8 @@ export default ()=>{
           appStore.resetAllInfo();
         })
       }else{
-        ElMessage.error("websocket初始化失败，请稍后再试")
-        appStore.resetAllInfo();
+        // ElMessage.error("websocket初始化失败，请稍后再试")
+        // appStore.resetAllInfo();
       }
       appStore.setWebsocketStatus(false);
       AQSender.getInstance().heartbeatStop();
@@ -269,7 +271,7 @@ export default ()=>{
   }
   // 恢复用户登录
   const recoverUserFun = (result:any)=>{
-    // console.log('恢复用户登录',result);
+    console.log('恢复用户登录');
     loading && loading.close();
     appStore.setRoomInfo({
       roomId:result.roomId || '',
