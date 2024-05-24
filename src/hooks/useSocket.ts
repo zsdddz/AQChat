@@ -287,12 +287,9 @@ export default ()=>{
   // 消息异常
   const exceptionFun = (result:any)=>{
     console.log("消息异常",result);
-    
     ElMessage.warning(result.msg)
     loading && loading.close();
     if(result.code === ExceptionEnum.NO_LOGIN || result.code === ExceptionEnum.USER_QUIT || result.code === ExceptionEnum.USER_MISMATCH){
-      console.log("关闭心态");
-      
       appStore.resetAllInfo();
       AQSender.getInstance().heartbeatStop();
       router.push({
