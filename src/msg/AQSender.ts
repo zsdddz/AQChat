@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-05-23 22:08:56
+ * @LastEditTime: 2024-05-24 16:09:16
  */
 
 
@@ -189,4 +189,8 @@ export default class AQSender {
     }
 
     closeService(){}
+
+    close(){
+        this.webSocket && this.webSocket.close();
+    }
 }
