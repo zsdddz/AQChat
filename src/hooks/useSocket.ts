@@ -19,11 +19,8 @@ import MsgTypeEnum from "../enums/MsgTypeEnum"
 import { ref } from 'vue'
 
 export default ()=>{
-  let appStore = useAppStore()
-  // onMounted(()=>{
-  //   appStore = useAppStore()
-  // })
 
+  const appStore = useAppStore()
   const router = useRouter();
   const route = useRoute();
   const showTip = ref(false)
