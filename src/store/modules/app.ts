@@ -8,8 +8,8 @@ import { defineStore } from 'pinia'
 import User from '../../class/User'
 import Msg from '../../class/Msg'
 import MsgStatusEnum from '../../enums/MsgStatusEnum'
-import AQSender from '@/msg/AQSender'
-import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import AQSender from '@/message/AQSender'
+import * as AQChatMSg from '@/message/protocol/AQChatMsgProtocol_pb'
 import CustomSnowflake from "@/utils/CustomSnowflake"
 import MsgTypeEnum from "@/enums/MsgTypeEnum"
 

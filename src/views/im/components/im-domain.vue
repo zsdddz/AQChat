@@ -51,8 +51,8 @@ import useAppStore from "@/store/modules/app"
 import LottieAni from "@/components/Lottie.vue";
 import lottieContent from "@/assets/json/lottie-content.json";
 import { ElMessageBox,FormRules  } from 'element-plus'
-import AQSender from '@/msg/AQSender'
-import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import AQSender from '@/message/AQSender'
+import * as AQChatMSg from '@/message/protocol/AQChatMsgProtocol_pb'
 import { useRouter } from "vue-router";
 
 interface RoomForm {

@@ -1,8 +1,8 @@
 <!--
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:16:54
- * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-22 17:03:42
+ * @LastEditors: zsdddz hitd@foxmail.com
+ * @LastEditTime: 2024-05-22 17:18:41
  * @Description: 首页
 -->
 <template>
@@ -21,7 +21,7 @@
         <div class="label">🚝仓库</div>
         <div class="ad-desc flex-c" >
           <div class="info">
-            <div class="git-name"><el-link href="https://gitee.com/static/images/logo-en.svg" target="_blank">AQChat</el-link></div>
+            <div class="git-name"><el-link href="https://gitee.com/howcode/aq-chat" target="_blank">AQChat</el-link></div>
             <a href='https://gitee.com/howcode/aq-chat/stargazers'><img src='https://gitee.com/howcode/aq-chat/badge/star.svg?theme=dark' alt='star'></img></a>
             <a href='https://gitee.com/howcode/aq-chat/members'><img src='https://gitee.com/howcode/aq-chat/badge/fork.svg?theme=dark' alt='fork'></img></a>
           </div>

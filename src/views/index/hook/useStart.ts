@@ -9,13 +9,13 @@
 import { ref,reactive,onMounted } from 'vue'
 import multiavatar from '@multiavatar/multiavatar/esm'
 import type { FormInstance, FormRules } from 'element-plus'
-import AQSender from '@/msg/AQSender'
-import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import AQSender from '@/message/AQSender'
+import * as AQChatMSg from '@/message/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app";
 import { ElMessage } from 'element-plus'
 import useSocket from "@/hooks/useSocket"
 import { useRouter } from 'vue-router'
-import AQSender from '@/msg/AQSender'
+import AQSender from '@/message/AQSender'
 
 export default ()=>{
   interface UserForm {

@@ -5,10 +5,10 @@
  * @LastEditTime: 2024-05-24 16:42:53
  * @Description: websocket消息处理
  */
-import AQSender from '@/msg/AQSender'
-import AQMsgHandlerFactory from '@/msg/msghandler/AQMsgHandlerFactory'
-import CallbackMethodManager from '@/msg/CallbackMethodManager';
-import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import AQSender from '@/message/AQSender'
+import AQMsgHandlerFactory from '@/message/msghandler/AQMsgHandlerFactory'
+import CallbackMethodManager from '@/message/CallbackMethodManager';
+import * as AQChatMSg from '@/message/protocol/AQChatMsgProtocol_pb'
 import useAppStore from "@/store/modules/app"
 import { ElMessage,ElMessageBox,ElLoading } from 'element-plus'
 import { useRouter,useRoute } from 'vue-router'

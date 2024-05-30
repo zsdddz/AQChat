@@ -43,7 +43,7 @@
 import ImEditor from "./im-editor.vue";
 import { ref,defineExpose,inject } from "vue";
 import { OssHelper } from '@/utils/OssHelper';
-import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb';
+import * as AQChatMSg from '@/message/protocol/AQChatMsgProtocol_pb';
 import useAppStore from "@/store/modules/app"
 import MsgTypeEnum from "@/enums/MsgTypeEnum"
 import { ClickOutside as vClickOutside, ElMessage } from "element-plus";

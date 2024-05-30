@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-21 00:40:59
- * @LastEditTime: 2024-05-24 16:09:16
+ * @LastEditTime: 2024-05-30 10:05:21
  */
 
 
@@ -9,7 +9,7 @@ import { w3cwebsocket} from 'websocket';
 import AQMsgDecoder from './AQMsgDecoder';
 import AQMsgEncoder from './AQMsgEncoder';
 import ByteBuffer from './codec/ByteBuffer'
-import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
+import * as AQChatMSg from './protocol/AQChatMsgProtocol_pb';
 
 const SERVER_HOST = import.meta.env.VITE_SOCKET_API;
 var loopTimer:any = null;
@@ -54,7 +54,7 @@ export default class AQSender {
      * @param funCallback 回调函数
      */
     connect(funCallback: () => void): void {
-        let strURL = `wss://${SERVER_HOST}`;
+        let strURL = `ws://${SERVER_HOST}`;
         console.log(`准备连接服务器, URL = ${strURL}`);
 
         let oWebSocket = new w3cwebsocket(strURL);
@@ -84,14 +84,14 @@ export default class AQSender {
         }
 
         // 收到消息
-        oWebSocket.onmessage = (oEvent)=> {
-            if (null == oEvent ||
-                null == oEvent.data) {
+        oWebSocket.onmessage = (event)=> {
+            if (null == event ||
+                null == event.data) {
                 return;
             }
 
             //收到的消息是一个字节数组
-            let bytebuf = new ByteBuffer(oEvent.data);
+            let bytebuf = new ByteBuffer(event.data);
 
             //解包
             let byteBuffer = bytebuf.int32().short().unpack();
@@ -108,9 +108,9 @@ export default class AQSender {
             let msgBody = unpack[2];
 
             // 构建消息体
-            let oMsgBody = this.msgDecoder.decode(msgCommand, msgBody);
+            let aqMsgBody = this.msgDecoder.decode(msgCommand, msgBody);
 
-            if (null == oMsgBody) {
+            if (null == aqMsgBody) {
                 console.error(`构建消息体为空, msgCommand = ${msgCommand}`);
                 return;
             }
@@ -118,7 +118,7 @@ export default class AQSender {
             // console.log(`从服务端收到消息, msgCommand = ${msgCommand}`);
 
             // 处理消息
-            this.onMsgReceived(msgCommand, oMsgBody);
+            this.onMsgReceived(msgCommand, aqMsgBody);
         }
     }
 

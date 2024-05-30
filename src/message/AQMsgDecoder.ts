@@ -3,7 +3,7 @@
  * @Date: 2024-04-21 00:53:16
  * @LastEditTime: 2024-05-16 16:49:13
  */
-import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
+import * as AQChatMSg from './protocol/AQChatMsgProtocol_pb';
 
 /**
  * 消息解码器

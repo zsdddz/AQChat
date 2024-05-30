@@ -43,9 +43,9 @@
 </template>
 
 <script setup lang="ts">
-import AQSender from '../msg/AQSender';
-import AQMsgHandlerFactory from '../msg/msghandler/AQMsgHandlerFactory';
-import AQChatMsgProtocol_pb, * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
+import AQSender from '../message/AQSender';
+import AQMsgHandlerFactory from '../message/msghandler/AQMsgHandlerFactory';
+import AQChatMsgProtocol_pb, * as AQChatMSg from '../message/protocol/AQChatMsgProtocol_pb';
 import { ref } from 'vue';
 import CustomSnowflake from "../utils/CustomSnowflake"
 

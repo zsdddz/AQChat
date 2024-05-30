@@ -48,8 +48,8 @@ import ImContent from "./components/im-content.vue"
 import ImDomain from "./components/im-domain.vue"
 import useAppStore from "@/store/modules/app"
 import { useRoute, useRouter } from "vue-router";
-import AQSender from '@/msg/AQSender'
-import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import AQSender from '@/message/AQSender'
+import * as AQChatMSg from '@/message/protocol/AQChatMsgProtocol_pb'
 import { ref } from 'vue'
 import { sendMessage, listenMessage,removeListenMsg } from '@/utils/CrossTagMsg'
 

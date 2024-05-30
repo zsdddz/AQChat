@@ -111,8 +111,8 @@ import useAppStore from '@/store/modules/app';
 import ImChat from "./im-chat.vue"
 import MsgTypeEnum from '../../../enums/MsgTypeEnum'
 import MsgStatusEnum from '../../../enums/MsgStatusEnum'
-import AQSender from '@/msg/AQSender'
-import * as AQChatMSg from '@/msg/protocol/AQChatMsgProtocol_pb'
+import AQSender from '@/message/AQSender'
+import * as AQChatMSg from '@/message/protocol/AQChatMsgProtocol_pb'
 import { watch, ref, getCurrentInstance } from 'vue'
 import Loading from "@/components/Loading.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'

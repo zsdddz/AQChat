@@ -5,9 +5,9 @@
  * @LastEditTime: 2024-05-16 18:02:36
  */
 import OSS from 'ali-oss';
-import AQSender from '../msg/AQSender';
-import * as AQChatMSg from '../msg/protocol/AQChatMsgProtocol_pb';
-import CallbackMethodManager from '../msg/CallbackMethodManager';
+import AQSender from '../message/AQSender';
+import * as AQChatMSg from '../message/protocol/AQChatMsgProtocol_pb';
+import CallbackMethodManager from '../message/CallbackMethodManager';
 
 export class OssHelper {
     private static instance: OssHelper = new OssHelper();
