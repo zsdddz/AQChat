@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-03 14:31:23
+ * @LastEditTime: 2024-06-03 15:51:37
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -157,13 +157,14 @@ export default ()=>{
   const recallMsgFun = (result:any) =>{
     console.log("消息撤回",result);
     if(result.status){
-      appStore.removeMsg(result.msgId);
+      const curMsg = appStore.msgList.find(x=>x.msgId == result.msgId)
       const msg:Msg = {
         roomId:result.roomId,
         msgType:MsgTypeEnum.TIP,
-        msg:`你撤回了一条消息`
+        msg:'你撤回了一条消息',
+        ext:curMsg?.msg
       }
-      appStore.sendInfoLocalFun(msg)
+      appStore.removeMsg(result.msgId,msg);
     }else{
       ElMessage.error("消息撤回失败，请稍后再试")
     }
@@ -172,7 +173,6 @@ export default ()=>{
   const recallMsgNotifyFun = (result:any) =>{
     console.log("消息撤回通知",result);
     if(result.userId != appStore.userInfo.userId){
-      appStore.removeMsg(result.msgId);
       const user = appStore.memberList.find(x=>x.userId == result.userId);
       const name = user?.userName || '成员'
       const msg:Msg = {
@@ -180,7 +180,7 @@ export default ()=>{
         msgType:MsgTypeEnum.TIP,
         msg:`${name}撤回了一条消息`
       }
-      appStore.sendInfoLocalFun(msg)
+      appStore.removeMsg(result.msgId,msg);
     }
   }
    
@@ -194,6 +194,7 @@ export default ()=>{
         msg:`${result.user.userName} 已离线`
       }
       appStore.sendInfoLocalFun(msg)
+      appStore.setMsgId(result.msgId)
       appStore.deleteNumberList(result.user)
     }
   }
@@ -228,11 +229,12 @@ export default ()=>{
         msg:`${result.user.userName} 离开了房间`
       }
       appStore.sendInfoLocalFun(msg)
+      appStore.setMsgId(result.msgId)
       appStore.deleteNumberList(result.user)
     }
   }
   // 上传文件
-  const uploadFileFun = (msgCommand,file) =>{
+  const uploadFileFun = (msgCommand:number,file:File) =>{
     let callbackMethod = CallbackMethodManager.getCallback(msgCommand);
     //执行回调函数
     if (callbackMethod) {
@@ -284,6 +286,7 @@ export default ()=>{
       ext:result.ext
     }
     appStore.sendInfoLocalFun(msg)
+    appStore.setMsgId(result.msgId)
     if(appStore.soundActive){
       appStore.soundDom && appStore.soundDom.play();
     }
@@ -300,6 +303,7 @@ export default ()=>{
         msg:`${msgContent} 加入了房间`
       }
       appStore.sendInfoLocalFun(msg)
+      appStore.setMsgId(result.msgId)
       // 同步房间用户
       let model = new AQChatMSg.default.SyncRoomMembersCmd();
       model.setRoomid(result.roomId)

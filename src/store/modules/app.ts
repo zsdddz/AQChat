@@ -38,7 +38,9 @@ interface AppState {
     // 声音开启状态
     soundActive:boolean,
     // 声音dom
-    soundDom:any
+    soundDom:any,
+    // 消息id，更新用于监听变化，判断是否需要消息触底
+    msgId:number|string
 }
 
 const epoch = +new Date();
@@ -64,12 +66,16 @@ const useAppStore = defineStore('app', {
         msgStatusTimer:{},
         memberList:[],
         soundActive:false,
-        soundDom:null
+        soundDom:null,
+        msgId:''
     }),
     getters: {
         mobile: (state) => state.isMobile,
     },
     actions: {
+        setMsgId(msgId:number|string){
+            this.msgId = msgId;
+        },
         setIsMobile(mobile:boolean) {
             this.isMobile = mobile
         },
@@ -100,6 +106,7 @@ const useAppStore = defineStore('app', {
                 msgStatus:MsgStatusEnum.PENDING
             }
             this.sendInfoLocalFun(msgInfo)
+            this.setMsgId(msgId)
             this.sendInfoNetWorkFun(msgInfo)
         },
         sendInfoLocalFun(msg:Msg){
@@ -138,10 +145,10 @@ const useAppStore = defineStore('app', {
             this.msgList.unshift(msg)
         },
         // 撤回聊天消息
-        removeMsg(msgId:number|string){
+        removeMsg(msgId:number|string,msg:any){
             for(let i=this.msgList.length-1;i>=0;i--){
                 if(this.msgList[i].msgId == msgId){
-                    this.msgList.splice(i,1)
+                    this.msgList.splice(i,1,msg)
                     break;
                 }
             }

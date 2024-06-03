@@ -217,6 +217,10 @@ const selectIcon = (icon:string) =>{
   let iconContent = `<img src='${icon}' class='emo-image' />`;
   imEditorRef.value.editor.cmd.do("insertHTML", iconContent);
 }
+// 重新编辑
+const rewriteFun = (content:string)=>{
+  imEditorRef.value.editor.cmd.do("insertHTML", content);
+}
 // 发送文件
 const sendFile = async ()=>{
   const file =  uploadRef.value && uploadRef.value.files[0]
@@ -273,7 +277,7 @@ const uploadToOss = (msgInfo,file:File)=>{
   });
 }
 
-defineExpose({changeExpression})
+defineExpose({changeExpression,rewriteFun})
 </script>
 
 <style scoped lang="less">

@@ -14,7 +14,7 @@
           <el-scrollbar style="max-height: 100%" ref="contentScrollbarRef">
             <template v-for="(item,index) in msgList" :key="item.msgId">
               <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip msg-box">
-                {{ item.msg }}
+                {{ item.msg }}<span v-if="item.msg.indexOf('撤回')!=-1" class='rewrite-box' @click='rewriteFun(item.ext)'>重新编辑</span>
               </div>
               <div v-else-if="item.user.userId == userInfo.userId" class="mine-box msg-box">
                 <div class="mine-block">
@@ -100,7 +100,7 @@
           </div>
         </div>
         <!--聊天框底部-->
-        <im-chat></im-chat>
+        <im-chat ref="imCharRef"></im-chat>
       </div>
       <im-number/>
       <context-menu
@@ -156,6 +156,7 @@ const optionsComponent =  ref({
   y: 200
 })
 const currentMsg = ref()
+const imCharRef = ref()
 
 // 监听websocket状态
 watch(() => appStore.websocketStatus, (newV) => {
@@ -164,15 +165,26 @@ watch(() => appStore.websocketStatus, (newV) => {
   }
 })
 
+// 更新消息列表
 watch(() => appStore.msgList, (newV) => {
   msgList = newV;
+}, { deep: true })
+
+// 监听msgId变化，判断是否需要触底
+watch(() => appStore.msgId, (newV) => {
   newMsgCount.value +=1 ;
   initIntersectionObserver();
   if(isIntersecting.value){
     toBottom()
   }
-}, { deep: true })
+})
 
+// 重新编辑
+const rewriteFun =(ext:any)=>{
+  imCharRef.value && imCharRef.value.rewriteFun(ext)
+}
+
+// 右键菜单
 const onContextMenu = (e : MouseEvent,msg:any) =>{
   e.preventDefault();
   //显示组件菜单
@@ -182,6 +194,7 @@ const onContextMenu = (e : MouseEvent,msg:any) =>{
   currentMsg.value = msg;
 }
 
+// 撤回消息
 const recallMsgFun = ()=>{
   let model = new AQChatMSg.default.RecallMsgCmd();
   model.setRoomid(appStore.roomInfo.roomId);
@@ -191,7 +204,6 @@ const recallMsgFun = ()=>{
   )
 }
             
-
 // 绑定/解绑观察对象
 const initIntersectionObserver = ()=>{
   const dom = document.querySelectorAll(".msg-box");
@@ -368,6 +380,13 @@ const toBottom = () => {
           margin: 20px auto;
           font-size: 14px;
           color: #ccc;
+        }
+
+        .rewrite-box{
+          margin-left: 10px;
+          color: @im-primary;
+          position: relative;
+          cursor: pointer;
         }
 
         .file-card {
@@ -563,7 +582,6 @@ const toBottom = () => {
       }
     }
   }
-
 }
 /deep/.emo-image {
   height: 30px;
