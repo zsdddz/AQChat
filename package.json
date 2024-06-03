@@ -9,6 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@imengyu/vue3-context-menu": "^1.4.1",
     "@multiavatar/multiavatar": "^1.0.7",
     "ali-oss": "^6.20.0",
     "axios": "^0.24.0",
