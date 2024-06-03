@@ -14,7 +14,7 @@
           <el-scrollbar style="max-height: 100%" ref="contentScrollbarRef">
             <template v-for="(item,index) in msgList" :key="item.msgId">
               <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip msg-box">
-                {{ item.msg }}<span v-if="item.msg.indexOf('撤回')!=-1" class='rewrite-box' @click='rewriteFun(item.ext)'>重新编辑</span>
+                {{ item.msg }}<span v-if="item.msg.indexOf('撤回')!=-1 && item.ext" class='rewrite-box' @click='rewriteFun(item.ext)'>重新编辑</span>
               </div>
               <div v-else-if="item.user.userId == userInfo.userId" class="mine-box msg-box">
                 <div class="mine-block">

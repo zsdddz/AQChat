@@ -162,7 +162,7 @@ export default ()=>{
         roomId:result.roomId,
         msgType:MsgTypeEnum.TIP,
         msg:'你撤回了一条消息',
-        ext:curMsg?.msg
+        ext:curMsg?.msgType === MsgTypeEnum.TEXT ? curMsg?.msg : undefined
       }
       appStore.removeMsg(result.msgId,msg);
     }else{
