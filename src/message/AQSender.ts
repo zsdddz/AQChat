@@ -54,7 +54,7 @@ export default class AQSender {
      * @param funCallback 回调函数
      */
     connect(funCallback: () => void): void {
-        let strURL = `ws://${SERVER_HOST}`;
+        let strURL = `${SERVER_HOST}`;
         console.log(`准备连接服务器, URL = ${strURL}`);
 
         let oWebSocket = new w3cwebsocket(strURL);
