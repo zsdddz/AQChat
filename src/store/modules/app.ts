@@ -137,6 +137,15 @@ const useAppStore = defineStore('app', {
         setMsgRecord(msg:Msg){
             this.msgList.unshift(msg)
         },
+        // 撤回聊天消息
+        removeMsg(msgId:number|string){
+            for(let i=this.msgList.length-1;i>=0;i--){
+                if(this.msgList[i].msgId == msgId){
+                    this.msgList.splice(i,1)
+                    break;
+                }
+            }
+        },
         resetAllInfo(){
             this.roomInfo = {
                 roomId:'',
@@ -164,8 +173,6 @@ const useAppStore = defineStore('app', {
             if(!userObjet?.userId){
                 this.memberList.push(user)
             }
-            console.log("用户成员：",this.memberList);
-            
         },
         // 删除聊天室成员
         deleteNumberList(user:User){

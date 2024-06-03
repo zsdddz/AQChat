@@ -22,34 +22,35 @@
                   <div v-else-if="item.msgStatus === MsgStatusEnum.REJECTED" class="msg-failed" @click="reSendMsgFun(item,index)">!</div>
                   <div class="info-box">
                     <div class="user-name text-ellipsis">{{ item.user.userName }}</div>
-                    <div v-if="item.msgType === MsgTypeEnum.TEXT" class="text-block" v-html="item.msg"></div>
-                    <img v-else-if="item.msgType === MsgTypeEnum.IMAGE" class="send-image" v-bind:src="item.msg"
+                    <div @contextmenu="onContextMenu($event,item)" v-if="item.msgType === MsgTypeEnum.TEXT" class="text-block" v-html="item.msg"></div>
+                    <img @contextmenu="onContextMenu($event,item)" v-else-if="item.msgType === MsgTypeEnum.IMAGE" class="send-image" v-bind:src="item.msg"
                       @click="privewImage(item.msg)" preview="1" />
-                    <video v-else-if="item.msgType === MsgTypeEnum.VIDEO" class="send-video" width="320" height="240"
+                    <video @contextmenu="onContextMenu($event,item)" v-else-if="item.msgType === MsgTypeEnum.VIDEO" class="send-video" width="320" height="240"
                       controls>
                       <source :src="item.msg" type="video/mp4" />
                       您的浏览器不支持 HTML5 video 标签。
                     </video>
-                    <audio class="send-video" v-else-if="item.msgType === MsgTypeEnum.VOICE" controls>
+                    <audio @contextmenu="onContextMenu($event,item)" class="send-video" v-else-if="item.msgType === MsgTypeEnum.VOICE" controls>
                       <source :src="item.msg" type="audio/mpeg" />
                       您的浏览器不支持该音频格式。
                     </audio>
-                    <el-dropdown v-else-if="item.msgType === MsgTypeEnum.FILE" trigger="click">
-                      <div class="file-card">
-                        <div class="file-top">
-                          <div class="info nowrap-2">
-                            {{ item.ext }}
-                          </div>
-                          <img class="icon-file" src="@/assets/images/icon-file.png" alt="">
+                    <div @contextmenu="onContextMenu($event,item)" v-else-if="item.msgType === MsgTypeEnum.FILE" class="file-card">
+                      <div class="file-top">
+                        <div class="info nowrap-2">
+                          {{ item.ext }}
                         </div>
-                        <div class="file-bottom">文件</div>
+                        <img class="icon-file" src="@/assets/images/icon-file.png" alt="">
                       </div>
+                      <div class="file-bottom">文件</div>
+                    </div>
+                    <!-- <el-dropdown v-else-if="item.msgType === MsgTypeEnum.FILE" trigger="click">
+                      
                       <template #dropdown>
                         <el-dropdown-menu>
                           <el-dropdown-item @click="downloadFileFun(item.msg, item.ext)">下载</el-dropdown-item>
                         </el-dropdown-menu>
                       </template>
-                    </el-dropdown>
+                    </el-dropdown> -->
                   </div>
                   <div class="mine-avatar" v-html="item.user.userAvatar"></div>
                 </div>
@@ -102,6 +103,13 @@
         <im-chat></im-chat>
       </div>
       <im-number/>
+      <context-menu
+        v-model:show="showMenu"
+        :options="optionsComponent"
+      >
+        <context-menu-item v-if="currentMsg.msgType === MsgTypeEnum.FILE" label="下载" @click="downloadFileFun(currentMsg.msg, currentMsg.ext)" />
+        <context-menu-item label="撤回" @click="recallMsgFun" />
+      </context-menu>
     </div>
   </div>
 </template>
@@ -139,6 +147,15 @@ const watchObject = new IntersectionObserver((entries)=>{
     newMsgCount.value = 0;
   }
 },{root:null,threshold:0})
+const showMenu = ref(false);
+// 菜单配置
+const optionsComponent =  ref({
+  zIndex: 3,
+  minWidth: 230,
+  x: 500,
+  y: 200
+})
+const currentMsg = ref()
 
 // 监听websocket状态
 watch(() => appStore.websocketStatus, (newV) => {
@@ -155,6 +172,25 @@ watch(() => appStore.msgList, (newV) => {
     toBottom()
   }
 }, { deep: true })
+
+const onContextMenu = (e : MouseEvent,msg:any) =>{
+  e.preventDefault();
+  //显示组件菜单
+  showMenu.value = true;
+  optionsComponent.value.x = e.x;
+  optionsComponent.value.y = e.y;
+  currentMsg.value = msg;
+}
+
+const recallMsgFun = ()=>{
+  let model = new AQChatMSg.default.RecallMsgCmd();
+  model.setRoomid(appStore.roomInfo.roomId);
+  model.setMsgid(currentMsg.value.msgId);
+  AQSender.getInstance().sendMsg(
+    AQChatMSg.default.MsgCommand.RECALL_MSG_CMD, model
+  )
+}
+            
 
 // 绑定/解绑观察对象
 const initIntersectionObserver = ()=>{
@@ -329,7 +365,6 @@ const toBottom = () => {
           padding: 5px 10px;
           border-radius: 20px;
           margin: 0 auto;
-          width: 150px;
           margin: 20px auto;
           font-size: 14px;
           color: #ccc;

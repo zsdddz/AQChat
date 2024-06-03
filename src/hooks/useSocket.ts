@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-24 16:42:53
+ * @LastEditTime: 2024-06-03 14:31:23
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -115,6 +115,14 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.LEAVE_ROOM_NOTIFY:
             leaveRoomNotufyFun(result)
             break;
+          // 消息撤回
+          case AQChatMSg.default.MsgCommand.RECALL_MSG_ACK:
+            recallMsgFun(result)
+            break;
+          // 消息撤回通知
+          case AQChatMSg.default.MsgCommand.RECALL_MSG_NOTIFY:
+            recallMsgNotifyFun(result)
+            break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
             exceptionFun(result);
@@ -145,6 +153,37 @@ export default ()=>{
     }
   }
 
+  // 消息撤回
+  const recallMsgFun = (result:any) =>{
+    console.log("消息撤回",result);
+    if(result.status){
+      appStore.removeMsg(result.msgId);
+      const msg:Msg = {
+        roomId:result.roomId,
+        msgType:MsgTypeEnum.TIP,
+        msg:`你撤回了一条消息`
+      }
+      appStore.sendInfoLocalFun(msg)
+    }else{
+      ElMessage.error("消息撤回失败，请稍后再试")
+    }
+  }
+  // 消息撤回通知
+  const recallMsgNotifyFun = (result:any) =>{
+    console.log("消息撤回通知",result);
+    if(result.userId != appStore.userInfo.userId){
+      appStore.removeMsg(result.msgId);
+      const user = appStore.memberList.find(x=>x.userId == result.userId);
+      const name = user?.userName || '成员'
+      const msg:Msg = {
+        roomId:result.roomId,
+        msgType:MsgTypeEnum.TIP,
+        msg:`${name}撤回了一条消息`
+      }
+      appStore.sendInfoLocalFun(msg)
+    }
+  }
+   
   // 房间成员离线
   const offlineNotyfyFun = (result:any) =>{
     console.log("房间成员离线",result);
@@ -230,7 +269,7 @@ export default ()=>{
   }
   // 接收广播消息
   const broadcastMsgFun = (result:any) =>{
-    console.log("接收广播消息",result);
+    // console.log("接收广播消息",result);
     if(result.userId === appStore.userInfo.userId) return;
     const msg:Msg = {
       user:{
