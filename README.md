@@ -31,21 +31,12 @@ AQChat 一个极速、便捷的匿名在线即时聊天室。
 <img src="https://aqchat.oss-cn-shenzhen.aliyuncs.com/demo/20240511212801.jpg" height="500">
 
 
-## 安装依赖
+# 部署文档
 
-```Shell
-npm install
+![戴戴的Linux](https://gitee.com/StephenJose_Dai/dockerhaschat/raw/master/daidailinux.jpg)
 
-
-# 建议
-npm install --registry=https://registry.npmmirror.com
-```
-
-## 启动项目
-
-```javascript
-npm run dev
-```
+- 微信扫一扫二维码关注公众号
+- 发送aqchat可获取部署教程
 
 ## 更新日志
 
