@@ -376,7 +376,6 @@ const toBottom = () => {
         .msg-tip {
           padding: 5px 10px;
           border-radius: 20px;
-          margin: 0 auto;
           margin: 20px auto;
           font-size: 14px;
           color: #ccc;
