@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-03 15:51:37
+ * @LastEditTime: 2024-06-04 17:01:56
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -299,6 +299,7 @@ export default ()=>{
       const msgContent = result.user.userId === appStore.userInfo.userId ? '您' : result.user.userName;
       const msg:Msg = {
         roomId:result.roomId,
+        msgId:+new Date()+'',
         msgType:MsgTypeEnum.TIP,
         msg:`${msgContent} 加入了房间`
       }
