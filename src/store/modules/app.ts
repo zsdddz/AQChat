@@ -106,11 +106,11 @@ const useAppStore = defineStore('app', {
                 msgStatus:MsgStatusEnum.PENDING
             }
             this.sendInfoLocalFun(msgInfo)
-            this.setMsgId(msgId)
             this.sendInfoNetWorkFun(msgInfo)
         },
         sendInfoLocalFun(msg:Msg){
             this.msgList.push(msg)
+            this.setMsgId(msg.msgId as never)
         },
         sendInfoNetWorkFun(msg:Msg){
             let sendMsg = new AQChatMSg.default.SendMsgCmd();
