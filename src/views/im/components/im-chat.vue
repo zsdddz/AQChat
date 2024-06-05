@@ -248,7 +248,7 @@ const sendFile = async ()=>{
     roomId:appStore.roomInfo.roomId,
     msgId:msgId,
     msgType:fileType,
-    msg:null,
+    msg:'',
     msgStatus:MsgStatusEnum.PENDING,
     ext:file.name
   }
@@ -256,15 +256,14 @@ const sendFile = async ()=>{
   let reader = new FileReader();
   reader.onload = (e)=> {
     if(!e.target?.result) return;
-    msgInfo.msg = e.target.result;
+    msgInfo.msg = e.target.result as string;
     appStore.sendInfoLocalFun(msgInfo)
     uploadToOss(msgInfo,file)
   };
   reader.readAsDataURL(file);
 }
 // 上传文件到服务器
-const uploadToOss = (msgInfo,file:File)=>{
-  AQChatMSg.default.MsgType.VIDEO
+const uploadToOss = (msgInfo:Msg,file:File)=>{
   OssHelper.getInstance().init(msgInfo.msgType,()=>{
     OssHelper.getInstance().uploadFile(file)
     .then((res)=>{
