@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-22 22:36:37
- * @LastEditTime: 2024-06-03 11:30:19
+ * @LastEditTime: 2024-06-06 10:02:24
  */
 
 import * as AQChatMSg from '../protocol/AQChatMsgProtocol_pb';
@@ -18,6 +18,7 @@ import SyncRoomMembersAckHandler from './SyncRoomMembersAckHandler';
 import SendMsgAckHandler from './SendMsgAckHandler';
 import OfflineNotifyHandler from './OfflineNotifyHandler';
 import OfflineMsgHandler from './OfflineMsgHandler';
+import LeaveRoomAckHandler from './LeaveRoomAckHandler';
 import LeaveRoomNotifyHandler from './LeaveRoomNotifyHandler';
 import RecallMsgAckHandler from './RecallMsgAckHandler';
 import RecallMsgNotifyHandler from './RecallMsgNotifyHandler';
@@ -47,13 +48,14 @@ export default class AQMsgHandlerFactory {
         this.handlerMap[msgCommand.SEND_MSG_ACK] = new SendMsgAckHandler();
         this.handlerMap[msgCommand.OFFLINE_NOTIFY] = new OfflineNotifyHandler();
         this.handlerMap[msgCommand.OFFLINE_MSG] = new OfflineMsgHandler();
+        this.handlerMap[msgCommand.LEAVE_ROOM_ACK] = new LeaveRoomAckHandler();
         this.handlerMap[msgCommand.LEAVE_ROOM_NOTIFY] = new LeaveRoomNotifyHandler();
         this.handlerMap[msgCommand.RECALL_MSG_ACK] = new RecallMsgAckHandler();
         this.handlerMap[msgCommand.RECALL_MSG_NOTIFY] = new RecallMsgNotifyHandler();
         this.handlerMap[msgCommand.HEART_BEAT_ACK] = "心跳保活";
     }
 
-    handle(msgCommand:number, msgBody) {
+    handle(msgCommand:number, msgBody:any) {
         if(msgCommand<0||null==msgBody){
             return;
         }
