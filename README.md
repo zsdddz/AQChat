@@ -37,6 +37,7 @@ AQChat 一个极速、便捷的匿名在线即时聊天室。
 
 - 微信扫一扫二维码关注公众号
 - 发送aqchat可获取AQChat部署教程
+- 发送aqchatonekey可获取AQChat一键部署脚本
 
 ## 更新日志
 
