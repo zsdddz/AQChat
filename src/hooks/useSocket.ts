@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-04 17:01:56
+ * @LastEditTime: 2024-06-12 15:00:26
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -71,6 +71,7 @@ export default ()=>{
           // 加入房间回调
           case AQChatMSg.default.MsgCommand.JOIN_ROOM_ACK:
             appStore.setRoomInfo(result);
+            sendSyncChatRecordFun();
             break;
           // 恢复用户连接
           case AQChatMSg.default.MsgCommand.RECOVER_USER_ACK:
@@ -183,7 +184,14 @@ export default ()=>{
       appStore.removeMsg(result.msgId,msg);
     }
   }
-   
+  // 发送消息同步指令
+  const sendSyncChatRecordFun = () => {
+    let syncChatRecord = new AQChatMSg.default.SyncChatRecordCmd();
+    syncChatRecord.setRoomid(appStore.roomInfo.roomId);
+    AQSender.getInstance().sendMsg(
+      AQChatMSg.default.MsgCommand.SYNC_CHAT_RECORD_CMD, syncChatRecord
+    )
+  }
   // 房间成员离线
   const offlineNotyfyFun = (result:any) =>{
     console.log("房间成员离线",result);

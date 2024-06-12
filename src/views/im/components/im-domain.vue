@@ -16,18 +16,46 @@
   </div>
   <el-dialog
     v-model="dialogVisible"
-    width="510px"
+    width="580px"
     class="pop-start"
   >
     <div class="tip-content">
       <div class="form-info">
-        <el-form :model="roomForm" label-width="100px" ref="roomFormRef" :rules="rules">
+        <el-form :model="roomForm" label-width="160px" ref="roomFormRef" :rules="rules">
           <el-form-item :inline-message="true" class="form-item" prop="roomNo" label="房间号">
             <el-input ref="roomNoRef" placeholder="请输入房间号" v-integer clearable v-model="roomForm.roomNo" />
           </el-form-item>
-          <el-form-item :inline-message="true" class="form-item" v-if="step == 1" label="房间名" prop="roomName">
-            <el-input style="height: 40px;" placeholder="请输入房间名" clearable v-model="roomForm.roomName" />
-          </el-form-item>
+          <template v-if="step == 1">
+            <el-form-item :inline-message="true" class="form-item" label="房间名" prop="roomName">
+              <el-input style="height: 40px;" placeholder="请输入房间名" clearable v-model="roomForm.roomName" />
+            </el-form-item>
+            <el-row>
+              <el-col :span="10">
+                <el-form-item :inline-message="true" class="form-item" label="开启AI" prop="ai">
+                  <el-switch
+                    v-model="roomForm.ai"
+                    inline-prompt
+                    active-text="是"
+                    inactive-text="否"
+                    :active-value="1"
+                    :inactive-value="0"
+                  />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item :inline-message="true" class="form-item" label="允许查看全部聊天信息" prop="history">
+                  <el-switch
+                    v-model="roomForm.history"
+                    inline-prompt
+                    active-text="是"
+                    inactive-text="否"
+                    :active-value="1"
+                    :inactive-value="0"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
+          </template>
         </el-form>
       </div>
       
@@ -57,14 +85,18 @@ import { useRouter } from "vue-router";
 
 interface RoomForm {
   roomNo:string,
-  roomName?:string
+  roomName?:string,
+  history?:number,
+  ai?:number,
 }
 const appStore = useAppStore()
 const step = ref(0);
 const dialogVisible = ref(false)
 const roomForm = ref<RoomForm>({
   roomNo:'',
-  roomName:''
+  roomName:'',
+  history:1,
+  ai:0
 })
 const router = useRouter();
 const roomNoRef = ref()
@@ -114,10 +146,11 @@ const initForm = ()=>{
   dialogVisible.value = true
   roomForm.value.roomName = '';
   roomForm.value.roomNo = '';
+  roomForm.value.ai = 0;
+  roomForm.value.history = 1;
   nextTick(()=>{
     roomFormRef.value.resetFields()
     setTimeout(()=>{
-      
       roomNoRef.value.focus();
     },500)
   })
@@ -158,19 +191,23 @@ const enterRoomFun = async ()=>{
     }
     if(step.value == 1){
       if (!roomFormRef.value) return
-      await roomFormRef.value.validate((valid, fields) => {
+      await roomFormRef.value.validate((valid:any, fields:any) => {
         if (valid) {
-          AQSender.getInstance().sendMsg(
-          AQChatMSg.default.MsgCommand.CREATE_ROOM_CMD,
-          new AQChatMSg.default.CreateRoomCmd([roomForm.value.roomNo.toString(),roomForm.value.roomName.trim()])
-        )
+          let msg = new AQChatMSg.default.CreateRoomCmd();
+          msg.setRoomno(roomForm.value.roomNo.toString());
+          if(roomForm.value.roomName){
+            msg.setRoomname(roomForm.value.roomName.trim());
+          }
+          msg.setHistory(roomForm.value.history);
+          msg.setAi(roomForm.value.ai);
+          AQSender.getInstance().sendMsg(AQChatMSg.default.MsgCommand.CREATE_ROOM_CMD,msg)
         } else {
           console.log('error submit!', fields)
         }
       })
     }else if(step.value == 2){
       if (!roomFormRef.value) return
-      await roomFormRef.value.validate((valid, fields) => {
+      await roomFormRef.value.validate((valid:any, fields:any) => {
         if (valid) {
           let msg = new AQChatMSg.default.JoinRoomCmd();
           msg.setRoomno(roomForm.value.roomNo);
@@ -284,6 +321,7 @@ const enterRoomFun = async ()=>{
         align-items: center;
         color: @txt-color;
         margin-top: 40px;
+        margin-bottom:0;
         width: 100%;
         .el-input{
           outline: none;
