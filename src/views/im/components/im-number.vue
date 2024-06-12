@@ -1,9 +1,17 @@
+<!--
+ * @Author: howcode 1051495009@qq.com
+ * @Date: 2024-05-23 11:33:03
+ * @LastEditors: howcode 1051495009@qq.com
+ * @LastEditTime: 2024-06-12 14:47:49
+ * @Description: 
+-->
 <template>
   <div class="chat-number ">
     <div class="room-txt">房间成员({{ appStore.memberList.length }})</div>
     <div class="number-list scroll_container">
       <div class="number-item" v-for="item in appStore.memberList" :key="item.userId">
-        <div class="user-avatar" v-html="item.userAvatar"></div>
+        <img v-if="item.userAvatar.indexOf('png') != -1" class="ai-avatar" :src="item.userAvatar" />
+        <div v-else class="user-avatar" v-html="item.userAvatar"></div>
         <div class="user-name text-ellipsis" :title="item.userName">{{ item.userName }}</div>
       </div>
     </div>
@@ -41,6 +49,13 @@ const appStore = useAppStore()
       width: calc(100% - 30px - 10px);
       text-align: left;
       color: @txt-color;
+    }
+    .ai-avatar{
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin-right: 6px;
+      margin-left: -4px;
     }
     .user-avatar {
       width: 30px;
