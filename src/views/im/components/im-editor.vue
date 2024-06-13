@@ -46,14 +46,6 @@ const initChat = () => {
   chat.value.enterSend = sendVerify
 }
 
-// 更新消息列表
-watch(() => appStore.memberList, (newV:any) => {
-  memberList = newV.filter((x:User)=>x.userId != appStore.userInfo.userId);
-  if(memberList.length > 0){
-    initUserList();
-  }
-}, { immediate:true,deep: true })
-
 const initUserList = ()=>{
   if (!chat.value) return
   chat.value.updateUserList(memberList)
@@ -84,19 +76,13 @@ const sendVerify = ()=> {
   chat.value.clear()
 }
 
-// 发送消息
-const sendMsg = () => {
-  if (!chat.value) return
-  // 获取html
-  const htmlMsg = chat.value.getHtml()
-  console.log(htmlMsg, 'html')
-  // 获取纯文本
-  const textMsg = chat.value.getText()
-  console.log(textMsg, 'text')
-  // 获取聊天框中@人员
-  const callUserList = chat.value.getCallUserList()
-  console.log(callUserList, 'callUserList')
-}
+// 更新消息列表
+watch(() => appStore.memberList, (newV:any) => {
+  memberList = newV.filter((x:User)=>x.userId != appStore.userInfo.userId);
+  if(memberList.length > 0){
+    initUserList();
+  }
+}, { immediate:true,deep: true })
 
 onMounted(() => {
   initChat()
