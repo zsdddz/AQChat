@@ -75,12 +75,10 @@ const sendVerify = ()=> {
   } else {
     // 获取聊天框中@人员
     const callUserList = chat.value.getCallUserList()
-    console.log(callUserList, 'callUserList')
-    
     let extArray = callUserList.map((x:any)=>x.userId);
+    extArray = extArray.map((element:string) => "@"+element);
     let ext = extArray.join(',');
-    appStore.sendInfo(sendContent,MsgTypeEnum.TEXT,ext)
-    
+    appStore.sendInfo(sendContent,MsgTypeEnum.TEXT,ext);
   }
   // 清空聊天框
   chat.value.clear()

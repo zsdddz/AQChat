@@ -57,7 +57,8 @@
               </div>
               <div v-else class="reciver-box msg-box">
                 <div class="reciver-block">
-                  <div class="reciver-avatar" v-html="item.user.userAvatar">
+                  <img v-if="item.user.userAvatar.indexOf('png') != -1" class="ai-avatar" :src="item.user.userAvatar" />
+                  <div v-else class="reciver-avatar" v-html="item.user.userAvatar">
                   </div>
                   <div class="info-box">
                     <div class="user-name text-ellipsis">{{ item.user.userName }}</div>
@@ -540,6 +541,12 @@ const toBottom = () => {
             }
 
             .reciver-avatar {
+              width: 45px;
+              height: 45px;
+              margin-left: 15px;
+            }
+
+            .ai-avatar{
               width: 45px;
               height: 45px;
               margin-left: 15px;

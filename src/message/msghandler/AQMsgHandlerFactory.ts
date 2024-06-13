@@ -1,7 +1,7 @@
 /*
  * @Author: zsdddz
  * @Date: 2024-04-22 22:36:37
- * @LastEditTime: 2024-06-06 10:02:24
+ * @LastEditTime: 2024-06-13 17:39:06
  */
 
 import * as AQChatMSg from '../protocol/AQChatMsgProtocol_pb';
@@ -23,6 +23,7 @@ import LeaveRoomNotifyHandler from './LeaveRoomNotifyHandler';
 import RecallMsgAckHandler from './RecallMsgAckHandler';
 import RecallMsgNotifyHandler from './RecallMsgNotifyHandler';
 import ExceptionMsgHandler from './ExceptionMsgHandler';
+import StreamMsgNotifyHandler from './StreamMsgNotifyHandler';
 
 export default class AQMsgHandlerFactory {
     private static instance: AQMsgHandlerFactory = new AQMsgHandlerFactory()
@@ -52,6 +53,7 @@ export default class AQMsgHandlerFactory {
         this.handlerMap[msgCommand.LEAVE_ROOM_NOTIFY] = new LeaveRoomNotifyHandler();
         this.handlerMap[msgCommand.RECALL_MSG_ACK] = new RecallMsgAckHandler();
         this.handlerMap[msgCommand.RECALL_MSG_NOTIFY] = new RecallMsgNotifyHandler();
+        this.handlerMap[msgCommand.STREAM_MSG_NOTIFY] = new StreamMsgNotifyHandler();
         this.handlerMap[msgCommand.HEART_BEAT_ACK] = "心跳保活";
     }
 

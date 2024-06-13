@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-13 15:05:45
+ * @LastEditTime: 2024-06-13 18:11:06
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -17,6 +17,7 @@ import MsgStatusEnum from "../enums/MsgStatusEnum"
 import Msg from "../class/Msg"
 import MsgTypeEnum from "../enums/MsgTypeEnum"
 import { ref } from 'vue'
+import StreamTypeEnum from '@/enums/StreamTypeEnum';
 
 export default ()=>{
 
@@ -24,6 +25,7 @@ export default ()=>{
   const router = useRouter();
   const route = useRoute();
   const showTip = ref(false)
+  const aiMsgId = ref()
   let loading:any = null
   
   // 初始化websocket
@@ -124,6 +126,10 @@ export default ()=>{
           case AQChatMSg.default.MsgCommand.RECALL_MSG_NOTIFY:
             recallMsgNotifyFun(result)
             break;
+          // 流消息
+          case AQChatMSg.default.MsgCommand.STREAM_MSG_NOTIFY:
+            streamMsgNotifyFun(result)
+            break;
           // 异常消息回调
           case AQChatMSg.default.MsgCommand.EXCEPTION_MSG:
             exceptionFun(result);
@@ -153,7 +159,28 @@ export default ()=>{
       loading && loading.close();
     }
   }
+  const streamMsgNotifyFun = (result:any) =>{
+    console.log("AI消息：",result);
 
+    let currentMsg = appStore.msgList.find(x=>x.msgId === result.msgId);
+    if(currentMsg){
+      currentMsg.msg += result.msg
+    }else{
+      const msg:Msg = {
+        user:{
+          userId:result.userId,
+          userAvatar:result.userAvatar,
+          userName:result.userName,
+        },
+        roomId:result.roomId,
+        msgType:MsgTypeEnum.TEXT,
+        msg:result.msg,
+        msgId:result.msgId
+      }
+      appStore.sendInfoLocalFun(msg)
+      appStore.setMsgId(result.msgId)
+    }
+  }
   // 消息撤回
   const recallMsgFun = (result:any) =>{
     console.log("消息撤回",result);
