@@ -1,8 +1,8 @@
 /*
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-11 11:53:19
- * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-24 16:30:06
+ * @LastEditors: zsdddz hitd@foxmail.com
+ * @LastEditTime: 2024-06-13 15:35:30
  * @Description: 雪花id生成
  */
 export default class CustomSnowflake {

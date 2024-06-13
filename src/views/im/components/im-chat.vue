@@ -51,8 +51,7 @@ import CustomSnowflake from "@/utils/CustomSnowflake"
 import Msg from '@/class/Msg'
 import MsgStatusEnum from '@/enums/MsgStatusEnum'
 
-const epoch = +new Date();
-const customSnowflake = new CustomSnowflake(1,epoch);
+const customSnowflake = new CustomSnowflake(1);
 const appStore = useAppStore()
 const expressionShow = ref(false)
 const imContent = ref('')
