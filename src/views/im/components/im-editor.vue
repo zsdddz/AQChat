@@ -19,12 +19,13 @@ import ChatArea from 'chatarea'
 import 'chatarea/lib/ChatArea.css'
 import MsgTypeEnum from "@/enums/MsgTypeEnum"
 import useAppStore from "@/store/modules/app"
+import User from '@/class/User'
 
 const chat = ref();
 const appStore = useAppStore()
 const showPopover = ref(false)
 const chatElm = ref()
-let memberList = appStore.memberList;
+let memberList:Array<User> = [];
 const initChat = () => {
   // 实例chat对象
   chat.value = new ChatArea({
@@ -47,39 +48,22 @@ const initChat = () => {
 
 // 更新消息列表
 watch(() => appStore.memberList, (newV:any) => {
-  memberList = newV;
-  console.log("更新用户列表",memberList);
-  
+  memberList = newV.filter((x:User)=>x.userId != appStore.userInfo.userId);
   if(memberList.length > 0){
     initUserList();
   }
-}, { deep: true })
+}, { immediate:true,deep: true })
 
 const initUserList = ()=>{
   if (!chat.value) return
-  // const nowUserList = chat.value.getCallUserTagList();
   chat.value.updateUserList(memberList)
-  console.log("更新艾特列表",memberList);
-  
-  // for(let i =0;i<memberList.length;i++){
-  //   if(!nowUserList.find((x:User)=>x.userId == memberList[i].userId)){
-  //     chat.value.updateUserList(memberList[i])
-  //   }
-  // }
-  
 }
 
 // 发送校验
 const sendVerify = ()=> {
 
   if (!chat.value) return
-
-  // 获取聊天框html内容
-  console.log(chat.value.richText.innerHTML);
-  console.log(chat.value.getHtml());
-  
-  // return
-  const htmlMsg_1 = chat.value.richText.innerHTML
+  const htmlMsg_1 = chat.value.getHtml({needUserId: true})
   if(!htmlMsg_1) return
   const sendContent = htmlMsg_1;
   if (sendContent.length == 0) {
@@ -89,8 +73,14 @@ const sendVerify = ()=> {
     }, 1000);
     return;
   } else {
-    console.log(sendContent);
-    appStore.sendInfo(sendContent,MsgTypeEnum.TEXT)
+    // 获取聊天框中@人员
+    const callUserList = chat.value.getCallUserList()
+    console.log(callUserList, 'callUserList')
+    
+    let extArray = callUserList.map((x:any)=>x.userId);
+    let ext = extArray.join(',');
+    appStore.sendInfo(sendContent,MsgTypeEnum.TEXT,ext)
+    
   }
   // 清空聊天框
   chat.value.clear()
@@ -138,6 +128,7 @@ defineExpose({
     height: 66%;
     .input-editor{
       height: 100%;
+      overflow-y: auto;
     }
   }
 

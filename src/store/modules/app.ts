@@ -91,7 +91,7 @@ const useAppStore = defineStore('app', {
         setWebsocketStatus(status:boolean) {
             this.websocketStatus = status
         },
-        sendInfo(msg:string,msgType:MsgTypeEnum){
+        sendInfo(msg:string,msgType:MsgTypeEnum,ext:undefined){
             const msgId = customSnowflake.nextId();
             const msgInfo:Msg = {
                 user:{
@@ -103,7 +103,8 @@ const useAppStore = defineStore('app', {
                 msgId:msgId,
                 msgType:msgType,
                 msg:msg,
-                msgStatus:MsgStatusEnum.PENDING
+                msgStatus:MsgStatusEnum.PENDING,
+                ext:ext
             }
             this.sendInfoLocalFun(msgInfo)
             this.sendInfoNetWorkFun(msgInfo)

@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-12 15:00:26
+ * @LastEditTime: 2024-06-13 15:05:45
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -279,7 +279,7 @@ export default ()=>{
   }
   // 接收广播消息
   const broadcastMsgFun = (result:any) =>{
-    // console.log("接收广播消息",result);
+    console.log("接收广播消息",result);
     if(result.userId === appStore.userInfo.userId) return;
     const msg:Msg = {
       user:{
@@ -297,6 +297,16 @@ export default ()=>{
     appStore.setMsgId(result.msgId)
     if(appStore.soundActive){
       appStore.soundDom && appStore.soundDom.play();
+    }
+    // 判断是否被艾特
+    if(result.ext.indexOf(appStore.userInfo.userId) != -1){
+      if (window.Notification && Notification.permission !== "denied") {
+        Notification.requestPermission(function (status) {
+          let n = new Notification("AQChat消息通知", {
+            body: "有用户@了你，快来查看消息吧",
+          });
+        });
+      }
     }
   }
   // 其他人加入房间通知

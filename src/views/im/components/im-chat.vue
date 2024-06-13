@@ -220,8 +220,10 @@ const selectIcon = (icon:string) =>{
 }
 // 重新编辑
 const rewriteFun = (content:string)=>{
-  imEditorRef.value.chat.richText.innerHTML = content
-  imEditorRef.value.chat.enable()
+  // imEditorRef.value.chat.richText.innerHTML = content
+  // imEditorRef.value.chat.enable()
+  // 第二配置项参数可以控制是否保留当前聊天框内容进行拼接回填内容
+  imEditorRef.value.chat.reverseAnalysis(content, true)
 }
 
 // 发送文件
