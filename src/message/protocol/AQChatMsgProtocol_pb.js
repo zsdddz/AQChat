@@ -1589,7 +1589,8 @@ proto.chat_msg.JoinRoomAck.toObject = function(includeInstance, msg) {
   var f, obj = {
     roomid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomno: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    roomname: jspb.Message.getFieldWithDefault(msg, 3, "")
+    roomname: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    ai: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -1638,6 +1639,10 @@ proto.chat_msg.JoinRoomAck.deserializeBinaryFromReader = function(msg, reader) {
       var value = /** @type {string} */ (reader.readString());
       msg.setRoomname(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setAi(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -1685,6 +1690,13 @@ proto.chat_msg.JoinRoomAck.serializeBinaryToWriter = function(message, writer) {
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getAi();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
       f
     );
   }
@@ -1742,6 +1754,24 @@ proto.chat_msg.JoinRoomAck.prototype.getRoomname = function() {
  */
 proto.chat_msg.JoinRoomAck.prototype.setRoomname = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional int32 ai = 4;
+ * @return {number}
+ */
+proto.chat_msg.JoinRoomAck.prototype.getAi = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.chat_msg.JoinRoomAck} returns this
+ */
+proto.chat_msg.JoinRoomAck.prototype.setAi = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 
@@ -1999,7 +2029,8 @@ proto.chat_msg.CreateRoomAck.toObject = function(includeInstance, msg) {
   var f, obj = {
     roomid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomno: jspb.Message.getFieldWithDefault(msg, 2, 0),
-    roomname: jspb.Message.getFieldWithDefault(msg, 3, "")
+    roomname: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    ai: jspb.Message.getFieldWithDefault(msg, 4, 0)
   };
 
   if (includeInstance) {
@@ -2048,6 +2079,10 @@ proto.chat_msg.CreateRoomAck.deserializeBinaryFromReader = function(msg, reader)
       var value = /** @type {string} */ (reader.readString());
       msg.setRoomname(value);
       break;
+    case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setAi(value);
+      break;
     default:
       reader.skipField();
       break;
@@ -2095,6 +2130,13 @@ proto.chat_msg.CreateRoomAck.serializeBinaryToWriter = function(message, writer)
   if (f.length > 0) {
     writer.writeString(
       3,
+      f
+    );
+  }
+  f = message.getAi();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
       f
     );
   }
@@ -2152,6 +2194,24 @@ proto.chat_msg.CreateRoomAck.prototype.getRoomname = function() {
  */
 proto.chat_msg.CreateRoomAck.prototype.setRoomname = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
+};
+
+
+/**
+ * optional int32 ai = 4;
+ * @return {number}
+ */
+proto.chat_msg.CreateRoomAck.prototype.getAi = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.chat_msg.CreateRoomAck} returns this
+ */
+proto.chat_msg.CreateRoomAck.prototype.setAi = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
 };
 
 
@@ -5626,7 +5686,7 @@ proto.chat_msg.RecoverUserAck.prototype.hasRoom = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.chat_msg.Room.repeatedFields_ = [4];
+proto.chat_msg.Room.repeatedFields_ = [5];
 
 
 
@@ -5662,6 +5722,7 @@ proto.chat_msg.Room.toObject = function(includeInstance, msg) {
     roomid: jspb.Message.getFieldWithDefault(msg, 1, ""),
     roomno: jspb.Message.getFieldWithDefault(msg, 2, 0),
     roomname: jspb.Message.getFieldWithDefault(msg, 3, ""),
+    ai: jspb.Message.getFieldWithDefault(msg, 4, 0),
     membersList: jspb.Message.toObjectList(msg.getMembersList(),
     proto.chat_msg.User.toObject, includeInstance)
   };
@@ -5713,6 +5774,10 @@ proto.chat_msg.Room.deserializeBinaryFromReader = function(msg, reader) {
       msg.setRoomname(value);
       break;
     case 4:
+      var value = /** @type {number} */ (reader.readInt32());
+      msg.setAi(value);
+      break;
+    case 5:
       var value = new proto.chat_msg.User;
       reader.readMessage(value,proto.chat_msg.User.deserializeBinaryFromReader);
       msg.addMembers(value);
@@ -5767,10 +5832,17 @@ proto.chat_msg.Room.serializeBinaryToWriter = function(message, writer) {
       f
     );
   }
+  f = message.getAi();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
   f = message.getMembersList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      4,
+      5,
       f,
       proto.chat_msg.User.serializeBinaryToWriter
     );
@@ -5833,12 +5905,30 @@ proto.chat_msg.Room.prototype.setRoomname = function(value) {
 
 
 /**
- * repeated User members = 4;
+ * optional int32 ai = 4;
+ * @return {number}
+ */
+proto.chat_msg.Room.prototype.getAi = function() {
+  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
+};
+
+
+/**
+ * @param {number} value
+ * @return {!proto.chat_msg.Room} returns this
+ */
+proto.chat_msg.Room.prototype.setAi = function(value) {
+  return jspb.Message.setProto3IntField(this, 4, value);
+};
+
+
+/**
+ * repeated User members = 5;
  * @return {!Array<!proto.chat_msg.User>}
  */
 proto.chat_msg.Room.prototype.getMembersList = function() {
   return /** @type{!Array<!proto.chat_msg.User>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.chat_msg.User, 4));
+    jspb.Message.getRepeatedWrapperField(this, proto.chat_msg.User, 5));
 };
 
 
@@ -5847,7 +5937,7 @@ proto.chat_msg.Room.prototype.getMembersList = function() {
  * @return {!proto.chat_msg.Room} returns this
 */
 proto.chat_msg.Room.prototype.setMembersList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 4, value);
+  return jspb.Message.setRepeatedWrapperField(this, 5, value);
 };
 
 
@@ -5857,7 +5947,7 @@ proto.chat_msg.Room.prototype.setMembersList = function(value) {
  * @return {!proto.chat_msg.User}
  */
 proto.chat_msg.Room.prototype.addMembers = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 4, opt_value, proto.chat_msg.User, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 5, opt_value, proto.chat_msg.User, opt_index);
 };
 
 
