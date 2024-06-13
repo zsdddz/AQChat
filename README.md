@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-25 09:15:08
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-03 16:44:04
+ * @LastEditTime: 2024-06-13 20:00:03
  * @Description: 
 -->
 # 项目说明
@@ -40,6 +40,11 @@ AQChat 一个极速、便捷的匿名在线即时聊天室。
 - 发送aqchatonekey可获取AQChat一键部署脚本
 
 ## 更新日志
+
+### 2024.06.13
+
+- ✅ 艾特用户，消息卡片提醒功能
+- ✅ 艾特小Q，ai消息功能对接
 
 ### 2024.06.03
 
