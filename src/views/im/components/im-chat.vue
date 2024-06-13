@@ -215,17 +215,18 @@ const cancleExpression = ()=>{
 const selectIcon = (icon:string) =>{
   changeExpression();
   let iconContent = `<img src='${icon}' class='emo-image' />`;
-  imEditorRef.value.editor.cmd.do("insertHTML", iconContent);
+  // imEditorRef.value.editor.cmd.do("insertHTML", iconContent);
+  imEditorRef.value.chat.insertHtml(iconContent);
 }
 // 重新编辑
 const rewriteFun = (content:string)=>{
-  imEditorRef.value.editor.cmd.do("insertHTML", content);
+  imEditorRef.value.chat.richText.innerHTML = content
+  imEditorRef.value.chat.enable()
 }
+
 // 发送文件
 const sendFile = async ()=>{
   const file =  uploadRef.value && uploadRef.value.files[0]
-  console.log(file);
-  
   if(!file) {
     ElMessage.error("解析文件异常")
     return;
