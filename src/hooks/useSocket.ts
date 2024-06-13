@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-13 18:11:06
+ * @LastEditTime: 2024-06-13 19:56:38
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -17,7 +17,6 @@ import MsgStatusEnum from "../enums/MsgStatusEnum"
 import Msg from "../class/Msg"
 import MsgTypeEnum from "../enums/MsgTypeEnum"
 import { ref } from 'vue'
-import StreamTypeEnum from '@/enums/StreamTypeEnum';
 
 export default ()=>{
 
@@ -25,7 +24,6 @@ export default ()=>{
   const router = useRouter();
   const route = useRoute();
   const showTip = ref(false)
-  const aiMsgId = ref()
   let loading:any = null
   
   // 初始化websocket
@@ -69,10 +67,16 @@ export default ()=>{
           // 创建房间回调
           case AQChatMSg.default.MsgCommand.CREATE_ROOM_ACK:
             appStore.setRoomInfo(result);
+            if(result.ai === 1){
+              initAiFun();
+            }
             break;
           // 加入房间回调
           case AQChatMSg.default.MsgCommand.JOIN_ROOM_ACK:
             appStore.setRoomInfo(result);
+            if(result.ai === 1){
+              initAiFun();
+            }
             sendSyncChatRecordFun();
             break;
           // 恢复用户连接
@@ -159,9 +163,8 @@ export default ()=>{
       loading && loading.close();
     }
   }
+  // ai流消息
   const streamMsgNotifyFun = (result:any) =>{
-    console.log("AI消息：",result);
-
     let currentMsg = appStore.msgList.find(x=>x.msgId === result.msgId);
     if(currentMsg){
       currentMsg.msg += result.msg
@@ -336,6 +339,21 @@ export default ()=>{
       }
     }
   }
+  // 发送ai提示
+  const initAiFun = () => {
+    const msg:Msg = {
+      roomId:appStore.roomInfo.roomId,
+      msgId:+new Date()+'',
+      msgType:MsgTypeEnum.TEXT,
+      msg:`你好，我是小Q，遇到不懂的问题，可以尝试在输入框<span style='color:var(--im-primary)'>@小Q</span>，我会随时替你解答！`,
+      user:{
+        userId:'AQChatHelper',
+        userAvatar:'https://aqchat.oss-cn-shenzhen.aliyuncs.com/avatar/AQChatAI.png',
+        userName:'小Q',
+      },
+    }
+    appStore.sendInfoLocalFun(msg)
+  }
   // 其他人加入房间通知
   const joinRoomNotifyFun = (result:any) =>{
     // console.log('其他人加入房间通知',result);
@@ -365,8 +383,12 @@ export default ()=>{
     appStore.setRoomInfo({
       roomId:result.roomId || '',
       roomNo:result.roomNo || '',
-      roomName:result.roomName || ''
+      roomName:result.roomName || '',
+      ai:result.ai || 0,
     })
+    if(result.ai === 1){
+      initAiFun();
+    }
   }
   // 用户登录
   const loginFun = (result:any)=>{

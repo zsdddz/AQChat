@@ -17,6 +17,7 @@ export default class CreateRoomAckHandler {
             roomId:msgAck.getRoomid(),
             roomNo:msgAck.getRoomno(),
             roomName:msgAck.getRoomname(),
+            ai:msgAck.getAi()
         }
     }
 }

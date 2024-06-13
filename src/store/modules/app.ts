@@ -14,9 +14,10 @@ import CustomSnowflake from "@/utils/CustomSnowflake"
 import MsgTypeEnum from "@/enums/MsgTypeEnum"
 
 interface RoomInfo {
-    roomId:String,
-    roomNo:String,
-    roomName:String
+    roomId:string,
+    roomNo:string,
+    roomName:string,
+    ai:number
 }
 
 interface AppState {
@@ -60,7 +61,8 @@ const useAppStore = defineStore('app', {
         roomInfo:{
             roomId:'',
             roomNo:'',
-            roomName:''
+            roomName:'',
+            ai:0
         },
         msgList:[],
         msgStatusTimer:{},
@@ -158,7 +160,8 @@ const useAppStore = defineStore('app', {
             this.roomInfo = {
                 roomId:'',
                 roomNo:'',
-                roomName:''
+                roomName:'',
+                ai:0
             }
             this.userInfo = {
                 userId:'',
@@ -171,7 +174,8 @@ const useAppStore = defineStore('app', {
             this.roomInfo = {
                 roomId:'',
                 roomNo:'',
-                roomName:''
+                roomName:'',
+                ai:0
             }
             this.msgList = []
         },

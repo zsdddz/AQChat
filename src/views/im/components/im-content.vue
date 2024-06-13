@@ -12,6 +12,11 @@
         <!--聊天内容-->
         <div class="content-win">
           <el-scrollbar style="max-height: 100%" ref="contentScrollbarRef">
+            <!-- <div v-if="appStore.roomInfo.ai === 1" class="ai-tip">
+              <img src="https://aqchat.oss-cn-shenzhen.aliyuncs.com/avatar/AQChatAI.png" alt="">
+              <div class="txt">你好，我是小Q</div>
+              <div class="txt1">可以尝试输入框<span style='color:var(--im-primary)'>@小Q</span>，我会随时替你解答！</div>
+            </div> -->
             <template v-for="(item,index) in msgList" :key="item.msgId">
               <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip msg-box">
                 {{ item.msg }}<span v-if="item.msg.indexOf('撤回')!=-1 && item.ext" class='rewrite-box' @click='rewriteFun(item.ext)'>重新编辑</span>
@@ -343,6 +348,27 @@ const toBottom = () => {
         width: 100%;
         height: 70%;
         position: relative;
+        .ai-tip{
+          width: 400px;
+          // background-color: var(--im-txt-bg);
+          margin: 0 auto;
+          margin-top: 20px;
+          padding: 0 15px 15px 15px;
+          border-radius: 10px;
+          text-align: center;
+          img{
+            width: 60px;
+            height: auto
+          }
+          .txt{
+            font-weight: 600;
+          }
+          .txt,.txt2{
+            font-size: 16px;
+            color: #3f3f3f;
+            line-height: 26px;
+          }
+        }
         .new-msg-tip{
           height: 30px;
           padding: 0 10px;
@@ -376,7 +402,7 @@ const toBottom = () => {
 
         .msg-tip {
           padding: 5px 10px;
-          border-radius: 20px;
+          border-radius: 10px;
           margin: 20px auto;
           font-size: 14px;
           color: #ccc;
@@ -437,7 +463,7 @@ const toBottom = () => {
           justify-content: end;
 
           .mine-block {
-            margin: 20px 0;
+            margin: 10px 0;
             display: flex;
             position: relative;
             font-size: 16px;
@@ -525,7 +551,7 @@ const toBottom = () => {
           display: flex;
 
           .reciver-block {
-            margin: 20px 0;
+            margin: 10px 0;
             display: flex;
             position: relative;
 

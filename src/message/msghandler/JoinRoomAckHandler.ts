@@ -21,6 +21,7 @@ export default class JoinRoomAckHandler {
             roomId:msgAck.getRoomid(),
             roomNo:msgAck.getRoomno(),
             roomName:msgAck.getRoomname(),
+            ai:msgAck.getAi()
         }
     }
 }

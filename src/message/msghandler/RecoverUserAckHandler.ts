@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:55:23
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-18 17:35:45
+ * @LastEditTime: 2024-06-13 19:51:36
  * @Description: 恢复用户连接消息处理器
  */
 
@@ -24,6 +24,7 @@ export default class RecoverUserAckHandler {
             userId:msgAck.getUserid(),
             userName:msgAck.getUsername(),
             userAvatar:msgAck.getUseravatar(),
+            ai:msgAck.getRoom()?.getAi()
         }
     }
 }
