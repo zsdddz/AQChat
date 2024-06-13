@@ -2,53 +2,77 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-11 11:53:19
  * @LastEditors: zsdddz hitd@foxmail.com
- * @LastEditTime: 2024-06-13 15:35:30
+ * @LastEditTime: 2024-06-13 22:33:32
  * @Description: 雪花id生成
  */
 export default class CustomSnowflake {
-  workerId:number;
-  sequence:number;
-  lastTimestamp:number;
-  epoch:number;
-  constructor(workerId, epoch = 1609459200000) {
-      this.workerId = workerId; // 机器ID
-      this.sequence = 0; // 序列号
-      this.lastTimestamp = -1; // 上次生成ID的时间戳
-      this.epoch = epoch; // 初始时间戳，可自定义
-  }
+    // 开始时间戳 (2020-01-01)
+    private static readonly epoch = 1577836800000n;
 
-  // 生成下一个ID的方法
-  nextId() {
-      let timestamp = Date.now();
-      // 如果当前时间小于上次生成ID的时间，抛出异常
-      if (timestamp < this.lastTimestamp) {
-          throw new Error('Clock moved backwards, refusing to generate id');
-      }
+    // 每部分所占的位数
+    private readonly workerIdBits = 5n;
+    private readonly dataCenterIdBits = 5n;
+    private readonly sequenceBits = 12n;
 
-      // 如果当前时间与上次生成ID的时间相同，则递增序列号
-      if (timestamp === this.lastTimestamp) {
-          this.sequence = (this.sequence + 1) & 4095; // 12位序列号
-          // 如果序列号达到最大值，等待下一毫秒
-          if (this.sequence === 0) {
-              timestamp = this.waitNextMillis(timestamp);
-          }
-      } else {
-          this.sequence = 0; // 重置序列号
-      }
+    // 支持的最大机器ID和数据中心ID
+    private readonly maxWorkerId = -1n ^ (-1n << this.workerIdBits);
+    private readonly maxDataCenterId = -1n ^ (-1n << this.dataCenterIdBits);
 
-      this.lastTimestamp = timestamp; // 更新上次生成ID的时间戳
+    // 偏移量
+    private readonly workerIdShift = this.sequenceBits;
+    private readonly dataCenterIdShift = this.sequenceBits + this.workerIdBits;
+    private readonly timestampShift = this.sequenceBits + this.workerIdBits + this.dataCenterIdBits;
 
-      // 生成ID，包括时间戳、机器ID和序列号
-      const id = ((BigInt(timestamp - this.epoch) << 22n) | (BigInt(this.workerId) << 10n) | BigInt(this.sequence)).toString();
+    // 上次生成ID的时间戳
+    private lastTimestamp = -1n;
+    // 序列号
+    private sequence = 0n;
 
-      return id;
-  }
+    constructor(private dataCenterId: number = 1, private workerId: number = 1) {
+        if (workerId > Number(this.maxWorkerId) || workerId < 0) {
+            throw new Error(`Worker ID can't be greater than ${this.maxWorkerId} or less than 0`);
+        }
+        if (dataCenterId > Number(this.maxDataCenterId) || dataCenterId < 0) {
+        throw new Error(`Data center ID can't be greater than ${this.maxDataCenterId} or less than 0`);
+        }
+    }
 
-  // 等待下一毫秒的方法
-  waitNextMillis(timestamp:number) {
-      while (timestamp <= this.lastTimestamp) {
-          timestamp = Date.now();
-      }
-      return timestamp;
-  }
+    // 生成ID的方法
+    public nextId(): string {
+        let timestamp = BigInt(this.timeGen());
+
+        if (timestamp < this.lastTimestamp) {
+            throw new Error(`Clock moved backwards. Refusing to generate id for ${this.lastTimestamp - timestamp} milliseconds`);
+        }
+
+        if (this.lastTimestamp === timestamp) {
+            this.sequence = (this.sequence + 1n) & ((1n << this.sequenceBits) - 1n);
+            if (this.sequence === 0n) {
+                timestamp = this.tillNextMillis(this.lastTimestamp);
+            }
+        } else {
+            this.sequence = 0n;
+        }
+
+        this.lastTimestamp = timestamp;
+
+        return (((timestamp - CustomSnowflake.epoch) << this.timestampShift) |
+                (BigInt(this.dataCenterId) << this.dataCenterIdShift) |
+                (BigInt(this.workerId) << this.workerIdShift) |
+                this.sequence).toString();
+    }
+
+    private timeGen(): number {
+        return Date.now();
+ 
+
+    }
+
+    private tillNextMillis(lastTimestamp: bigint): bigint {
+        let timestamp = BigInt(this.timeGen());
+        while (timestamp <= lastTimestamp) {
+            timestamp = BigInt(this.timeGen());
+        }
+        return timestamp;
+    }
 }

@@ -44,8 +44,7 @@ interface AppState {
     msgId:number|string
 }
 
-const epoch = +new Date();
-const customSnowflake = new CustomSnowflake(1,epoch);
+const customSnowflake = new CustomSnowflake();
 
 
 const useAppStore = defineStore('app', {
