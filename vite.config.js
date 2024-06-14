@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-24 09:49:31
+ * @LastEditTime: 2024-06-14 22:17:19
  * @Description: 
  */
 import { defineConfig } from 'vite'
@@ -10,6 +10,8 @@ import path from "path";
 import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
+// 时间戳
+const timestamp = new Date().getTime();
 export default defineConfig({
   base: "./",
   root: process.cwd(),
@@ -21,6 +23,27 @@ export default defineConfig({
   },
   assetsInclude: ["./src/assets"],
   plugins: [vue()],
+  build: {
+    rollupOptions: {
+      output: {
+        chunkFileNames: ({ name }) => {
+          if (name === 'vendor') {
+            return `assets/js/[name]-[hash].js`; // 第三方库不添加时间戳
+          } else {
+            return `assets/js/[name]-[hash]-${timestamp}.js`; // 自定义文件名，使用时间戳保证唯一性
+          }
+        },
+        entryFileNames: ({ name }) => {
+          if (name === 'vendor') {
+            return `assets/js/[name]-[hash].js`; // 第三方库不添加时间戳
+          } else {
+            return `assets/js/[name]-[hash]-${timestamp}.js`; // 自定义文件名，使用时间戳保证唯一性
+          }
+        },
+        assetFileNames: `assets/[ext]/[name]-[hash]-${timestamp}.[ext]` // 资源文件添加时间戳
+      },
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {
