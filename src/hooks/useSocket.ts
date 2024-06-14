@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-13 19:56:38
+ * @LastEditTime: 2024-06-14 21:50:02
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -25,36 +25,37 @@ export default ()=>{
   const route = useRoute();
   const showTip = ref(false)
   let loading:any = null
+  let connetMsg:any = null
+  let connectTime:any = null
+  let connectCount = 1;
   
   // 初始化websocket
   const initSocketFun = ()=>{
     if(route.name === 'IM' && appStore.userInfo.userId){
-      loading = ElLoading.service({
-        lock: true,
-        text: '恢复用户登录...',
-        background: 'rgba(0, 0, 0, 0.7)',
-      })
+      if(loading){
+        loading.close();
+      }
+      if(!connetMsg && connectCount != 1){
+        loading = ElMessage({
+          message: '正在恢复用户登录...',
+          type: 'warning',
+          duration:0
+        })
+      }
     }else{
       loading && loading.close();
     }
     AQSender.getInstance().connect(()=>{
       console.log("连接成功...");
+      connectCount = 1
+      connetMsg && connetMsg.close();
       appStore.setWebsocketStatus(true);
-
-      if(appStore.userInfo?.userId){
-        if(route.name === 'IM'){
-          const { userId,userName,userAvatar } = appStore.userInfo
-          const msgArray = [userId,userName,userAvatar]
-          if(appStore.roomInfo?.roomId){
-            msgArray.push(appStore.roomInfo.roomId)
-          }
-          AQSender.getInstance().sendMsg(
-            AQChatMSg.default.MsgCommand.RECOVER_USER_CMD,
-            new AQChatMSg.default.RecoverUserCmd(msgArray)
-          )
-        }
+      if(connectTime!=null){
+        clearInterval(connectTime);
+        connectTime = null;
+        ElMessageBox.close();
       }
-
+      toRecoverUserFun();
       let handlerFactory = AQMsgHandlerFactory.getInstance();
       // 消息回调
       AQSender.getInstance().onMsgReceived = (msgCommand,msgBody) =>{
@@ -142,26 +143,74 @@ export default ()=>{
       }
       
     })
+    
     AQSender.getInstance().closeService = ()=>{
-      if(route.name === 'IM'){
-        ElMessageBox.confirm("服务已关闭，是否重新登录", "系统提示", {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: "warning",
-        }).then(res=>{
-          router.replace({
-            name:'Index'
+      if(route.name === 'IM' && connectCount == 1){
+        if(connectTime == null){
+          connetMsg = ElMessage({
+            message:  `服务器断开，正在尝试第${connectCount}重连`,
+            type: 'warning',
+            duration:0
           })
-          appStore.resetAllInfo();
-        })
-      }else{
-        // ElMessage.error("websocket初始化失败，请稍后再试")
-        // appStore.resetAllInfo();
+          // 重连
+          connectTime = setInterval(()=>{
+            connectCount ++;
+            if(connetMsg){
+              connetMsg.close();
+              connetMsg = null;
+            }
+            connetMsg = ElMessage({
+              message:  `服务器断开，正在尝试第${connectCount}重连`,
+              type: 'warning',
+              duration:0
+            })
+            console.log(`正在尝试第${connectCount}重连`);
+            if(connectCount >5){
+              clearInterval(connectTime)
+              connectTime = null
+              connetTip()
+              connetMsg.close();
+              connetMsg = null;
+            }
+            initSocketFun();
+          },5000)
+        }
       }
       appStore.setWebsocketStatus(false);
       AQSender.getInstance().heartbeatStop();
-      loading && loading.close();
+      // loading && loading.close();
     }
+  }
+
+  const toRecoverUserFun = ()=>{
+    
+    
+    if(appStore.userInfo?.userId){
+      if(route.name === 'IM'){
+        const { userId,userName,userAvatar } = appStore.userInfo
+        const msgArray = [userId,userName,userAvatar]
+        if(appStore.roomInfo?.roomId){
+          msgArray.push(appStore.roomInfo.roomId)
+        }
+        AQSender.getInstance().sendMsg(
+          AQChatMSg.default.MsgCommand.RECOVER_USER_CMD,
+          new AQChatMSg.default.RecoverUserCmd(msgArray)
+        )
+        console.log("恢复用户登录");
+      }
+    }
+  }
+  const connetTip = ()=>{
+    ElMessageBox.confirm("服务已关闭，是否重新登录", "系统提示", {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: "warning",
+    }).then(res=>{
+      router.replace({
+        name:'Index'
+      })
+      appStore.resetAllInfo();
+    })
   }
   // ai流消息
   const streamMsgNotifyFun = (result:any) =>{
@@ -401,7 +450,7 @@ export default ()=>{
   const exceptionFun = (result:any)=>{
     console.log("消息异常",result);
     ElMessage.warning(result.msg)
-    loading && loading.close();
+    // loading && loading.close();
     if(result.code === ExceptionEnum.NO_LOGIN || result.code === ExceptionEnum.USER_QUIT || result.code === ExceptionEnum.USER_MISMATCH){
       appStore.resetAllInfo();
       AQSender.getInstance().heartbeatStop();
