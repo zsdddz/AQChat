@@ -144,7 +144,9 @@ const useAppStore = defineStore('app', {
             }
         },
         setMsgRecord(msg:Msg){
-            this.msgList.unshift(msg)
+            if(!this.msgList.find(x=>x.msgId === msg.msgId)){
+                this.msgList.unshift(msg)
+            }
         },
         // 撤回聊天消息
         removeMsg(msgId:number|string,msg:any){
@@ -195,6 +197,9 @@ const useAppStore = defineStore('app', {
         },
         // 设置消息状态
         setMsgStatus(index:number,status:MsgStatusEnum){
+            console.log(this.msgList);
+            console.log(index);
+            
             this.msgList[index].msgStatus = status;
         }
     },
