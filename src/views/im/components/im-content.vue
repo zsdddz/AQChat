@@ -17,7 +17,7 @@
               <div class="txt">你好，我是小Q</div>
               <div class="txt1">可以尝试输入框<span style='color:var(--im-primary)'>@小Q</span>，我会随时替你解答！</div>
             </div> -->
-            <template v-for="(item,index) in msgList" :key="item.msgId">
+            <template v-for="(item,index) in appStore.msgList" :key="item.msgId">
               <div v-if="item.msgType == MsgTypeEnum.TIP" class="msg-tip msg-box">
                 {{ item.msg }}<span v-if="item.msg.indexOf('撤回')!=-1 && item.ext" class='rewrite-box' @click='rewriteFun(item.ext)'>重新编辑</span>
               </div>
@@ -136,7 +136,6 @@ import Msg from '@/class/Msg'
 const appStore = useAppStore()
 const { proxy }: any = getCurrentInstance();
 const userInfo = appStore.userInfo
-let msgList = appStore.msgList
 // 滚动条Ref
 const contentScrollbarRef = ref(null)
 // 新消息条数
@@ -170,12 +169,6 @@ watch(() => appStore.websocketStatus, (newV) => {
     syncChatRecordFun();
   }
 })
-
-// 更新消息列表
-watch(() => appStore.msgList, (newV) => {
-  msgList = newV;
-}, { deep: true })
-
 // 监听msgId变化，判断是否需要触底
 watch(() => appStore.msgId, (newV) => {
   newMsgCount.value +=1 ;
