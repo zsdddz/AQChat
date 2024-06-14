@@ -47,7 +47,6 @@ export default ()=>{
     ],
   })
   const reloadLoading = ref(true)
-  const router = useRouter();
 
   onMounted(()=>{
     userForm.userName =  generateUsernameFun(4)
