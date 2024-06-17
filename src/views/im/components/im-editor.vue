@@ -21,14 +21,14 @@ import MsgTypeEnum from "@/enums/MsgTypeEnum"
 import useAppStore from "@/store/modules/app"
 import User from '@/class/User'
 
-let chat:any = null;
+const chat = ref();
 const appStore = useAppStore()
 const showPopover = ref(false)
 const chatElm = ref()
 let memberList:Array<User> = [];
 const initChat = () => {
   // 实例chat对象
-  chat = new ChatArea({
+  chat.value = new ChatArea({
     elm: chatElm.value,
     placeholder: '',
     needCallEvery:false,
@@ -38,40 +38,40 @@ const initChat = () => {
     },
     userList: []
   })
-  chat.revisePCPointDialogLabel({
+  chat.value.revisePCPointDialogLabel({
       title: '房间成员',
       checkLabel: ''
   })
   // 绑定键盘发送事件（默认配置为回车发送）
-  chat.enterSend = sendVerify
+  chat.value.enterSend = sendVerify
 }
 
 const initUserList = ()=>{
-  if (!chat) return
-  chat.updateUserList(memberList)
+  if (!chat.value) return
+  chat.value.updateUserList(memberList)
 }
 
 // 发送校验
 const sendVerify = ()=> {
 
-  if (!chat) return
-  if(chat.isEmpty() || chat.getText().trim().length == 0){
+  if (!chat.value) return
+  if(chat.value.isEmpty() || chat.value.getText().trim().length == 0){
     showPopover.value = true;
     setTimeout(() => {
       showPopover.value = false;
     }, 1000);
     return;
   }
-  const sendContent = chat.getHtml({needUserId: true})
+  const sendContent = chat.value.getHtml({needUserId: true})
   if(!sendContent) return
   // 获取聊天框中@人员
-  const callUserList = chat.getCallUserList()
+  const callUserList = chat.value.getCallUserList()
     let extArray = callUserList.map((x:any)=>x.userId);
     extArray = extArray.map((element:string) => "@"+element);
     let ext = extArray.join(',');
     appStore.sendInfo(sendContent,MsgTypeEnum.TEXT,ext);
   // 清空聊天框
-  chat.clear()
+  chat.value.clear()
 }
 
 // 更新消息列表
@@ -88,7 +88,7 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   // 释放实例
-  chat && chat.dispose()
+  chat.value && chat.value.dispose()
 })
 
 
