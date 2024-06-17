@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-25 09:15:08
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-17 10:08:40
+ * @LastEditTime: 2024-06-17 10:29:26
  * @Description: 
 -->
 # 项目说明
@@ -37,6 +37,10 @@ AQChat 一个极速、便捷的匿名在线即时聊天室。
 - 微信扫一扫二维码关注公众号
 - 发送aqchat可获取AQChat部署教程
 - 发送aqchatonekey可获取AQChat一键部署脚本
+
+## 交流群
+
+添加`howcoder`微信进群（关于项目解答、技术/行业/兴趣交流）
 
 ## 免责声明
 
