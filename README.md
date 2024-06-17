@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-25 09:15:08
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-17 10:05:26
+ * @LastEditTime: 2024-06-17 10:08:40
  * @Description: 
 -->
 # 项目说明
@@ -30,6 +30,14 @@ AQChat 一个极速、便捷的匿名在线即时聊天室。
 <img src="https://aqchat.oss-cn-shenzhen.aliyuncs.com/demo/20240511212754.jpg" height="500">
 <img src="https://aqchat.oss-cn-shenzhen.aliyuncs.com/demo/20240511212801.jpg" height="500">
 
+## 部署文档
+
+![戴戴的Linux](https://gitee.com/StephenJose_Dai/dockerhaschat/raw/master/daidailinux.jpg)
+
+- 微信扫一扫二维码关注公众号
+- 发送aqchat可获取AQChat部署教程
+- 发送aqchatonekey可获取AQChat一键部署脚本
+
 ## 免责声明
 
 - 通用性：本项目是作为一个开源项目提供的，开发者在法律允许的范围内不对软件的功能性、安全性或适用性提供任何形式的明示或暗示的保证
@@ -39,14 +47,6 @@ AQChat 一个极速、便捷的匿名在线即时聊天室。
 - 修改和版本：开发者有权在任何时间修改软件的功能或特性，以及本免责声明的任何部分，并且这些修改可能会以软件更新的形式体现
 
 最终解释权：本免责声明的最终解释权归开发者所有
-
-## 部署文档
-
-![戴戴的Linux](https://gitee.com/StephenJose_Dai/dockerhaschat/raw/master/daidailinux.jpg)
-
-- 微信扫一扫二维码关注公众号
-- 发送aqchat可获取AQChat部署教程
-- 发送aqchatonekey可获取AQChat一键部署脚本
 
 ## 更新日志
 
