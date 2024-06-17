@@ -55,23 +55,21 @@ const initUserList = ()=>{
 const sendVerify = ()=> {
 
   if (!chat.value) return
-  const htmlMsg_1 = chat.value.getHtml({needUserId: true})
-  if(!htmlMsg_1) return
-  const sendContent = htmlMsg_1;
-  if (sendContent.length == 0) {
+  if(chat.value.isEmpty() || chat.value.getText().trim().length == 0){
     showPopover.value = true;
     setTimeout(() => {
       showPopover.value = false;
     }, 1000);
     return;
-  } else {
-    // 获取聊天框中@人员
-    const callUserList = chat.value.getCallUserList()
+  }
+  const sendContent = chat.value.getHtml({needUserId: true})
+  if(!sendContent) return
+  // 获取聊天框中@人员
+  const callUserList = chat.value.getCallUserList()
     let extArray = callUserList.map((x:any)=>x.userId);
     extArray = extArray.map((element:string) => "@"+element);
     let ext = extArray.join(',');
     appStore.sendInfo(sendContent,MsgTypeEnum.TEXT,ext);
-  }
   // 清空聊天框
   chat.value.clear()
 }
