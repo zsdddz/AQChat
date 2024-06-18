@@ -170,12 +170,25 @@ watch(() => appStore.websocketStatus, (newV) => {
   }
 })
 // 监听msgId变化，判断是否需要触底
-watch(() => appStore.msgId, (newV) => {
-  newMsgCount.value +=1 ;
+watch(() => appStore.otherUserMsgId, (newV) => {
+  initIntersectionObserver();
+  if(isIntersecting.value){
+    toBottom()
+  }else{
+    newMsgCount.value +=1 ;
+  }
+})
+// 监听AI消息变化，触底
+watch(() => appStore.aiCode, (newV) => {
   initIntersectionObserver();
   if(isIntersecting.value){
     toBottom()
   }
+})
+// 监听强制触底标识
+watch(() => appStore.forceBottom, (newV) => {
+  newMsgCount.value = 0;
+  toBottom()
 })
 
 // 重新编辑

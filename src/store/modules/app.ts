@@ -41,7 +41,11 @@ interface AppState {
     // 声音dom
     soundDom:any,
     // 消息id，更新用于监听变化，判断是否需要消息触底
-    msgId:number|string
+    otherUserMsgId:number|string,
+    // ai消息更新，判断是否需要触底
+    aiCode:number|string,
+    // 强制触底标识
+    forceBottom:number|string,
 }
 
 const customSnowflake = new CustomSnowflake();
@@ -68,14 +72,22 @@ const useAppStore = defineStore('app', {
         memberList:[],
         soundActive:false,
         soundDom:null,
-        msgId:''
+        otherUserMsgId:'',
+        aiCode:'',
+        forceBottom:''
     }),
     getters: {
         mobile: (state) => state.isMobile,
     },
     actions: {
         setMsgId(msgId:number|string){
-            this.msgId = msgId;
+            this.otherUserMsgId = msgId;
+        },
+        setAiCode(code:number|string){
+            this.aiCode = code;
+        },
+        setForceBottom(code:number|string){
+            this.forceBottom = code
         },
         setIsMobile(mobile:boolean) {
             this.isMobile = mobile
@@ -112,7 +124,9 @@ const useAppStore = defineStore('app', {
         },
         sendInfoLocalFun(msg:Msg){
             this.msgList.push(msg)
-            this.setMsgId(msg.msgId as never)
+            if(msg.user?.userId != this.userInfo.userId){
+                this.setMsgId(msg.msgId as never)
+            }
         },
         sendInfoNetWorkFun(msg:Msg){
             let sendMsg = new AQChatMSg.default.SendMsgCmd();

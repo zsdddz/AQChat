@@ -68,6 +68,7 @@ const sendVerify = ()=> {
     let extArray = callUserList.map((x:any)=>x.userId);
     extArray = extArray.map((element:string) => "@"+element);
     let ext = extArray.join(',');
+    appStore.setForceBottom(+new Date())
     appStore.sendInfo(sendContent,MsgTypeEnum.TEXT,ext);
   // 清空聊天框
   chat.value.clear()

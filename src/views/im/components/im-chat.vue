@@ -260,6 +260,7 @@ const sendFile = async ()=>{
     if(!e.target?.result) return;
     msgInfo.msg = e.target.result as string;
     appStore.sendInfoLocalFun(msgInfo)
+    appStore.setForceBottom(+new Date())
     uploadToOss(msgInfo,file)
   };
   reader.readAsDataURL(file);
