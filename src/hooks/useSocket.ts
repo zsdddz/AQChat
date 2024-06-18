@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-14 21:50:02
+ * @LastEditTime: 2024-06-18 09:24:20
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -217,6 +217,7 @@ export default ()=>{
     let currentMsg = appStore.msgList.find(x=>x.msgId === result.msgId);
     if(currentMsg){
       currentMsg.msg += result.msg
+      appStore.setMsgId(+new Date()+'')
     }else{
       const msg:Msg = {
         user:{
