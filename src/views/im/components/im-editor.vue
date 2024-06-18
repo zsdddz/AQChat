@@ -34,7 +34,9 @@ const initChat = () => {
     needCallEvery:false,
     userProps: {
         id: 'userId',
-        name: 'userName'
+        name: 'userName',
+        avatar:'userAvatar',
+        pinyin:'pinyin'
     },
     userList: []
   })
@@ -48,7 +50,22 @@ const initChat = () => {
 
 const initUserList = ()=>{
   if (!chat.value) return
-  chat.value.updateUserList(memberList)
+  let list = memberList.map(x=>{
+    return {
+      userId:x.userId,
+      userName:x.userName,
+      userAvatar:x.userAvatar.indexOf('png') != -1 ? null : svgToDataURL(x.userAvatar)
+    }
+  })
+  chat.value.updateUserList(list)
+}
+
+const svgToDataURL = (html:any)=> {
+  const toolElm = document.createElement('div')
+  toolElm.innerHTML = html
+  const svgElement = toolElm.firstChild
+  if(!svgElement) return null
+  return 'data:image/svg+xml;base64,' + btoa(new XMLSerializer().serializeToString(svgElement))
 }
 
 // 发送校验
