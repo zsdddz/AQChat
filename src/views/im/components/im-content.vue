@@ -300,6 +300,9 @@ const toBottom = () => {
   border-radius: 30px;
   background: @im-content-bg2;
   overflow: hidden;
+  ::v-deep .at-user{
+    color: @im-primary;
+  }
   .head {
     height: 7%;
     display: flex;
