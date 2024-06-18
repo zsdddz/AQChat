@@ -53,9 +53,8 @@ const initUserList = ()=>{
 
 // 发送校验
 const sendVerify = ()=> {
-
   if (!chat.value) return
-  if(chat.value.isEmpty() || chat.value.getText().trim().length == 0){
+  if(chat.value.isEmpty(true)){
     showPopover.value = true;
     setTimeout(() => {
       showPopover.value = false;
