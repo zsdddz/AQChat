@@ -130,7 +130,9 @@ defineExpose({
       overflow-y: auto;
     }
   }
-
+  /deep/ .chat-rich-text{
+    height: 100%;
+  }
   /deep/ .w-e-text p{
     margin:0;
     line-height: 22px;
