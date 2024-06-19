@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-22 20:26:00
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-05-23 16:48:01
+ * @LastEditTime: 2024-06-19 23:07:35
  * @Description: 
  */
 
@@ -16,6 +16,7 @@ import { ElMessage } from 'element-plus'
 import useSocket from "@/hooks/useSocket"
 import { useRouter } from 'vue-router'
 import AQSender from '@/message/AQSender'
+import ChineseName from "@/utils/ChineseName"
 
 export default ()=>{
   interface UserForm {
@@ -33,23 +34,17 @@ export default ()=>{
     userAvatar:''
   })
   const { initSocketFun } = useSocket()
+  const reloadLoading = ref(true)
+  const chineseName = new ChineseName();
   const userRules = reactive<FormRules<UserForm>>({
     userName: [
-      { required: true, message: '请输入用户昵称', trigger: 'blur' },
-      { min: 3, max: 8, message: '用户昵称长度3—8直接', trigger: 'blur' },
-    ],
-    userAvatar: [
-      {
-        required: true,
-        message: '请生成用户头像',
-        trigger: 'change',
-      },
+      { required: true, message: '请输入用户昵称', trigger: 'change' },
+      { min: 2, max: 4, message: '用户昵称长度2-4', trigger: 'change' },
     ],
   })
-  const reloadLoading = ref(true)
 
   onMounted(()=>{
-    userForm.userName =  generateUsernameFun(4)
+    // userForm.userName =  generateUsernameFun(4)
     initUserAvatar();
   })
 
@@ -67,29 +62,13 @@ export default ()=>{
   const initUserAvatar = ()=>{
     const avatarString = generateUsernameFun(2);
     userForm.userAvatar = multiavatar(avatarString)
+    userForm.userName =  chineseName.random();
   }
 
   // 点击开启
   const toStartFun = ()=>{
-    // 如果本地存在用户信息，直接恢复登录
-    // if(appStore.userInfo.userId){
-    //   router.push({
-    //     name:'IM'
-    //   })
-    //   const { userId,userName,userAvatar } = appStore.userInfo
-    //   const msgArray = [userId,userName,userAvatar]
-    //   if(appStore.roomInfo?.roomId){
-    //     msgArray.push(appStore.roomInfo.roomId)
-    //   }
-    //   AQSender.getInstance().sendMsg(
-    //     AQChatMSg.default.MsgCommand.RECOVER_USER_CMD,
-    //     new AQChatMSg.default.RecoverUserCmd(msgArray)
-    //   )
-    //   return
-    // }
     dialogStartVisible.value = true;
     step.value = 1;
-    userForm.userName =  generateUsernameFun(4);
     initUserAvatar();
     if(!appStore.websocketStatus){
       initSocketFun();
@@ -107,35 +86,26 @@ export default ()=>{
   }
 
   // 进入聊天室
-  const enterRoomFun = ()=>{
+  const enterRoomFun = async ()=>{
     if(!appStore.websocketStatus){
       ElMessage.error("websocket初始化失败，请稍后再试")
       return
     }
-    if(step.value == 1){
-      if(!userForm.userName.trim()){
-        ElMessage.warning("请输入用户名")
-        return
+    if (!userFormRef.value) return
+    await userFormRef.value.validate((valid:any, fields:any) => {
+      if (valid) {
+        AQSender.getInstance().sendMsg(
+          AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
+          new AQChatMSg.default.UserLoginCmd([userForm.userName.trim(),userForm.userAvatar])
+        );
+        setTimeout(()=>{
+          appStore.resetRoomInfo();
+        })
+      } else {
+        ElMessage.warning("用户昵称请遵守表单规则")
+        console.log('error submit!', fields)
       }
-      
-      AQSender.getInstance().sendMsg(
-        AQChatMSg.default.MsgCommand.USER_LOGIN_CMD,
-        new AQChatMSg.default.UserLoginCmd([userForm.userName.trim(),userForm.userAvatar])
-      );
-      setTimeout(()=>{
-        appStore.resetRoomInfo();
-      })
-    }else if(step.value == 3){
-      if(!userForm.roomId.trim()){
-        ElMessage.warning("请输入房间名")
-        return
-      }
-      let msg = new AQChatMSg.default.JoinRoomCmd();
-      msg.setRoomno(parseInt(userForm.roomId.trim()));
-      AQSender.getInstance().sendMsg(
-        AQChatMSg.default.MsgCommand.JOIN_ROOM_CMD,msg
-      )
-    }
+    })
   }
 
   const createRoomFun = ()=>{
@@ -151,8 +121,8 @@ export default ()=>{
     step,
     userFormRef,
     userForm,
-    userRules,
     reloadLoading,
+    userRules,
     toStartFun,
     reloadFun,
     enterRoomFun,

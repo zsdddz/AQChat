@@ -1,8 +1,8 @@
 <!--
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:16:54
- * @LastEditors: zsdddz hitd@foxmail.com
- * @LastEditTime: 2024-05-22 17:18:41
+ * @LastEditors: howcode 1051495009@qq.com
+ * @LastEditTime: 2024-06-19 23:02:26
  * @Description: 首页
 -->
 <template>
@@ -25,8 +25,6 @@
             <a href='https://gitee.com/howcode/aq-chat/stargazers'><img src='https://gitee.com/howcode/aq-chat/badge/star.svg?theme=dark' alt='star'></img></a>
             <a href='https://gitee.com/howcode/aq-chat/members'><img src='https://gitee.com/howcode/aq-chat/badge/fork.svg?theme=dark' alt='fork'></img></a>
           </div>
-          
-          
         </div>
       </div>
     </div>
@@ -58,20 +56,28 @@
   >
     <div v-if="step == 1" class="tip-content">
       <div class="user-info">
-        <div class="user-avatar" v-html="userForm.userAvatar"></div>
-        <div class="btn-reload">
-          <lottie-ani
-            v-if="reloadLoading"
-            :loop="false"
-            :autoplay="true"
-            :src="LottieReload"
-            @click.native="reloadFun"
-          />
+        <div class="top-box">
+          <div class="user-avatar" v-html="userForm.userAvatar"></div>
+          <div class="btn-reload">
+            <lottie-ani
+              v-if="reloadLoading"
+              :loop="false"
+              :autoplay="true"
+              :src="LottieReload"
+              @click.native="reloadFun"
+            />
+          </div>
         </div>
-        <div class="user-name">
-          用户名
-          <input placeholder="请输入用户名" v-model="userForm.userName" />
-        </div>
+        <el-form :model="userForm" label-width="160px" ref="userFormRef" :rules="userRules">
+          
+          <!-- <div class="user-name">
+            用户名
+            <input placeholder="请输入用户名" v-model="userForm.userName" />
+          </div> -->
+          <el-form-item :inline-message="true" class="form-item" prop="userName" label="用户名">
+            <el-input placeholder="请输入用户名" v-model="userForm.userName" />
+          </el-form-item>
+        </el-form>
       </div>
       
       <button :class="['next-btn',,!appStore.websocketStatus && 'init-fail']" @click="enterRoomFun">
@@ -91,7 +97,6 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import LottieChat from "@/assets/json/lottie-chat.json";
-// import LottieStart from "@/assets/json/lottie-start.json";
 import LottieReload from "@/assets/json/lottie-reload.json";
 import LottieAni from "@/components/Lottie.vue";
 import useTyping from "./hook/useTyping";
@@ -105,7 +110,9 @@ const {
   dialogStartVisible,
   step,
   userForm,
+  userFormRef,
   reloadLoading,
+  userRules,
   toStartFun,
   reloadFun,
   enterRoomFun
@@ -180,13 +187,7 @@ setTimeout(() => {
         }
       }
     }
-    .btn-reload {
-      margin: 0 auto;
-      height: 30px;
-      position: absolute;
-      right: 110px;
-      top: 40px;
-    }
+    
    
     .next-btn {
       float: right;
@@ -263,10 +264,54 @@ setTimeout(() => {
       display: flex;
       flex-direction: column;
       align-items: center;
-      .user-avatar {
-        height: 90px;
-        width: 90px;
+      .el-form{
+        width: 100%;
+      }
+      .top-box{
+        position: relative;
+        width: 100%;
         margin-bottom: 20px;
+        .user-avatar {
+          height: 90px;
+          width: 90px;
+          margin: 0 auto;
+        }
+        .btn-reload {
+          position: absolute;
+          right: 110px;
+          top: 40px;
+          height: 30px;
+          width: 30px;
+        }
+      }
+      
+      .form-item{
+        position: relative;
+        display: flex;
+        align-items: center;
+        color: @txt-color;
+        margin-top: 10px;
+        margin-bottom:0;
+        width: 100%;
+        .el-input{
+          outline: none;
+          border: none;
+          height: 40px;
+          width: 150px;
+          border-radius: 17px;
+          background: #ffffff;
+          box-shadow: inset 6px 6px 8px #cfcfcf,
+                      inset -6px -6px 8px #ffffff;
+          padding: 0 10px;
+          text-align: center;
+          
+        }
+        /deep/ .el-input__wrapper{
+          background-color: transparent;
+          box-shadow:none;
+          outline: none;
+          border: none;
+        }
       }
       .room-no,.user-name{
         height: 40px;
