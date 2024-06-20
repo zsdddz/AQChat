@@ -13,7 +13,7 @@ AQChat 一个极速、便捷的匿名在线即时聊天室。
 
 ## 其他仓库
 - 移动端：<a href="https://gitee.com/ghosthhf/aqchat-mobile">AQChat-Mobile</a>
-- 后端服务：<a href="https://gitee.com/howcode/aq-chat-server">AQChat-Server</a>
+- 后端服务：<a href="https://github.com/zsdddz/AQChatServer">AQChat-Server</a>
 
 ## 项目预览
 [AQChat在线预览](https://aqchat.run) 
