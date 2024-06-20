@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-25 09:15:08
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-19 23:11:12
+ * @LastEditTime: 2024-06-20 10:01:40
  * @Description: 
 -->
 # 项目说明
@@ -53,6 +53,11 @@ AQChat 一个极速、便捷的匿名在线即时聊天室。
 最终解释权：本免责声明的最终解释权归开发者所有
 
 ## 更新日志
+
+### 2024.06.20
+
+- ✨ markdown文档解析AI回答
+- ✨ 复制AI回答功能
 
 ### 2024.06.19
 
