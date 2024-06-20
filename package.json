@@ -24,6 +24,7 @@
     "v-viewer": "^3.0.10",
     "vue": "^3.4.21",
     "vue-router": "4",
+    "vue3-markdown-it": "^1.0.10",
     "wangeditor": "^4.7.5",
     "websocket": "^1.0.34"
   },
