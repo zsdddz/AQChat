@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:16:54
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-19 23:02:26
+ * @LastEditTime: 2024-06-20 10:04:14
  * @Description: 首页
 -->
 <template>
@@ -119,7 +119,7 @@ const {
 } = useStart();
 const advantageList = [
   {
-    title: "🚀即使通讯",
+    title: "🚀即时通讯",
     desc: "protobuf协议轻便快捷</br>采用Netty实现高效处理",
   },
   {
