@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-04-20 18:08:20
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-03 10:36:42
+ * @LastEditTime: 2024-06-20 09:39:14
  * @Description: 
  */
 
@@ -24,6 +24,8 @@ import "./assets/icon/iconfont.css"
 // 注册右键菜单组件
 import '@imengyu/vue3-context-menu/lib/vue3-context-menu.css'
 import ContextMenu from '@imengyu/vue3-context-menu'
+// 复制指令
+import copys from './utils/directives/copy.js'
 
 const options = {
   defaultOptions: {
@@ -40,6 +42,7 @@ vueApp.use(store)
 .use(ElementPlus)
 .use(VueViewer,options)
 .use(ContextMenu)
+vueApp.directive('copy', copys)
 
 router.isReady().then(() =>{
   vueApp.mount('#app')
