@@ -48,14 +48,6 @@
                       </div>
                       <div class="file-bottom">文件</div>
                     </div>
-                    <!-- <el-dropdown v-else-if="item.msgType === MsgTypeEnum.FILE" trigger="click">
-                      
-                      <template #dropdown>
-                        <el-dropdown-menu>
-                          <el-dropdown-item @click="downloadFileFun(item.msg, item.ext)">下载</el-dropdown-item>
-                        </el-dropdown-menu>
-                      </template>
-                    </el-dropdown> -->
                   </div>
                   <div class="mine-avatar" v-html="item.user.userAvatar"></div>
                 </div>
@@ -67,7 +59,16 @@
                   </div>
                   <div class="info-box">
                     <div class="user-name text-ellipsis">{{ item.user.userName }}</div>
-                    <div v-if="item.msgType === MsgTypeEnum.TEXT" class="text-block" v-html="item.msg"></div>
+                    <div v-if="item.msgType === MsgTypeEnum.TEXT && item.user.userId != 'AQChatHelper'" class="text-block" v-html="item.msg"></div>
+                    <div  v-else-if="item.msgType === MsgTypeEnum.TEXT" class="text-block md-block">
+                      <Markdown :source="item.msg" />
+                      <div class="ai-btn">
+                        <div class="copy" v-copy="item.msg">
+                          <i class="iconfont icon-copy"></i>
+                          复制
+                        </div>
+                      </div>
+                    </div>
                     <img v-else-if="item.msgType === MsgTypeEnum.IMAGE" class="send-image" v-bind:src="item.msg"
                       @click="privewImage(item.msg)" preview="1" />
                     <video class="send-video" v-else-if="item.msgType === MsgTypeEnum.VIDEO" width="320" height="240"
@@ -123,8 +124,8 @@
 <script setup lang="ts">
 import useAppStore from '@/store/modules/app';
 import ImChat from "./im-chat.vue"
-import MsgTypeEnum from '../../../enums/MsgTypeEnum'
-import MsgStatusEnum from '../../../enums/MsgStatusEnum'
+import MsgTypeEnum from '@/enums/MsgTypeEnum'
+import MsgStatusEnum from '@/enums/MsgStatusEnum'
 import AQSender from '@/message/AQSender'
 import * as AQChatMSg from '@/message/protocol/AQChatMsgProtocol_pb'
 import { watch, ref, getCurrentInstance } from 'vue'
@@ -132,6 +133,7 @@ import Loading from "@/components/Loading.vue"
 import { ElMessage, ElMessageBox } from 'element-plus'
 import ImNumber from "./im-number.vue"
 import Msg from '@/class/Msg'
+import Markdown from 'vue3-markdown-it';
 
 const appStore = useAppStore()
 const { proxy }: any = getCurrentInstance();
@@ -190,6 +192,20 @@ watch(() => appStore.forceBottom, (newV) => {
   newMsgCount.value = 0;
   toBottom()
 })
+
+// 复制
+const handleCopy = (text: string) => {
+  let oInput = document.createElement('input');
+  oInput.value = text;
+  document.body.appendChild(oInput);
+  oInput.select(); // 选择对象;
+  document.execCommand("Copy"); // 执行浏览器复制命令
+  oInput.remove();
+  ElMessage({
+    type: 'success',
+    message: '复制成功！'
+  });
+}
 
 // 重新编辑
 const rewriteFun =(ext:any)=>{
@@ -614,6 +630,24 @@ const toBottom = () => {
                 position: relative;
                 max-width: 500px;
                 text-align: left;
+              }
+              ::v-deep .md-block{
+                line-height: 30px;
+                h1,h2,h3,h4 {
+                  margin: 10px 0;
+                }
+                .ai-btn{
+                  display: flex;
+                  align-items: center;
+                  font-size: 12px;
+                  .copy{
+                    color: @ai-btn;
+                    cursor: pointer;
+                    .icon-copy{
+                      margin-right: 4px;
+                    }
+                  }
+                }
               }
             }
           }
