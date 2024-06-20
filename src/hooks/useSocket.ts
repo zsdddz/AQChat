@@ -2,7 +2,7 @@
  * @Author: howcode 1051495009@qq.com
  * @Date: 2024-05-02 12:00:36
  * @LastEditors: howcode 1051495009@qq.com
- * @LastEditTime: 2024-06-18 10:44:08
+ * @LastEditTime: 2024-06-19 23:21:31
  * @Description: websocket消息处理
  */
 import AQSender from '@/message/AQSender'
@@ -397,7 +397,7 @@ export default ()=>{
       msgType:MsgTypeEnum.TEXT,
       msg:`你好，我是小Q，遇到不懂的问题，可以尝试在输入框<span style='color:var(--im-primary)'>@小Q</span>，我会随时替你解答！`,
       user:{
-        userId:'AQChatHelper',
+        userId:'AQChatHelper_INIT',
         userAvatar:'https://aqchat.oss-cn-shenzhen.aliyuncs.com/avatar/AQChatAI.png',
         userName:'小Q',
       },
